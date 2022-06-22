@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'zarperspectiva.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "ZARPERSPECTIVA",
+        "NAME": "zarperspectiva",
         "USER": env("PSQL_USER"),
         "PASSWORD": env("PSQL_PASSWORD"),
         "HOST": "localhost",
