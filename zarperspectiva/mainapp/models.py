@@ -20,6 +20,9 @@ class Subject(models.Model):
         max_length=40,
     )
 
+    def __str__(self):
+        return self.title
+
 
 class Teacher(models.Model):
     first_name = models.CharField(
@@ -60,6 +63,9 @@ class Age(models.Model):
         null=False,
         max_length=30,
     )
+
+    def __str__(self):
+        return self.age
 
 
 class Course(models.Model):
@@ -118,3 +124,6 @@ class Course(models.Model):
         blank=True,
         max_length=30,
     )
+
+    def __str__(self):
+        return self.title
