@@ -2,24 +2,34 @@
 {% load static %}
 
 {% block content %}
-<main>
-<section class="py-3" style="background-color:#10203F;">
-        <div class="container" id="topNav">
-          <div class="row justify-content-between">
-            <div class="col-auto"><a class="navbar-brand" href="index.html"><img src="/media/logo.png" width="141" alt="logo" /></a></div>
-            <div class="col-auto order-2 d-none d-sm-block"><a class="nav-link" href="#!"> <i class="fas fa-user text-info me-2"></i></a></div>
-            <div class="col-auto d-none d-lg-block">
-              <div class="d-flex align-items-center">
-                <p class="mb-0 me-3 text-primary text-end fw-bolder lh-1 opacity-50">SEARCH <br />ANYTHING</p>
-                <form>
-                  <div class="input-group d-flex flex-end-center">
-                    <input class="form-control form-eduprixsearch-control rounded-pill" id="formGroupExampleInput" type="text" placeholder="Ex: Modern Art" /><img class="input-box-icon" src="assets/img/illustrations/search.png" width="36" alt="" />
-                  </div>
-                </form>
+<section class="py-5">
+    <div class="container px-3">
+        <h3>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut massa enim, porttitor vel magna non, sagittis
+            ultrices sapien. Proin quis diam et mi blandit cursus. Etiam quis diam semper lacus venenatis mollis
+            at id dolor. Vivamus sagittis euismod arcu eu tempus. Ut vel porttitor nulla. Phasellus interdum, justo
+            vel aliquet rhoncus, diam metus venenatis risus, et porta est erat vitae enim. Vivamus mi arcu, maximus
+            a nisi quis, auctor ultricies lectus. Duis ultricies diam quis feugiat pulvinar.
+        </h3>
+
+    </div>
+</section>
+<section class="py-3">
+<div class="container">
+          <div class="row">
+            <h1>КУРСЫ</h1>
+            {% for subject in subjects %}
+            <div class="col-sm-6 col-lg-3 mb-4">
+              <div class="card border-0 h-100">
+                <div class="position-relative"><img class="w-100" src="assets/img/gallery/art-masterclass.png" alt="courses" />
+                  <div class="course-logo"><img src="assets/img/gallery/moma.png" alt="logo" /></div>
+                </div>
+                <div class="card-body px-0 py-3">
+                  <h5 class="mb-0 font-sans-serif fw-bold fs-md-0 fs-lg-1">{{ subject.title }}</h5><a class="text-muted fs--1 stretched-link text-decoration-none" href="#!">{{ subject.title }}</a>
+                </div>
               </div>
             </div>
+            {% endfor %}
           </div>
-        </div>
-      </section>
-</main>
+</section>
 {% endblock %}
