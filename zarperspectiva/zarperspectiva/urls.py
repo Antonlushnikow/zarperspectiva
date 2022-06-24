@@ -3,11 +3,14 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 
-from mainapp.views import CoursesView
+from mainapp.views import SubjectsView, CoursesView, CourseDetailView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', CoursesView.as_view()),
+    path('', SubjectsView.as_view(), name='index'),
+
+    path('subject/<slug:slug>/', CoursesView.as_view(), name='subject'),
+    path('course/<int:pk>/', CourseDetailView.as_view(), name='course'),
 ]
 
 if settings.DEBUG:
