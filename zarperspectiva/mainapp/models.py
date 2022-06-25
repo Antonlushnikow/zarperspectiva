@@ -19,6 +19,18 @@ class Subject(models.Model):
         null=False,
         max_length=40,
     )
+    pic = models.ImageField(
+        upload_to='subjects/',
+        null=True,
+        blank=True,
+        verbose_name='фон предмета',
+    )
+    slug = models.SlugField(
+        max_length=255, unique=True, db_index=True, verbose_name="URL",
+    )
+
+    def __str__(self):
+        return self.title
 
 
 class Teacher(models.Model):
@@ -60,6 +72,9 @@ class Age(models.Model):
         null=False,
         max_length=30,
     )
+
+    def __str__(self):
+        return self.age
 
 
 class Course(models.Model):
@@ -118,3 +133,6 @@ class Course(models.Model):
         blank=True,
         max_length=30,
     )
+
+    def __str__(self):
+        return self.title

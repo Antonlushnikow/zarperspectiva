@@ -1,11 +1,19 @@
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 
-from mainapp.views import ListCourses, send
+from mainapp.views import SubjectsView, CoursesView, CourseDetailView, send
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("", ListCourses.as_view(), name="index"),
-    path("send_mail", send, name='send'),
+    path('admin/', admin.site.urls),
+    path('', SubjectsView.as_view(), name='index'),
 
+    path('subject/<slug:slug>/', CoursesView.as_view(), name='subject'),
+    path('course/<int:pk>/', CourseDetailView.as_view(), name='course'),
+
+    path("send_mail", send, name='send'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
