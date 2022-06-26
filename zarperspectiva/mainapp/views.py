@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import ListView, DetailView
-from mainapp.models import Subject, Course
+from django.views.generic import ListView, DetailView, CreateView
+
+from mainapp.forms import CreateRecordForm
+from mainapp.models import Subject, Course, Pupil
 from django.http import HttpResponseRedirect
 from django.core.mail import send_mail
 from zarperspectiva import settings
@@ -41,3 +43,9 @@ def send(request):
         title, message, settings.EMAIL_HOST_USER, [send_to], fail_silently=False
     )
     return HttpResponseRedirect("/")
+
+
+class RecordForCourses(CreateView):
+    model = Pupil
+    template_name = "mainapp/record_for_course.html"
+    form_class = CreateRecordForm

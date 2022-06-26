@@ -136,3 +136,81 @@ class Course(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Pupil(models.Model):
+
+    parent_name = models.CharField(
+        verbose_name='Имя заказчика',
+        max_length=50,
+        null=False,
+        blank=False,
+    )
+
+    parent_surname = models.CharField(
+        verbose_name='Фамилия заказчика',
+        max_length=50,
+        null=False,
+        blank=False,
+    )
+
+    parent_second_name = models.CharField(
+        verbose_name='Отчество заказчика',
+        max_length=50,
+        null=False,
+        blank=False,
+    )
+
+    phone_pupil = models.IntegerField(
+        verbose_name='Телефоно ученика',
+        null=False,
+        blank=False,
+    )
+
+    e_mail_pupil = models.EmailField(
+        verbose_name='Электронная почта',
+        null=False,
+        blank=False,
+    )
+
+    name_pupil = models.CharField(
+        verbose_name='Имя ученика',
+        max_length=50,
+        null=False,
+    )
+
+    surname_pupil = models.CharField(
+        verbose_name='Фамилия ученика',
+        max_length=50,
+        null=False,
+    )
+
+    second_name_pupil = models.CharField(
+        verbose_name='Отчество ученика',
+        max_length=50,
+    )
+
+    birthday_pupil = models.DateField(
+        verbose_name='дата рождения ученика',
+        null=False,
+    )
+
+    school = models.CharField(
+        verbose_name='Место учебы',
+        max_length=50,
+    )
+
+    phone_parent = models.IntegerField(
+        verbose_name='Телефоно заказчика',
+        null=True,
+    )
+
+    e_mail_parent = models.EmailField(
+        verbose_name='Электронная почта заказчика',
+        null=True,
+    )
+
+    courses = models.ManyToManyField(Course)
+
+    def __str__(self):
+        return " ".join([self.name_pupil, self.second_name_pupil, self.surname_pupil])

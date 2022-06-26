@@ -1,0 +1,23 @@
+{% extends 'zarperspectiva/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container px-3 col-lg-9">
+        <h3>
+            {{ site_info }}
+        </h3>
+
+    </div>
+</section>
+<section class="py-3">
+    <div class="container col-lg-6">
+        <h2>Запись на курсы в 2021—2022 учебном году</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Записаться">
+        </form>
+    </div>
+</section>
+{% endblock %}
