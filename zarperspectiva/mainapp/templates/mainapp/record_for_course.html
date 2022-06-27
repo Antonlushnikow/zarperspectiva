@@ -11,11 +11,32 @@
     </div>
 </section>
 <section class="py-3">
-    <div class="container col-lg-6">
-        <h2>Запись на курсы в 2021—2022 учебном году</h2>
+    <h2 class="text-center">Запись на курсы в 2021—2022 учебном году</h2>
+    <div class="container col-lg-3">
+
         <form method="post">
+            <h4>Информация об Ученике:</h4>
+            <hr>
             {% csrf_token %}
-            {{ form.as_p }}
+            {% for field in form %}
+            {% if  'pupil' in field.name %}
+                {{ field.label }}
+                {{ field }}
+            {% endif %}
+            {% endfor %}
+            <br>
+            <h4>Информация о Заказчике:</h4>
+            <hr>
+            {% for field in form %}
+            {% if  'parent' in field.name %}
+                {{ field.label }}
+                {{ field }}
+            {% endif %}
+            {% endfor %}
+
+            {{form.subjects.label}}
+            {{form.subjects}}
+            <br>
             <input type="submit" value="Записаться">
         </form>
     </div>

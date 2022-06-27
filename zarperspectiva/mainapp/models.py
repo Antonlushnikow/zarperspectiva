@@ -39,7 +39,7 @@ class Teacher(models.Model):
         max_length=30,
         null=False,
     )
-    parent_name = models.CharField(
+    second_name = models.CharField(
         verbose_name='отчество',
         max_length=30,
         null=False,
@@ -63,7 +63,7 @@ class Teacher(models.Model):
     subjects = models.ManyToManyField(Subject)
 
     def __str__(self):
-        return f'{self.last_name} {self.first_name} {self.parent_name}'
+        return f'{self.last_name} {self.first_name} {self.second_name}'
 
 
 class Age(models.Model):
@@ -161,14 +161,15 @@ class Pupil(models.Model):
         blank=False,
     )
 
-    phone_pupil = models.IntegerField(
-        verbose_name='Телефоно ученика',
+    phone_parent = models.CharField(
+        verbose_name='Телефон заказчика',
+        max_length=12,
         null=False,
         blank=False,
     )
 
-    e_mail_pupil = models.EmailField(
-        verbose_name='Электронная почта',
+    e_mail_parent = models.EmailField(
+        verbose_name='Электронная почта заказчика',
         null=False,
         blank=False,
     )
@@ -177,12 +178,14 @@ class Pupil(models.Model):
         verbose_name='Имя ученика',
         max_length=50,
         null=False,
+        blank=False,
     )
 
     surname_pupil = models.CharField(
         verbose_name='Фамилия ученика',
         max_length=50,
         null=False,
+        blank=False,
     )
 
     second_name_pupil = models.CharField(
@@ -195,22 +198,25 @@ class Pupil(models.Model):
         null=False,
     )
 
-    school = models.CharField(
+    school_pupil = models.CharField(
         verbose_name='Место учебы',
-        max_length=50,
+        max_length=100,
     )
 
-    phone_parent = models.IntegerField(
-        verbose_name='Телефоно заказчика',
+    phone_pupil = models.CharField(
+        verbose_name='Телефон ученика',
+        max_length=12,
         null=True,
+        blank=True,
     )
 
-    e_mail_parent = models.EmailField(
-        verbose_name='Электронная почта заказчика',
+    e_mail_pupil = models.EmailField(
+        verbose_name='Электронная почта ученика',
         null=True,
+        blank=True,
     )
 
-    courses = models.ManyToManyField(Course)
+    subjects = models.ManyToManyField(Subject)
 
     def __str__(self):
-        return " ".join([self.name_pupil, self.second_name_pupil, self.surname_pupil])
+        return f'{self.surname_pupil} {self.name_pupil} {self.second_name_pupil}'

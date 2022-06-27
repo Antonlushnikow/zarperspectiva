@@ -49,3 +49,4 @@ class RecordForCourses(CreateView):
     model = Pupil
     template_name = "mainapp/record_for_course.html"
     form_class = CreateRecordForm
+    success_url = "/"
