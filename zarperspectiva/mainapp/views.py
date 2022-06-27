@@ -6,10 +6,10 @@ from django.core.mail import send_mail
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from mainapp.models import Subject, Course
+from mainapp.models import Subject, Course, Age
 from zarperspectiva import settings
 
-from mainapp.serializers import CourseSerializer
+from mainapp.serializers import CourseSerializer, SubjectSerializer, AgeSerializer
 
 
 class SubjectsView(ListView):
@@ -31,10 +31,18 @@ class ListCoursesApi(APIView):
         return Response(serializer.data)
 
 
-class CourseDetailView(DetailView):
-    model = Course
-    template_name = 'mainapp/course.html'
-    context_object_name = 'course'
+class ListSubjectsApi(APIView):
+    def get(self, request, format=None):
+        subjects = Subject.objects.all()
+        serializer = SubjectSerializer(subjects, many=True)
+        return Response(serializer.data)
+
+
+class ListAgesApi(APIView):
+    def get(self, request, format=None):
+        ages = Age.objects.all()
+        serializer = AgeSerializer(ages, many=True)
+        return Response(serializer.data)
 
 
 def send(request):
