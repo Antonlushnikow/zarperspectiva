@@ -3,6 +3,10 @@ from django import forms
 from mainapp.models import Pupil, Subject
 
 
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
+
 class CreateRecordForm(forms.ModelForm):
     """
     Форма создания записи на курс
@@ -18,6 +22,9 @@ class CreateRecordForm(forms.ModelForm):
     class Meta:
         model = Pupil
         fields = "__all__"
+        widgets = {
+            'birthday_pupil': DateInput(),
+        }
 
     def __init__(self, *args, **kwargs):
         super(CreateRecordForm, self).__init__(*args, **kwargs)
