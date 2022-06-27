@@ -87,9 +87,12 @@ class Course(models.Model):
         verbose_name='информация о курсе',
         blank=True,
     )
-    subject = models.ManyToManyField(
+    subject = models.ForeignKey(
         Subject,
         verbose_name='предмет',
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name='subject',
     )
     age = models.ManyToManyField(
         Age,

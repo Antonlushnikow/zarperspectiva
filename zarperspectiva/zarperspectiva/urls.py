@@ -3,14 +3,14 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 
-from mainapp.views import SubjectsView, CoursesView, CourseDetailView, send
+from mainapp.views import SubjectsView, CoursesView, ListCoursesApi, send
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', SubjectsView.as_view(), name='index'),
 
-    path('subject/<slug:slug>/', CoursesView.as_view(), name='subject'),
-    path('course/<int:pk>/', CourseDetailView.as_view(), name='course'),
+    path('courses/', CoursesView.as_view(), name='courses'),
+    path('api/courses/', ListCoursesApi.as_view(), name='courses-api'),
 
     path("send_mail", send, name='send'),
 ]
