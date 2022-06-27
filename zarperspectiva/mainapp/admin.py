@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import SiteSettings, Subject, Teacher, Age, Course
+from .models import SiteSettings, Subject, Teacher, Age, Course, Pupil
 
 
 class SubjectAdmin(admin.ModelAdmin):
@@ -13,3 +13,4 @@ admin.site.register(Subject, SubjectAdmin)
 admin.site.register(Teacher)
 admin.site.register(Age)
 admin.site.register(Course)
+admin.site.register(Pupil)
