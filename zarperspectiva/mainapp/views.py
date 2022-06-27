@@ -1,11 +1,19 @@
 from django.shortcuts import render, get_object_or_404
+
 from django.views.generic import ListView, DetailView, CreateView
 
 from mainapp.forms import CreateRecordForm
 from mainapp.models import Subject, Course, Pupil
+
 from django.http import HttpResponseRedirect
 from django.core.mail import send_mail
+from rest_framework.views import APIView
+from rest_framework.response import Response
+
+from mainapp.models import Subject, Course
 from zarperspectiva import settings
+
+from mainapp.serializers import CourseSerializer
 
 
 class SubjectsView(ListView):
@@ -19,14 +27,21 @@ class CoursesView(ListView):
     template_name = 'mainapp/courses.html'
     context_object_name = 'courses'
 
-    def get_queryset(self):
-        subject = get_object_or_404(Subject, slug=self.kwargs["slug"])
-        return Course.objects.filter(subject__in=[subject])
+    # def get_queryset(self):
+    #     subject = get_object_or_404(Subject, slug=self.kwargs["slug"])
+    #     return Course.objects.filter(subject__in=[subject])
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data()
-        context["subject"] = get_object_or_404(Subject, slug=self.kwargs["slug"])
-        return context
+    # def get_context_data(self, *, object_list=None, **kwargs):
+    #     context = super().get_context_data()
+    #     context["subject"] = get_object_or_404(Subject, slug=self.kwargs["slug"])
+    #     return context
+
+
+class ListCoursesApi(APIView):
+    def get(self, request, format=None):
+        courses = Course.objects.all()
+        serializer = CourseSerializer(courses, many=True)
+        return Response(serializer.data)
 
 
 class CourseDetailView(DetailView):
