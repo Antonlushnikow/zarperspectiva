@@ -8,7 +8,7 @@ class AgeListingField(serializers.RelatedField):
 
 
 class CourseSerializer(serializers.ModelSerializer):
-    subject_name = serializers.CharField(source='subject.title')
+    subject_name = serializers.CharField(source='subject')
     teacher_name = serializers.CharField(source='teacher')
     age = AgeListingField(read_only=True, many=True)
 

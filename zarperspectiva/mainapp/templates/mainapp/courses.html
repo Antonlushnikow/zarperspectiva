@@ -10,7 +10,17 @@
           {% verbatim %}
 
             <div id="vue">
-              <div v-for="course in courses">
+                <select v-model="selectedSubject">
+                    <option value="">Все</option>
+                    <option value="2">Физика</option>
+                    <option value="3">Математика</option>
+                </select>
+                <select v-model="selectedTeacher">
+                    <option value="">Все</option>
+                    <option value="1">Коскина</option>
+                    <option value="2">Лушников</option>
+                </select>
+              <div v-for="course in filteredCourses">
                 <toggle-list-item :course="course"></toggle-list-item>
               </div>
             </div>
@@ -46,6 +56,7 @@
     </div>
 </section>
 <script type="text/javascript">
+
     Vue.component('toggle-list-item', {
       template: '#list-item',
       props: ['course'],
@@ -66,6 +77,11 @@
       data: {
         visible: false,
         courses: [],
+        selectedSubject: '',
+        selectedTeacher: '',
+      },
+      created() {
+
       },
       mounted() {
         axios
@@ -73,6 +89,27 @@
           .then(response => {
             this.courses = response.data;
           });
+      },
+      computed: {
+        filteredCourses() {
+          let tempCourses = this.courses;
+            console.log(this.selectedSubject)
+          if (this.selectedSubject) {
+              tempCourses = tempCourses.filter((item) => {
+                return (item.subject == this.selectedSubject);
+              });
+          }
+            console.log('teacher ' + this.selectedTeacher)
+          if (this.selectedTeacher) {
+            tempCourses = tempCourses.filter((item) => {
+                console.log(item.teacher)
+
+
+              return (item.teacher == this.selectedTeacher);
+            })
+          }
+            return tempCourses;
+        }
       }
     })
 </script>

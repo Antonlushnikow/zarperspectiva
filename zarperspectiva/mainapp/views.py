@@ -23,15 +23,6 @@ class CoursesView(ListView):
     template_name = 'mainapp/courses.html'
     context_object_name = 'courses'
 
-    # def get_queryset(self):
-    #     subject = get_object_or_404(Subject, slug=self.kwargs["slug"])
-    #     return Course.objects.filter(subject__in=[subject])
-
-    # def get_context_data(self, *, object_list=None, **kwargs):
-    #     context = super().get_context_data()
-    #     context["subject"] = get_object_or_404(Subject, slug=self.kwargs["slug"])
-    #     return context
-
 
 class ListCoursesApi(APIView):
     def get(self, request, format=None):
