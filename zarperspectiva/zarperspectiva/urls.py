@@ -3,8 +3,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 
-
-from mainapp.views import SubjectsView, CoursesView, CourseDetailView, send, RecordForCourses
+from mainapp.views import SubjectsView, CoursesView, ListCoursesApi, ListSubjectsApi, ListAgesApi, send, RecordForCourses
 
 
 urlpatterns = [
@@ -16,6 +15,8 @@ urlpatterns = [
     path('record-for-courses/', RecordForCourses.as_view(), name='record'),
     path('courses/', CoursesView.as_view(), name='courses'),
     path('api/courses/', ListCoursesApi.as_view(), name='courses-api'),
+    path('api/subjects/', ListSubjectsApi.as_view(), name='subjects-api'),
+    path('api/ages/', ListAgesApi.as_view(), name='ages-api'),
 
 
     path("send_mail", send, name='send'),
