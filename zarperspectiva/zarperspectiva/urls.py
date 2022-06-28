@@ -11,7 +11,6 @@ urlpatterns = [
     path('', SubjectsView.as_view(), name='index'),
 
     path('subject/<slug:slug>/', CoursesView.as_view(), name='subject'),
-    # path('course/<int:pk>/', CourseDetailView.as_view(), name='course'),
     path('record-for-courses/', RecordForCourses.as_view(), name='record'),
     path('courses/', CoursesView.as_view(), name='courses'),
     path('api/courses/', ListCoursesApi.as_view(), name='courses-api'),
