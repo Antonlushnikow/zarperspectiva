@@ -13,8 +13,10 @@ urlpatterns = [
     path('', SubjectsView.as_view(), name='index'),
 
     path('subject/<slug:slug>/', CoursesView.as_view(), name='subject'),
+
     path('export/', TemplateView.as_view(template_name='mainapp/export.html'), name='export'),
     path('export-records/', export_records, name='export-records'),
+
 
     path('record-for-courses/', RecordForCourses.as_view(), name='record'),
     path('courses/', CoursesView.as_view(), name='courses'),
