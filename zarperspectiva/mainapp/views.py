@@ -5,7 +5,7 @@ from django.views.generic import ListView, DetailView, CreateView
 from mainapp.forms import CreateRecordForm
 from mainapp.models import Subject, Course, Pupil
 
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.core.mail import send_mail
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -14,6 +14,27 @@ from mainapp.models import Subject, Course, Age
 from zarperspectiva import settings
 
 from mainapp.serializers import CourseSerializer, SubjectSerializer, AgeSerializer
+import csv
+
+
+MODELS = {
+    'pupil': (
+        Pupil,
+        [
+            'name_pupil',
+            'surname_pupil',
+            'second_name_pupil',
+            'birthday_pupil',
+            'phone_pupil'
+        ]
+    ),
+    'course': (
+        Course,
+        [
+            'title',
+        ]
+    )
+}
 
 
 class SubjectsView(ListView):
@@ -64,3 +85,37 @@ class RecordForCourses(CreateView):
     template_name = "mainapp/record_for_course.html"
     form_class = CreateRecordForm
     success_url = "/"
+
+
+def export_model(model_name: str):
+    model, headers = MODELS[model_name]
+    response = HttpResponse('text/csv')
+    response['Content-Disposition'] = 'attachment; filename=students.csv'
+    writer = csv.writer(response)
+    writer.writerow(headers)
+    objects = model.objects.all().values_list()
+    for obj in objects:
+        writer.writerow(obj)
+    return response
+
+
+def export_students(request):
+    return export_model('pupil')
+
+
+def export_courses(request):
+    return export_model('course')
+
+
+def export_records(request):
+    model = Course
+    response = HttpResponse('text/csv')
+    response['Content-Disposition'] = 'attachment; filename=students.csv'
+    writer = csv.writer(response)
+    objects = model.objects.select_related('subject')
+    print(objects.query)
+    objects = objects.values_list()
+    print(objects.values_list())
+    for obj in objects:
+        writer.writerow(obj)
+    return response
