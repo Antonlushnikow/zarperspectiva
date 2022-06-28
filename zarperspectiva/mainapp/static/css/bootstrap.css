@@ -10833,5 +10833,7 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
-
+.errorlist{
+    color:red;
+}
 /*# sourceMappingURL=bootstrap.css.map */

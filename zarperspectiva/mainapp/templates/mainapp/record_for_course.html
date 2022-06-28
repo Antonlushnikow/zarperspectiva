@@ -13,13 +13,12 @@
 <section class="py-3">
     <h2 class="text-center">Запись на курсы в 2021—2022 учебном году</h2>
     <div class="container col-lg-3">
-
         <form method="post">
             <h4>Информация об Ученике:</h4>
             <hr>
             {% csrf_token %}
             {% for field in form %}
-            {% if  'pupil' in field.name %}
+            {% if 'pupil' in field.name %}
                 {{ field.label }}
                 {{ field }}
             {% endif %}
@@ -28,50 +27,50 @@
             <h4>Информация о Заказчике:</h4>
             <hr>
             {% for field in form %}
-            {% if  'parent' in field.name %}
-                {{ field.label }}
-                {{ field }}
+            {% if 'parent' in field.name %}
+            {{ field.errors }}
+            {{ field.label }}
+            {{ field }}
             {% endif %}
             {% endfor %}
-
-
-          {% verbatim %}
-
+            {{ form.courses.errors }}
+            {% verbatim %}
             <div id="vue">
                 <div class="mt-2 mb-2">
                     <div>
-                    <label for="selectSubject" class="fw-bold me-1">ПРЕДМЕТ</label>
-                    <select v-model="selectedSubject" id="selectSubject" class="me-3">
-                        <option value="">Все</option>
-                        <option v-for="subject in subjects" :value="subject.id" class="text-capitalize">{{ subject.title }}</option>
-                    </select>
+                        <label for="selectSubject" class="fw-bold me-1">ПРЕДМЕТ</label>
+                        <select v-model="selectedSubject" id="selectSubject" class="me-3">
+                            <option value="">Все</option>
+                            <option v-for="subject in subjects" :value="subject.id" class="text-capitalize">{{
+                                subject.title }}
+                            </option>
+                        </select>
                     </div>
                     <div>
-                    <label for="selectAge" class="fw-bold me-2">ВОЗРАСТ</label>
-                    <select v-model="selectedAge" id="selectAge">
-                        <option value="">Все</option>
-                        <option v-for="age in ages" :value="age.id">{{ age.age }}</option>
-                    </select>
+                        <label for="selectAge" class="fw-bold me-2">ВОЗРАСТ</label>
+                        <select v-model="selectedAge" id="selectAge">
+                            <option value="">Все</option>
+                            <option v-for="age in ages" :value="age.id">{{ age.age }}</option>
+                        </select>
                     </div>
                 </div>
-              <div v-for="course in filteredCourses">
-                <toggle-list-item :course="course"></toggle-list-item>
-              </div>
+                <div v-for="course in filteredCourses">
+                    <toggle-list-item :course="course"></toggle-list-item>
+                </div>
             </div>
 
-          <template id="list-item">
-            <div>
-              <input type="checkbox" :id="course.id" :value="course.id" name="courses" v-model="course.checked">
-              <label :for="course.id">{{ course.title }}</label>
-            </div>
-          </template>
-          {% endverbatim %}
-            {{form.subjects.label}}
-            {{form.subjects}}
+            <template id="list-item">
+                <div>
+                    <input type="checkbox" :id="course.id" :value="course.id" name="courses" v-model="course.checked">
+                    <label :for="course.id">{{ course.title }}</label>
+                </div>
+            </template>
+            {% endverbatim %}
+
             <br>
             <input type="submit" value="Записаться">
         </form>
-<script type="text/javascript">
+        <script type="text/javascript">
     Vue.component('toggle-list-item', {
       template: '#list-item',
       props: ['course'],
@@ -135,7 +134,10 @@
         }
       }
     })
-</script>
+
+
+
+        </script>
     </div>
 </section>
 {% endblock %}

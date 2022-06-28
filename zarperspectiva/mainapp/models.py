@@ -219,7 +219,7 @@ class Pupil(models.Model):
         blank=True,
     )
 
-    subjects = models.ManyToManyField(Subject)
+    courses = models.ManyToManyField(Course)
 
     def __str__(self):
         return f'{self.surname_pupil} {self.name_pupil} {self.second_name_pupil}'
