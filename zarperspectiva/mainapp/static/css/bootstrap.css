@@ -10833,7 +10833,7 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
-.errorlist{
+  ul.errorlist li{
     color:red;
-}
+  }
 /*# sourceMappingURL=bootstrap.css.map */

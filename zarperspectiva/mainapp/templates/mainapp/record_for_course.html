@@ -12,13 +12,14 @@
 </section>
 <section class="py-3">
     <h2 class="text-center">Запись на курсы в 2021—2022 учебном году</h2>
-    <div class="container col-lg-3">
+    <div class="container col-12 col-md-5 col-lg-4 ">
         <form method="post">
             <h4>Информация об Ученике:</h4>
             <hr>
             {% csrf_token %}
             {% for field in form %}
-            {% if 'pupil' in field.name %}
+            {% if  'pupil' in field.name %}
+                {{ field.errors }}
                 {{ field.label }}
                 {{ field }}
             {% endif %}
@@ -66,9 +67,8 @@
                 </div>
             </template>
             {% endverbatim %}
-
             <br>
-            <input type="submit" value="Записаться">
+            <input type="submit" value="Записаться" class="col-12">
         </form>
         <script type="text/javascript">
     Vue.component('toggle-list-item', {
