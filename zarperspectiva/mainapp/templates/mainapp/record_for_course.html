@@ -61,7 +61,7 @@
 
           <template id="list-item">
             <div>
-              <input type="checkbox" :id="course.id" :value="course.id" v-model="course.checked">
+              <input type="checkbox" :id="course.id" :value="course.id" name="courses" v-model="course.checked">
               <label :for="course.id">{{ course.title }}</label>
             </div>
           </template>
