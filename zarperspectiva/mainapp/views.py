@@ -1,40 +1,17 @@
-from django.shortcuts import render, get_object_or_404
+import csv
 
-from django.views.generic import ListView, DetailView, CreateView
-
-from mainapp.forms import CreateRecordForm
-from mainapp.models import Subject, Course, Pupil
-
+from django.contrib.auth.decorators import login_required
+from django.views.generic import ListView, CreateView
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.mail import send_mail
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from mainapp.models import Subject, Course, Age
+from mainapp.forms import CreateRecordForm
+from mainapp.models import Subject, Course, Age, Pupil
 from zarperspectiva import settings
-
 from mainapp.serializers import CourseSerializer, SubjectSerializer, AgeSerializer
-import csv
-
-
-MODELS = {
-    'pupil': (
-        Pupil,
-        [
-            'name_pupil',
-            'surname_pupil',
-            'second_name_pupil',
-            'birthday_pupil',
-            'phone_pupil'
-        ]
-    ),
-    'course': (
-        Course,
-        [
-            'title',
-        ]
-    )
-}
 
 
 class SubjectsView(ListView):
@@ -87,35 +64,36 @@ class RecordForCourses(CreateView):
     success_url = "/"
 
 
-def export_model(model_name: str):
-    model, headers = MODELS[model_name]
-    response = HttpResponse('text/csv')
-    response['Content-Disposition'] = 'attachment; filename=students.csv'
-    writer = csv.writer(response)
-    writer.writerow(headers)
-    objects = model.objects.all().values_list()
-    for obj in objects:
-        writer.writerow(obj)
-    return response
-
-
-def export_students(request):
-    return export_model('pupil')
-
-
-def export_courses(request):
-    return export_model('course')
-
-
+@login_required
 def export_records(request):
-    model = Course
-    response = HttpResponse('text/csv')
+    model = Pupil
+    response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=students.csv'
-    writer = csv.writer(response)
-    objects = model.objects.select_related('subject')
-    print(objects.query)
-    objects = objects.values_list()
-    print(objects.values_list())
-    for obj in objects:
+    response.write(u'\ufeff'.encode('utf8'))
+    writer = csv.writer(response, delimiter=';')
+
+    writer.writerow([
+        'Фамилия родителя',
+        'Имя родителя',
+        'Отчество родителя',
+        'Email родителя',
+        'Фамилия ученика',
+        'Имя ученика',
+        'Отчество ученика',
+        'День рождения',
+        'Предмет',
+    ])
+
+    for obj in model.objects.values_list(
+            'parent_surname',
+            'parent_name',
+            'parent_second_name',
+            'e_mail_parent',
+            'surname_pupil',
+            'name_pupil',
+            'second_name_pupil',
+            'birthday_pupil',
+            'subjects__title',
+    ):
         writer.writerow(obj)
     return response
