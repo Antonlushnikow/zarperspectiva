@@ -4,8 +4,9 @@ from django.contrib import admin
 from django.urls import path
 from django.views.generic import TemplateView
 
+
 from mainapp.views import SubjectsView, CoursesView, ListCoursesApi, ListSubjectsApi, \
-    ListAgesApi, send, RecordForCourses, export_records
+    ListAgesApi, RecordForCourses, export_records
 
 
 urlpatterns = [
@@ -24,9 +25,7 @@ urlpatterns = [
     path('api/subjects/', ListSubjectsApi.as_view(), name='subjects-api'),
     path('api/ages/', ListAgesApi.as_view(), name='ages-api'),
 
-
-    path("send_mail", send, name='send'),
-]
+    ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

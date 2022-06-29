@@ -47,21 +47,32 @@ class ListAgesApi(APIView):
         return Response(serializer.data)
 
 
-def send(request):
-    send_to = "ashiryaev84@gmail.com"
-    title = f"Тема для тестового письма"
-    message = f"Тело письма. Привет это письмо от зарперспективы"
-    send_mail(
-        title, message, settings.EMAIL_HOST_USER, [send_to], fail_silently=False
-    )
-    return HttpResponseRedirect("/")
-
-
 class RecordForCourses(CreateView):
     model = Pupil
     template_name = "mainapp/record_for_course.html"
     form_class = CreateRecordForm
     success_url = "/"
+
+
+    def form_valid(self, form):
+        super_form = super().form_valid(form)
+        send_mail(
+            from_email=settings.EMAIL_HOST_USER,
+            subject='Новый ученик успешно записался',
+            message=f'Здравствуйте,\n {form.instance.name_pupil} {form.instance.surname_pupil} записался' +
+                    f'курсы : ',
+            recipient_list=[settings.ADMIN_EMAIL_ADDRESS]
+        )
+
+        send_mail(
+            from_email=settings.EMAIL_HOST_USER,
+            subject='Поздравляем с успешной записью на курсы',
+            message=f'Здравствуйте, ваш ребенок\n {form.instance.name_pupil} {form.instance.surname_pupil} ' +
+                    f' записан на курсы : ',
+            recipient_list=[form.instance.e_mail_parent],
+        )
+        return super_form
+
 
 
 @login_required
@@ -97,3 +108,4 @@ def export_records(request):
     ):
         writer.writerow(obj)
     return response
+
