@@ -1,0 +1,15 @@
+{% extends 'zarperspectiva/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container col-lg-10">
+      <div class="row">
+          <h3>Расписание занятий</h3>
+          <div><a href="{{ content.schedule_url }}">Расписание занятий</a></div>
+          <div><a href="{{ content.calendar_url }}">Календарь занятий</a></div>
+      </div>
+    </div>
+</section>
+
+{% endblock %}

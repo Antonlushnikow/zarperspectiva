@@ -1,7 +1,7 @@
 import csv
 
 from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, DetailView
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.mail import send_mail
 
@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from mainapp.forms import CreateRecordForm
-from mainapp.models import Subject, Course, Age, Pupil
+from mainapp.models import Subject, Course, Age, Pupil, SiteSettings
 from zarperspectiva import settings
 from mainapp.serializers import CourseSerializer, SubjectSerializer, AgeSerializer
 
@@ -104,8 +104,21 @@ def export_records(request):
             'name_pupil',
             'second_name_pupil',
             'birthday_pupil',
-            'subjects__title',
+            'courses__title',
     ):
         writer.writerow(obj)
     return response
 
+
+class ScheduleView(DetailView):
+    model = SiteSettings
+    template_name = "mainapp/schedule.html"
+    context_object_name = "content"
+
+    def get_object(self, queryset=None):
+        if SiteSettings.objects.exists():
+            obj = SiteSettings.objects.all()[0]
+        else:
+            obj = SiteSettings.objects.create()
+            obj.save()
+        return obj
