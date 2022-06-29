@@ -11,13 +11,6 @@ class CreateRecordForm(forms.ModelForm):
     """
     Форма создания записи на курс
     """
-    subject_choices = [(subj.pk, subj.title) for subj in Subject.objects.all()]
-    subjects = forms.MultipleChoiceField(
-        required=True,
-        widget=forms.CheckboxSelectMultiple,
-        label='Предметы',
-        choices=subject_choices,
-    )
 
     class Meta:
         model = Pupil
