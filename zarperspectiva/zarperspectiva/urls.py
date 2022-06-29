@@ -6,7 +6,7 @@ from django.views.generic import TemplateView
 
 
 from mainapp.views import SubjectsView, CoursesView, ListCoursesApi, ListSubjectsApi, \
-    ListAgesApi, RecordForCourses, export_records
+    ListAgesApi, RecordForCourses, export_records, ScheduleView
 
 
 urlpatterns = [
@@ -15,6 +15,8 @@ urlpatterns = [
 
     path('subject/<slug:slug>/', CoursesView.as_view(), name='subject'),
 
+    path('schedule/', ScheduleView.as_view(), name='schedule'),
+    path('contacts/', TemplateView.as_view(template_name='mainapp/contacts.html'), name='contacts'),
     path('export/', TemplateView.as_view(template_name='mainapp/export.html'), name='export'),
     path('export-records/', export_records, name='export-records'),
 

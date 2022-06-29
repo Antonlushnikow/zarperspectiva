@@ -148,4 +148,4 @@ EMAIL_HOST = 'smtp.mail.ru'
 EMAIL_HOST_USER = 'zarperspectiva@list.ru'
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
-ADMIN_EMAIL_ADDRESS = 'ashiryaev84@gmail.com'
+ADMIN_EMAIL_ADDRESS = 'antonlushnikow@gmail.com'

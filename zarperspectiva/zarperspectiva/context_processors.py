@@ -7,5 +7,7 @@ def get_site_settings(request):
         return {
             "site_info": obj.site_info,
             "letter_template": obj.letter_template,
+            "schedule_url": obj.schedule_url,
+            "calendar_url": obj.calendar_url,
         }
     return {}
