@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.views.generic import TemplateView
 
 
@@ -27,6 +27,7 @@ urlpatterns = [
     path('api/subjects/', ListSubjectsApi.as_view(), name='subjects-api'),
     path('api/ages/', ListAgesApi.as_view(), name='ages-api'),
 
+    path("staff/", include(("adminapp.urls", "adminapp"), namespace="staff")),
     ]
 
 if settings.DEBUG:

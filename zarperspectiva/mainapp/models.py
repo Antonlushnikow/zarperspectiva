@@ -11,13 +11,15 @@ class SiteSettings(models.Model):
         verbose_name='шаблон письма',
         default='Спасибо за заявку',
     )
-    schedule_url = HTMLField(
+    schedule_url = models.CharField(
         verbose_name='ссылка на расписание',
         default='',
+        max_length=150,
     )
-    calendar_url = HTMLField(
+    calendar_url = models.CharField(
         verbose_name='ссылка на календарь',
         default='',
+        max_length=150,
     )
 
 

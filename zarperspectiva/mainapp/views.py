@@ -53,7 +53,6 @@ class RecordForCourses(CreateView):
     form_class = CreateRecordForm
     success_url = "/"
 
-
     def form_valid(self, form):
         super_form = super().form_valid(form)
         send_mail(
@@ -72,7 +71,6 @@ class RecordForCourses(CreateView):
             recipient_list=[form.instance.e_mail_parent],
         )
         return super_form
-
 
 
 @login_required
