@@ -1,0 +1,17 @@
+{% extends 'zarperspectiva/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container col-lg-10">
+      <div class="row">
+          <h3>Меню администратора</h3>
+          <div><a href="{% url 'export' %}">Экспорт</a></div>
+          <div><a href="{% url 'staff:courses' %}">Список курсов</a></div>
+          <div><a href="{% url 'staff:teachers' %}">Список преподавателей</a></div>
+          <div><a href="{% url 'staff:site-settings' %}">Настройки сайта</a></div>
+      </div>
+    </div>
+</section>
+
+{% endblock %}
