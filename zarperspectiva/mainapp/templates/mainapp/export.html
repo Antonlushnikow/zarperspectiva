@@ -4,6 +4,7 @@
 {% block content %}
 <section class="py-3">
     <div class="container col-lg-8">
+        <p><a href="{% url 'staff:index' %}">К панели администратора</a></p>
       <div class="row">
           <h3>Экспорт данных</h3>
           <div><a href="{% url 'export-records' %}">Экспортировать список записей</a></div>

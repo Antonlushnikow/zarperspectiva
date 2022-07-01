@@ -1,41 +1,39 @@
-from mainapp.models import SiteSettings, Course, Teacher
+from mainapp.models import SiteSettings, Course, Teacher, Subject
 from django import forms
 
 
-class SiteSettingsEditForm(forms.ModelForm):
+class AdminEditForm(forms.ModelForm):
+    class Meta:
+        model = None
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field_name, field in self.fields.items():
+            field.widget.attrs["class"] = "form-control"
+            field.help_text = ""
+
+
+class SiteSettingsEditForm(AdminEditForm):
     class Meta:
         model = SiteSettings
         fields = '__all__'
 
-    def __init__(self, *args, **kwargs):
-        super(SiteSettingsEditForm, self).__init__(*args, **kwargs)
 
-        for field_name, field in self.fields.items():
-            field.widget.attrs["class"] = "form-control"
-            field.help_text = ""
-
-
-class CourseEditForm(forms.ModelForm):
+class CourseEditForm(AdminEditForm):
     class Meta:
         model = Course
         fields = '__all__'
 
-    def __init__(self, *args, **kwargs):
-        super(CourseEditForm, self).__init__(*args, **kwargs)
 
-        for field_name, field in self.fields.items():
-            field.widget.attrs["class"] = "form-control"
-            field.help_text = ""
-
-
-class TeacherEditForm(forms.ModelForm):
+class TeacherEditForm(AdminEditForm):
     class Meta:
         model = Teacher
         fields = '__all__'
 
-    def __init__(self, *args, **kwargs):
-        super(TeacherEditForm, self).__init__(*args, **kwargs)
 
-        for field_name, field in self.fields.items():
-            field.widget.attrs["class"] = "form-control"
-            field.help_text = ""
+class SubjectEditForm(AdminEditForm):
+    class Meta:
+        model = Subject
+        fields = '__all__'

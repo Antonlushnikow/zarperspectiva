@@ -53,21 +53,31 @@ class RecordForCourses(CreateView):
     form_class = CreateRecordForm
     success_url = "/"
 
+    if SiteSettings.objects.exists():
+        obj = SiteSettings.objects.all()[0]
+        admin_email = obj.admin_email
+    else:
+        admin_email = 'zarpespectiva@gmail.com'
+
     def form_valid(self, form):
         super_form = super().form_valid(form)
+        courses = form.cleaned_data['courses']
+        courses_ = [f'{course}' for course in courses]
         send_mail(
             from_email=settings.EMAIL_HOST_USER,
-            subject='Новый ученик успешно записался',
-            message=f'Здравствуйте,\n {form.instance.name_pupil} {form.instance.surname_pupil} записался' +
-                    f'курсы : ',
-            recipient_list=[settings.ADMIN_EMAIL_ADDRESS]
+            subject='Новая запись на курсы',
+            message=f'{form.instance.name_pupil} {form.instance.surname_pupil} записался(ась) '
+                    f'на курсы: {", ".join(courses_)}\n\n'
+                    f'Заявитель: {form.instance.parent_surname} {form.instance.parent_name} '
+                    f'{form.instance.parent_second_name}\n'
+                    f'Телефон: {form.instance.phone_pupil}',
+            recipient_list=[self.admin_email]
         )
 
         send_mail(
             from_email=settings.EMAIL_HOST_USER,
             subject='Поздравляем с успешной записью на курсы',
-            message=f'Здравствуйте, ваш ребенок\n {form.instance.name_pupil} {form.instance.surname_pupil} ' +
-                    f' записан на курсы : ',
+            message=f'Вы записаны на курсы: {", ".join(courses_)}',
             recipient_list=[form.instance.e_mail_parent],
         )
         return super_form
