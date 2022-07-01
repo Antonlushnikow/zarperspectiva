@@ -144,11 +144,11 @@ class Course(models.Model):
         default=1600,
     )
     price_once_group = models.IntegerField(
-        verbose_name='цена за занятие без группы',
+        verbose_name='цена за занятие в группе',
         default=500,
     )
     price_pass_group = models.IntegerField(
-        verbose_name='цена за месяц без группы',
+        verbose_name='цена за месяц в группе',
         default=1400,
     )
     duration = models.IntegerField(
