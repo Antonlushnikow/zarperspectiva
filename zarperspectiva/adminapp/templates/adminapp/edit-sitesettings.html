@@ -4,6 +4,7 @@
 {% block content %}
 <section class="py-5">
     <div class="container col-lg-10">
+    <p><a href="{% url 'staff:index' %}">К панели администратора</a></p>
       <div class="row">
         <form action="" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
@@ -13,5 +14,11 @@
       </div>
     </div>
 </section>
-
+  <script>
+    tinymce.init({
+      selector: 'textarea',
+      plugins: 'advlist autolink lists link image charmap preview anchor pagebreak',
+      toolbar_mode: 'floating',
+    });
+  </script>
 {% endblock %}

@@ -3,7 +3,8 @@ from django.views.generic import TemplateView
 
 
 from adminapp.views import SiteSettingsEditView, CoursesView, CourseEditView, CourseCreateView, CourseDeleteView, \
-    TeachersView, TeacherEditView, TeacherCreateView, TeacherDeleteView
+    TeachersView, TeacherEditView, TeacherCreateView, TeacherDeleteView, SubjectDeleteView, SubjectCreateView, \
+    SubjectsView, SubjectEditView
 
 
 urlpatterns = [
@@ -17,4 +18,8 @@ urlpatterns = [
     path('edit-teacher/<int:pk>/', TeacherEditView.as_view(), name='edit-teacher'),
     path('add-teacher/', TeacherCreateView.as_view(), name='add-teacher'),
     path('delete-teacher/<int:pk>/', TeacherDeleteView.as_view(), name='delete-teacher'),
+    path('subjects/', SubjectsView.as_view(), name='subjects'),
+    path('edit-subject/<int:pk>/', SubjectEditView.as_view(), name='edit-subject'),
+    path('add-subject/', SubjectCreateView.as_view(), name='add-subject'),
+    path('delete-subject/<int:pk>/', SubjectDeleteView.as_view(), name='delete-subject'),
     ]

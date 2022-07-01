@@ -3,139 +3,150 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import UpdateView, ListView, CreateView, DeleteView
 from mainapp.models import SiteSettings
 
-from adminapp.forms import SiteSettingsEditForm, CourseEditForm, TeacherEditForm
-from mainapp.models import Course, Teacher
+from adminapp.forms import CourseEditForm, TeacherEditForm, SubjectEditForm, SiteSettingsEditForm
+from mainapp.models import Course, Teacher, Subject
 
 
-class SiteSettingsEditView(UpdateView):
+# Абстрактные классы
+class AdminCreateView(CreateView):
+    model = None
+    template_name = "adminapp/add-object.html"
+    form_class = None
+    success_url = None
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            if request.user.is_superuser:
+                return super().dispatch(
+                    request, *args, **kwargs
+                )
+        return HttpResponseRedirect("/")
+
+
+class AdminEditView(UpdateView):
+    model = None
+    template_name = "adminapp/edit-object.html"
+    form_class = None
+    success_url = None
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            if request.user.is_superuser:
+                return super().dispatch(
+                    request, *args, **kwargs
+                )
+        return HttpResponseRedirect("/")
+
+
+class AdminListView(ListView):
+    model = None
+    template_name = None
+    success_url = None
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            if request.user.is_superuser:
+                return super().dispatch(
+                    request, *args, **kwargs
+                )
+        return HttpResponseRedirect("/")
+
+
+class AdminDeleteView(DeleteView):
+    model = None
+    template_name = None
+    success_url = None
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            if request.user.is_superuser:
+                return super().dispatch(
+                    request, *args, **kwargs
+                )
+        return HttpResponseRedirect("/")
+
+
+# CRUD для SiteSettings
+class SiteSettingsEditView(AdminEditView):
     model = SiteSettings
-    template_name = "adminapp/edit-site.html"
+    template_name = 'adminapp/edit-sitesettings.html'
     form_class = SiteSettingsEditForm
     success_url = reverse_lazy("staff:site-settings")
 
     def get_object(self):
         return SiteSettings.objects.all()[0]
 
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            if request.user.is_superuser:
-                return super(SiteSettingsEditView, self).dispatch(
-                    request, *args, **kwargs
-                )
-        return HttpResponseRedirect("/")
 
-
-class CoursesView(ListView):
+# CRUD для Course
+class CoursesView(AdminListView):
     model = Course
     template_name = 'adminapp/courses.html'
     context_object_name = 'courses'
 
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            if request.user.is_superuser:
-                return super(CoursesView, self).dispatch(
-                    request, *args, **kwargs
-                )
-        return HttpResponseRedirect("/")
 
-
-class CourseEditView(UpdateView):
+class CourseEditView(AdminEditView):
     model = Course
-    template_name = "adminapp/edit-course.html"
     form_class = CourseEditForm
     success_url = reverse_lazy("staff:courses")
 
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            if request.user.is_superuser:
-                return super(CourseEditView, self).dispatch(
-                    request, *args, **kwargs
-                )
-        return HttpResponseRedirect("/")
 
-
-class CourseCreateView(CreateView):
+class CourseCreateView(AdminCreateView):
     model = Course
-    template_name = "adminapp/add-course.html"
     form_class = CourseEditForm
     success_url = reverse_lazy("staff:courses")
 
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            if request.user.is_superuser:
-                return super(CourseCreateView, self).dispatch(
-                    request, *args, **kwargs
-                )
-        return HttpResponseRedirect("/")
 
-
-class CourseDeleteView(DeleteView):
+class CourseDeleteView(AdminDeleteView):
     model = Course
     template_name = 'adminapp/confirm-delete-course.html'
     success_url = reverse_lazy("staff:courses")
 
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            if request.user.is_superuser:
-                return super(CourseDeleteView, self).dispatch(
-                    request, *args, **kwargs
-                )
-        return HttpResponseRedirect("/")
 
-
-class TeachersView(ListView):
+# CRUD для Teacher
+class TeachersView(AdminListView):
     model = Teacher
     template_name = 'adminapp/teachers.html'
     context_object_name = 'teachers'
 
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            if request.user.is_superuser:
-                return super(TeachersView, self).dispatch(
-                    request, *args, **kwargs
-                )
-        return HttpResponseRedirect("/")
 
-
-class TeacherEditView(UpdateView):
+class TeacherEditView(AdminEditView):
     model = Teacher
-    template_name = "adminapp/edit-teacher.html"
     form_class = TeacherEditForm
     success_url = reverse_lazy("staff:teachers")
 
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            if request.user.is_superuser:
-                return super(TeacherEditView, self).dispatch(
-                    request, *args, **kwargs
-                )
-        return HttpResponseRedirect("/")
 
-
-class TeacherCreateView(CreateView):
+class TeacherCreateView(AdminCreateView):
     model = Teacher
-    template_name = "adminapp/add-teacher.html"
     form_class = TeacherEditForm
     success_url = reverse_lazy("staff:teachers")
 
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            if request.user.is_superuser:
-                return super(TeacherCreateView, self).dispatch(
-                    request, *args, **kwargs
-                )
-        return HttpResponseRedirect("/")
 
-
-class TeacherDeleteView(DeleteView):
+class TeacherDeleteView(AdminDeleteView):
     model = Teacher
     template_name = 'adminapp/confirm-delete-teacher.html'
     success_url = reverse_lazy("staff:teachers")
 
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            if request.user.is_superuser:
-                return super(TeacherDeleteView, self).dispatch(
-                    request, *args, **kwargs
-                )
-        return HttpResponseRedirect("/")
+
+# CRUD для Teacher
+class SubjectsView(AdminListView):
+    model = Subject
+    template_name = 'adminapp/subjects.html'
+    context_object_name = 'subjects'
+
+
+class SubjectEditView(AdminEditView):
+    model = Subject
+    form_class = SubjectEditForm
+    success_url = reverse_lazy("staff:subjects")
+
+
+class SubjectCreateView(AdminCreateView):
+    model = Subject
+    form_class = SubjectEditForm
+    success_url = reverse_lazy("staff:subjects")
+
+
+class SubjectDeleteView(AdminDeleteView):
+    model = Subject
+    template_name = 'adminapp/confirm-delete-subject.html'
+    success_url = reverse_lazy("staff:subjects")

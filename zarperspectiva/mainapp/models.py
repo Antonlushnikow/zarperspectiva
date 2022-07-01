@@ -22,6 +22,15 @@ class SiteSettings(models.Model):
         max_length=150,
     )
 
+    admin_email = models.EmailField(
+        verbose_name='email администратора',
+        null=False,
+        default='zarperspectiva@gmail.com'
+    )
+
+    class Meta:
+        verbose_name = 'Настройки сайта'
+
 
 class Subject(models.Model):
     title = models.CharField(
@@ -41,6 +50,10 @@ class Subject(models.Model):
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        verbose_name = 'Предмет'
+        verbose_name_plural = 'Предметы'
 
 
 class Teacher(models.Model):
@@ -75,6 +88,10 @@ class Teacher(models.Model):
     def __str__(self):
         return f'{self.last_name} {self.first_name} {self.second_name}'
 
+    class Meta:
+        verbose_name = 'Преподаватель'
+        verbose_name_plural = 'Преподаватели'
+
 
 class Age(models.Model):
     age = models.CharField(
@@ -85,6 +102,10 @@ class Age(models.Model):
 
     def __str__(self):
         return self.age
+
+    class Meta:
+        verbose_name = 'Возрастная категория'
+        verbose_name_plural = 'Возрастные категории'
 
 
 class Course(models.Model):
@@ -111,7 +132,8 @@ class Course(models.Model):
     teacher = models.ForeignKey(
         Teacher,
         verbose_name='преподаватель',
-        on_delete=models.DO_NOTHING,
+        null=True,
+        on_delete=models.SET_NULL,
     )
     price_once_alone = models.IntegerField(
         verbose_name='цена за занятие без группы',
@@ -150,9 +172,12 @@ class Course(models.Model):
     def __str__(self):
         return self.title
 
+    class Meta:
+        verbose_name = 'Курс'
+        verbose_name_plural = 'Курсы'
+
 
 class Pupil(models.Model):
-
     parent_name = models.CharField(
         verbose_name='Имя заказчика',
         max_length=50,
@@ -233,3 +258,7 @@ class Pupil(models.Model):
 
     def __str__(self):
         return f'{self.surname_pupil} {self.name_pupil} {self.second_name_pupil}'
+
+    class Meta:
+        verbose_name = 'Запись на курс'
+        verbose_name_plural = 'Записи на курсы'

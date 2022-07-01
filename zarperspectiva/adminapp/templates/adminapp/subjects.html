@@ -1,0 +1,24 @@
+{% extends 'zarperspectiva/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="py-3">
+    <div class="container col-lg-8">
+      <p><a href="{% url 'staff:index' %}">К панели администратора</a></p>
+      <div class="row">
+          <h1>ПРЕДМЕТЫ</h1>
+            <a  href="{% url 'staff:add-subject' %}"><button class="btn btn-primary me-2">ДОБАВИТЬ</button></a>
+          {% for subject in subjects %}
+
+            <div class="px-2 py-3">
+              <h4 class="mb-0 font-sans-serif fw-bold fs-md-0 fs-lg-1">{{ subject }}</h4>
+              <div class="mt-3">
+                <a class="me-2" href="{% url 'staff:edit-subject' subject.pk %}">ИЗМЕНИТЬ</a>
+                <a href="{% url 'staff:delete-subject' subject.pk %}">УДАЛИТЬ</a>
+              </div>
+            </div>
+          {% endfor %}
+      </div>
+    </div>
+</section>
+{% endblock %}
