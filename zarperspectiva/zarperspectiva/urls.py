@@ -8,6 +8,8 @@ from django.views.generic import TemplateView
 from mainapp.views import SubjectsView, CoursesView, ListCoursesApi, ListSubjectsApi, \
     ListAgesApi, RecordForCourses, export_records, ScheduleView
 
+from mainapp.utils import export_courses_to_xls
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -19,6 +21,7 @@ urlpatterns = [
     path('contacts/', TemplateView.as_view(template_name='mainapp/contacts.html'), name='contacts'),
     path('export/', TemplateView.as_view(template_name='mainapp/export.html'), name='export'),
     path('export-records/', export_records, name='export-records'),
+    path('export-courses/', export_courses_to_xls, name='export-courses'),
 
 
     path('record-for-courses/', RecordForCourses.as_view(), name='record'),
