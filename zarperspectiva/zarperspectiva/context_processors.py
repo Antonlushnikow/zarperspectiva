@@ -1,4 +1,17 @@
+from django.urls import reverse_lazy
+
 from mainapp.models import SiteSettings
+
+
+def get_menu_items(request):
+    return {
+        'main_menu': {
+            'КОНТАКТЫ': reverse_lazy('contacts'),
+            'ИНФОРМАЦИЯ': reverse_lazy('schedule'),
+            'КУРСЫ': reverse_lazy('courses'),
+            'ЗАПИСЬ': reverse_lazy('record'),
+        }
+    }
 
 
 def get_site_settings(request):

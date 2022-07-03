@@ -7,10 +7,9 @@
             </a>
             <div class="col-auto d-flex align-items-center"><a class="navbar-brand" href="{% url 'index' %}"><img src="/media/logo.png" width="141" alt="logo" /></a></div>
             <div class="col-auto d-flex flex-row align-items-center d-none d-lg-flex">
-                <div class="col-auto "><a class="nav-link text-light" href="{% url 'contacts' %}">КОНТАКТЫ</a></div>
-                <div class="col-auto "><a class="nav-link text-light" href="{% url 'schedule' %}">РАСПИСАНИЕ</a></div>
-                <div class="col-auto "><a class="nav-link text-light" href="{% url 'courses' %}">КУРСЫ</a></div>
-                <div class="col-auto "><a class="nav-link text-light" href="{% url 'record' %}">ЗАПИСЬ</a></div>
+              {% for key, value in main_menu.items %}
+                <div class="col-auto "><a class="nav-link text-light" href="{{ value }}">{{ key }}</a></div>
+              {% endfor %}
             </div>
             </div>
           </div>
@@ -27,30 +26,16 @@
                 <ul class="navbar-nav">
                     <li class="nav-item py-1 lh-1">
                     </li>
+                    {% for key, value in main_menu.items %}
+
                     <div class="dropdown-divider"></div>
                     <li>
-                        <a class="nav-link px-lg-3 py-2 py-lg-3 lh-1" href="{% url 'contacts' %}">
-                            КОНТАКТЫ
+                        <a class="nav-link px-lg-3 py-2 py-lg-3 lh-1" href="{{ value }}">
+                            {{ key }}
                         </a>
                     </li>
-                    <div class="dropdown-divider"></div>
-                    <li>
-                        <a class="nav-link px-lg-3 py-2 py-lg-3 lh-1" href="{% url 'schedule' %}">
-                            РАСПИСАНИЕ
-                        </a>
-                    </li>
-                    <div class="dropdown-divider"></div>
-                    <li>
-                        <a class="nav-link px-lg-3 py-2 py-lg-3 lh-1" href="{% url 'courses' %}">
-                            КУРСЫ
-                        </a>
-                    </li>
-                    <div class="dropdown-divider"></div>
-                    <li>
-                        <a class="nav-link px-lg-3 py-2 py-lg-3 lh-1" href="{% url 'record' %}">
-                            ЗАПИСЬ
-                        </a>
-                    </li>
+
+                    {% endfor %}
                 </ul>
             </div>
         </nav>

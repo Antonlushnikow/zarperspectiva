@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 from tinymce.models import HTMLField
 
@@ -255,6 +257,11 @@ class Pupil(models.Model):
     )
 
     courses = models.ManyToManyField(Course)
+
+    sign_up_date = models.DateField(
+        verbose_name='дата записи',
+        auto_now_add=True,
+    )
 
     def __str__(self):
         return f'{self.surname_pupil} {self.name_pupil} {self.second_name_pupil}'
