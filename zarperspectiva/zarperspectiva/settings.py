@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 
     'adminapp',
     'mainapp',
+    'authapp',
 ]
 
 MIDDLEWARE = [
@@ -116,6 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = 'authapp.SiteUser'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/

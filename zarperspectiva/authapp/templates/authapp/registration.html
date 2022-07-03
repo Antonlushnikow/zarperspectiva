@@ -1,0 +1,20 @@
+{% extends 'zarperspectiva/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container col-lg-10">
+      <div class="row">
+                <h2>Регистрация</h2>
+                <!-- Login Form -->
+                <form action="" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+
+                    <input type="submit" class="btn btn-primary" value="Зарегистрироваться">
+                </form>
+                <br>
+            </div>
+        </div>
+</section>
+{% endblock %}
