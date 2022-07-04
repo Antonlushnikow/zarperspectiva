@@ -49,8 +49,6 @@ class SiteUserRegistrationForm(UserCreationForm):
             "first_name",
             "last_name",
             "email",
-            "info",
-            "avatar",
             "password1",
             "password2",
         )
@@ -84,7 +82,7 @@ class SiteUserUpdateForm(UserChangeForm):
 
     class Meta:
         model = SiteUser
-        fields = ("first_name", "last_name", "info", "avatar")
+        fields = ("first_name", "last_name")
 
     def __init__(self, *args, **kwargs):
         super(SiteUserUpdateForm, self).__init__(*args, **kwargs)

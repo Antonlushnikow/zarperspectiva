@@ -1,0 +1,17 @@
+{% extends 'zarperspectiva/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container col-lg-10">
+      <div class="row">
+            Письмо с инструкциями по активации аккаунта отправлено на указанный при регистрации почтовый
+            адрес {{ user.email }}. Для завершения активации пройдите по ссылке в сообщении. Ссылка на
+            активацию действительна в течении 24 часов.
+            <button class="btn btn-round form-control">
+                <a href="{% url 'index' %}">на главную</a>
+            </button>
+      </div>
+    </div>
+</section>
+{% endblock %}

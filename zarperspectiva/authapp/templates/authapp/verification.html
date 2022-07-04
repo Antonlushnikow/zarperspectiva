@@ -1,0 +1,22 @@
+{% extends 'zarperspectiva/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container col-lg-10">
+      <div class="row">
+        {% if user.is_authenticated %}
+            <h3 align="center">Поздравляем!</h3>
+            <br>
+            Учетная запись пользователя {{ user.username }} подтверждена.
+        {% else %}
+            <h3 align="center">Верификация не пройдена.</h3>
+        {% endif %}
+            <br>
+            <button class="btn btn-round form-control">
+                <a href="{% url 'index' %}" class="">на главную</a>
+            </button>
+            </div>
+        </div>
+</section>
+{% endblock %}

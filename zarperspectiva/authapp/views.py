@@ -1,14 +1,17 @@
 # from allauth.account.signals import user_signed_up
 from django.conf import settings
 from django.contrib import auth
+from django.contrib.auth.views import LoginView, LogoutView
 
 from django.core.mail import send_mail
-from django.http import HttpResponseRedirect
-from django.shortcuts import redirect, render, reverse
+from django.http import HttpResponseRedirect, HttpResponseNotFound
+from django.shortcuts import redirect, render, reverse, get_object_or_404
+from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
 from .forms import (
     SiteUserRegistrationForm,
+    SiteUserLoginForm,
 )
 from .models import SiteUser
 
@@ -20,33 +23,17 @@ class SiteUserRegisterView(CreateView):
     Model = SiteUser
     form_class = SiteUserRegistrationForm
     template_name = "authapp/registration.html"
+    success_url = reverse_lazy("authapp:login")
 
     def dispatch(self, request, *args, **kwargs):
         if self.request.user.is_authenticated:
             return redirect("/")
-        return super(SiteUserRegisterView, self).dispatch(request, *args, **kwargs)
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super(SiteUserRegisterView, self).get_context_data()
-        context["title"] = "регистрация"
-        """
-        После вызова предка get_context_data в контексте лежит форма с состоянием valid=Undefined. По-этому она снова 
-        валидируется и второй раз запрашивается у гугл капчи проверка, которая проваливается, тк токен на форме еще не
-        обновился но уже для него была сделана проверка. В то же время в kwargs лежит форма с определнным состоянием, и
-        для нее уже все проверки пройдены. Перекладываем форму из kwargs в контекст и передаем рендеру. 
-        """
-        if kwargs:
-            context["form"] = kwargs["form"]
-        return context
-
-    def get_success_url(self):
-        return reverse("authapp:login")
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         user = form.save()
         self.send_verify_mail(user)
         context = {}
-        context["title"] = "Активация аккаунта"
         context["user"] = user
         return render(self.request, "authapp/verification_sent.html", context=context)
 
@@ -71,9 +58,48 @@ class SiteUserRegisterView(CreateView):
                 auth.login(
                     self, user, backend="django.contrib.auth.backends.ModelBackend"
                 )
-                return render(self, "authapp/verification.html")
-            else:
-                return render(self, "authapp/verification.html")
+            return render(self, "authapp/verification.html")
         except Exception as e:
             print(e.with_traceback())
             return HttpResponseRedirect(reverse("index"))
+
+
+class SiteUserLoginView(LoginView):
+    """
+    Контроллер аутентификации
+    """
+    Model = SiteUser
+    form_class = SiteUserLoginForm
+    template_name = "authapp/login.html"
+    redirect_authenticated_user = True
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(SiteUserLoginView, self).get_context_data()
+        context["title"] = "авторизация"
+        """
+        После вызова предка get_context_data в контексте лежит форма с состоянием valid=Undefined. По-этому она снова 
+        валидируется и второй раз запрашивается у гугл капчи проверка, которая проваливается, тк токен на форме еще не
+        обновился но уже для него была сделана проверка. В то же время в kwargs лежит форма с определнным состоянием, и
+        для нее уже все проверки пройдены. Перекладываем форму из kwargs в контекст и передаем рендеру. 
+        """
+        if kwargs:
+            context["form"] = kwargs["form"]
+        return context
+
+    def form_valid(self, form):
+        user = get_object_or_404(SiteUser, username=form["username"].value())
+        if user.is_deleted:
+            return HttpResponseNotFound("Пользователь удален")
+        if user.is_blocked:
+            return HttpResponseNotFound(
+                f"Пользователь заблокирован до {user.block_expires}"
+            )
+        return super(SiteUserLoginView, self).form_valid(form)
+
+
+class SiteUserLogoutView(LogoutView):
+    """
+    Контроллер выхода из системы
+    """
+    model = SiteUser
+    login_url = reverse_lazy("auth:login")
