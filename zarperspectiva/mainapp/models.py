@@ -9,8 +9,12 @@ class SiteSettings(models.Model):
         verbose_name='информация о сайте',
         default='Информация',
     )
-    letter_template = HTMLField(
-        verbose_name='шаблон письма',
+    admin_letter_template = HTMLField(
+        verbose_name='шаблон письма администратору',
+        default='Поступила новая заявка',
+    )
+    client_letter_template = HTMLField(
+        verbose_name='шаблон письма клиенту',
         default='Спасибо за заявку',
     )
     schedule_url = models.CharField(
