@@ -46,8 +46,9 @@ class SiteUserRegistrationForm(UserCreationForm):
         model = SiteUser
         fields = (
             "username",
-            "first_name",
             "last_name",
+            "first_name",
+            "second_name",
             "email",
             "password1",
             "password2",

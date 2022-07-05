@@ -72,29 +72,7 @@ class SiteUserLoginView(LoginView):
     form_class = SiteUserLoginForm
     template_name = "authapp/login.html"
     redirect_authenticated_user = True
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super(SiteUserLoginView, self).get_context_data()
-        context["title"] = "авторизация"
-        """
-        После вызова предка get_context_data в контексте лежит форма с состоянием valid=Undefined. По-этому она снова 
-        валидируется и второй раз запрашивается у гугл капчи проверка, которая проваливается, тк токен на форме еще не
-        обновился но уже для него была сделана проверка. В то же время в kwargs лежит форма с определнным состоянием, и
-        для нее уже все проверки пройдены. Перекладываем форму из kwargs в контекст и передаем рендеру. 
-        """
-        if kwargs:
-            context["form"] = kwargs["form"]
-        return context
-
-    def form_valid(self, form):
-        user = get_object_or_404(SiteUser, username=form["username"].value())
-        if user.is_deleted:
-            return HttpResponseNotFound("Пользователь удален")
-        if user.is_blocked:
-            return HttpResponseNotFound(
-                f"Пользователь заблокирован до {user.block_expires}"
-            )
-        return super(SiteUserLoginView, self).form_valid(form)
+    next_page = reverse_lazy("index")
 
 
 class SiteUserLogoutView(LogoutView):
@@ -103,3 +81,4 @@ class SiteUserLogoutView(LogoutView):
     """
     model = SiteUser
     login_url = reverse_lazy("auth:login")
+    next_page = reverse_lazy("index")

@@ -3,7 +3,7 @@
 
 {% block content %}
 <section class="py-5">
-    <div class="container col-lg-10">
+    <div class="container col-12 col-md-5 col-lg-4 mt-4 mb-4">
       <div class="row">
                 <h2>Вход</h2>
                 <!-- Login Form -->
@@ -13,6 +13,7 @@
 
                     <input type="submit" class="btn btn-primary" value="Войти">
                 </form>
+                <a class="mt-2" href="{% url 'auth:register' %}">Зарегистрироваться</a>
                 <br>
             </div>
         </div>

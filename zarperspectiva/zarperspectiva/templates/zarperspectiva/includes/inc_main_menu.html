@@ -11,6 +11,20 @@
                 <div class="col-auto "><a class="nav-link text-light" href="{% url 'schedule' %}">РАСПИСАНИЕ</a></div>
                 <div class="col-auto "><a class="nav-link text-light" href="{% url 'courses' %}">КУРСЫ</a></div>
                 <div class="col-auto "><a class="nav-link text-light" href="{% url 'record' %}">ЗАПИСЬ</a></div>
+                {% if user.is_authenticated %}
+                <div class="col-auto dropdown">
+
+                        <a class="nav-link text-light dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{user.username|upper }}
+                        </a>
+                      <ul class="dropdown-menu mt-3">
+                        <li><a class="dropdown-item" href="{% url 'auth:logout' %}">ВЫЙТИ</a></li>
+                      </ul>
+
+                    </div>
+                {% else %}
+                    <div class="col-auto "><a class="nav-link text-light" href="{% url 'auth:login' %}">ВОЙТИ</a></div>
+                {% endif %}
             </div>
             </div>
           </div>
@@ -51,6 +65,21 @@
                             ЗАПИСЬ
                         </a>
                     </li>
+                    {% if user.is_authenticated %}
+                    <div class="dropdown-divider"></div>
+                    <li>
+                        <a class="nav-link px-lg-3 py-2 py-lg-3 lh-1" href="{% url 'auth:logout' %}">
+                            ВЫЙТИ
+                        </a>
+                    </li>
+                    {% else %}
+                    <div class="dropdown-divider"></div>
+                    <li>
+                        <a class="nav-link px-lg-3 py-2 py-lg-3 lh-1" href="{% url 'auth:login' %}">
+                            ВОЙТИ
+                        </a>
+                    </li>
+                    {% endif %}
                 </ul>
             </div>
         </nav>
