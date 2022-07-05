@@ -19,7 +19,8 @@ def get_site_settings(request):
         obj = SiteSettings.objects.all()[0]
         return {
             "site_info": obj.site_info,
-            "letter_template": obj.letter_template,
+            "admin_letter_template": obj.admin_letter_template,
+            "client_letter_template": obj.client_letter_template,
             "schedule_url": obj.schedule_url,
             "calendar_url": obj.calendar_url,
         }
