@@ -77,6 +77,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'zarperspectiva.context_processors.get_site_settings',
+                'zarperspectiva.context_processors.get_menu_items',
             ],
         },
     },

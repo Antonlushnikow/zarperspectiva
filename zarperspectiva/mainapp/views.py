@@ -53,34 +53,52 @@ class RecordForCourses(CreateView):
     form_class = CreateRecordForm
     success_url = "/"
 
-    def form_valid(self, form):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         if SiteSettings.objects.exists():
             obj = SiteSettings.objects.all()[0]
             admin_email = obj.admin_email
         else:
             admin_email = 'zarpespectiva@gmail.com'
 
-        super_form = super().form_valid(form)
-        courses = form.cleaned_data['courses']
-        courses_ = [f'{course}' for course in courses]
+    def process_templates(self, template: str, obj):
+        template = template.replace('$client_name', " ".join(
+            [obj.parent_name, obj.parent_second_name, obj.parent_name]))
+        template = template.replace('$pupil_name', " ".join(
+            [obj.name_pupil, obj.surname_pupil, obj.second_name_pupil]))
+        template = template.replace('$phone_parent', obj.phone_parent)
+        template = template.replace('$e_mail_parent', obj.e_mail_parent)
+        template = template.replace('$birthday_pupil', str(obj.birthday_pupil))
+        template = template.replace('$school_pupil', obj.school_pupil)
+        if obj.phone_pupil:
+            template = template.replace('$phone_pupil', obj.phone_pupil)
+        if obj.e_mail_pupil:
+            template = template.replace('$e_mail_pupil', obj.e_mail_pupil)
+        template = template.replace('$sign_up_date', str(obj.sign_up_date))
+
+        template = template.replace('$courses', "<br>".join([course.title for course in obj.courses.all()]))
+        return template
+
+    def form_valid(self, form):
+        obj = form.save()
+        admin_message_text = SiteSettings.objects.get().admin_letter_template
+        client_message_text = SiteSettings.objects.get().client_letter_template
         send_mail(
             from_email=settings.EMAIL_HOST_USER,
             subject='Новая запись на курсы',
-            message=f'{form.instance.name_pupil} {form.instance.surname_pupil} записался(ась) '
-                    f'на курсы: {", ".join(courses_)}\n\n'
-                    f'Заявитель: {form.instance.parent_surname} {form.instance.parent_name} '
-                    f'{form.instance.parent_second_name}\n'
-                    f'Телефон: {form.instance.phone_pupil}',
-            recipient_list=[admin_email]
+            message=self.process_templates(admin_message_text, obj),
+            recipient_list=[SiteSettings.objects.get().admin_email],
+            html_message=self.process_templates(admin_message_text, obj),
         )
 
         send_mail(
             from_email=settings.EMAIL_HOST_USER,
             subject='Поздравляем с успешной записью на курсы',
-            message=f'Вы записаны на курсы: {", ".join(courses_)}',
-            recipient_list=[form.instance.e_mail_parent],
+            message=self.process_templates(client_message_text, obj),
+            recipient_list=[obj.e_mail_parent],
+            html_message=self.process_templates(client_message_text, obj),
         )
-        return super_form
+        return HttpResponseRedirect("/")
 
 
 @login_required
