@@ -53,13 +53,13 @@ class RecordForCourses(CreateView):
     form_class = CreateRecordForm
     success_url = "/"
 
-    if SiteSettings.objects.exists():
-        obj = SiteSettings.objects.all()[0]
-        admin_email = obj.admin_email
-    else:
-        admin_email = 'zarpespectiva@gmail.com'
-
     def form_valid(self, form):
+        if SiteSettings.objects.exists():
+            obj = SiteSettings.objects.all()[0]
+            admin_email = obj.admin_email
+        else:
+            admin_email = 'zarpespectiva@gmail.com'
+
         super_form = super().form_valid(form)
         courses = form.cleaned_data['courses']
         courses_ = [f'{course}' for course in courses]
@@ -71,7 +71,7 @@ class RecordForCourses(CreateView):
                     f'Заявитель: {form.instance.parent_surname} {form.instance.parent_name} '
                     f'{form.instance.parent_second_name}\n'
                     f'Телефон: {form.instance.phone_pupil}',
-            recipient_list=[self.admin_email]
+            recipient_list=[admin_email]
         )
 
         send_mail(

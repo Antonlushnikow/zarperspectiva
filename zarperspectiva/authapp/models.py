@@ -23,6 +23,7 @@ class SiteUser(AbstractUser):
         Student,
         verbose_name='ученики',
         related_name='parent',
+        blank=True,
     )
     activation_key = models.CharField(max_length=128, blank=True, verbose_name="ключ активации")
     activation_key_expires = models.DateTimeField(
@@ -30,5 +31,17 @@ class SiteUser(AbstractUser):
         verbose_name="срок действия ключа активации"
     )
 
+    is_verified = models.BooleanField(
+        verbose_name='почта подтверждена',
+        default=False,
+    )
+
     def is_activation_key_expired(self):
         return now() > self.activation_key_expires
+
+    def is_activation_key_too_young(self, minutes):
+        return (self.activation_key_expires - now()) > timedelta(hours=23, minutes=(60-minutes))
+
+    class Meta:
+        verbose_name = 'пользователь'
+        verbose_name_plural = 'пользователи'

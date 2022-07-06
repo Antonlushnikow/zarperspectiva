@@ -1,4 +1,7 @@
 # from allauth.account.signals import user_signed_up
+import hashlib
+from random import random
+
 from django.conf import settings
 from django.contrib import auth
 from django.contrib.auth.views import LoginView, LogoutView
@@ -13,7 +16,33 @@ from .forms import (
     SiteUserRegistrationForm,
     SiteUserLoginForm,
 )
-from .models import SiteUser
+from .models import SiteUser, default_key_expires
+
+
+def send_verify_mail(user):
+    salt = hashlib.sha1(str(random()).encode("utf8")).hexdigest()[:6]
+    user.activation_key = hashlib.sha1(
+        (user.email + salt).encode("utf8")
+    ).hexdigest()
+    user.activation_key_expires = default_key_expires()
+    user.save()
+    verify_link = reverse("auth:verify", args=[user.email, user.activation_key])
+    title = f"ПЕРСПЕКТИВА. Подтверждение электронной почты"
+    message = f"Для подтверждения учетной записи {user.username}  \
+    перейдите по ссылке: \n{settings.DOMAIN_NAME}{verify_link}"
+    return send_mail(
+        title, message, settings.EMAIL_HOST_USER, [user.email], fail_silently=False
+    )
+
+
+def send_verify_mail_again(request, email):
+    user = get_object_or_404(SiteUser, email=email)
+    if not user.is_verified and not user.is_activation_key_too_young(5):
+        send_verify_mail(user)
+        context = {"user": user}
+        return render(request, "authapp/verification_sent.html", context=context)
+    else:
+        return HttpResponseRedirect('/')
 
 
 class SiteUserRegisterView(CreateView):
@@ -32,19 +61,9 @@ class SiteUserRegisterView(CreateView):
 
     def form_valid(self, form):
         user = form.save()
-        self.send_verify_mail(user)
-        context = {}
-        context["user"] = user
+        send_verify_mail(user)
+        context = {"user": user}
         return render(self.request, "authapp/verification_sent.html", context=context)
-
-    def send_verify_mail(self, user):
-        verify_link = reverse("auth:verify", args=[user.email, user.activation_key])
-        title = f"Подтверждение учетной записи {user.username} на портале Site"
-        message = f"Для подтверждения учетной записи {user.username} на портале \
-        {settings.DOMAIN_NAME} перейдите по ссылке: \n{settings.DOMAIN_NAME}{verify_link}"
-        send_mail(
-            title, message, settings.EMAIL_HOST_USER, [user.email], fail_silently=False
-        )
 
     def verify(self, email, activation_key):
         try:
@@ -53,7 +72,7 @@ class SiteUserRegisterView(CreateView):
                 user.activation_key == activation_key
                 and not user.is_activation_key_expired()
             ):
-                user.is_active = True
+                user.is_verified = True
                 user.save()
                 auth.login(
                     self, user, backend="django.contrib.auth.backends.ModelBackend"
@@ -73,6 +92,12 @@ class SiteUserLoginView(LoginView):
     template_name = "authapp/login.html"
     redirect_authenticated_user = True
     next_page = reverse_lazy("index")
+
+    def form_valid(self, form):
+        user = get_object_or_404(SiteUser, username=form["username"].value())
+        if not user.is_verified:
+            return render(self.request, 'authapp/verification_not_passed.html', context={'user': user})
+        return super().form_valid(form)
 
 
 class SiteUserLogoutView(LogoutView):

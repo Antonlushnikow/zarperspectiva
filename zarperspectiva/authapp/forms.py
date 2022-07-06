@@ -22,10 +22,10 @@ class SiteUserLoginForm(AuthenticationForm):
     captcha = ReCaptchaField(
         widget=ReCaptchaV2Checkbox, label="Подтвердите, что вы не робот!"
     )
+    username = forms.CharField(label='Email / Username')
 
     class Meta:
         model = SiteUser
-        fields = ("username", "password")
 
     def __init__(self, *args, **kwargs):
         super(SiteUserLoginForm, self).__init__(*args, **kwargs)
@@ -62,16 +62,6 @@ class SiteUserRegistrationForm(UserCreationForm):
             if field.required:
                 field.label_suffix = " (обязательное)"
             field.help_text = ""
-
-    def save(self, commit=True):
-        user = super(SiteUserRegistrationForm, self).save()
-        user.is_active = False
-        salt = hashlib.sha1(str(random()).encode("utf8")).hexdigest()[:6]
-        user.activation_key = hashlib.sha1(
-            (user.email + salt).encode("utf8")
-        ).hexdigest()
-        user.save()
-        return user
 
 
 class SiteUserUpdateForm(UserChangeForm):

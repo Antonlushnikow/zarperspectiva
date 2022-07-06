@@ -2,10 +2,11 @@ from django.urls import path
 
 import authapp.views as authapp
 
-from .views import (
+from authapp.views import (
     SiteUserLoginView,
     SiteUserLogoutView,
     SiteUserRegisterView,
+    send_verify_mail_again,
 )
 
 urlpatterns = [
@@ -14,7 +15,8 @@ urlpatterns = [
     path("register/", SiteUserRegisterView.as_view(), name="register"),
     path(
         "verify/<str:email>/<str:activation_key>/",
-        authapp.SiteUserRegisterView.verify,
+        SiteUserRegisterView.verify,
         name="verify",
     ),
+    path("send-verify/<str:email>", send_verify_mail_again, name="send-verify")
 ]
