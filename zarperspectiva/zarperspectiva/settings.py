@@ -44,9 +44,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
+    'captcha',
 
     'adminapp',
     'mainapp',
+    'authapp',
 ]
 
 MIDDLEWARE = [
@@ -117,6 +119,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = 'authapp.SiteUser'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
@@ -151,3 +154,7 @@ EMAIL_HOST_USER = 'zarperspectiva@list.ru'
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
 ADMIN_EMAIL_ADDRESS = 'antonlushnikow@gmail.com'
+
+RECAPTCHA_PUBLIC_KEY = env("RECAPTCHA_KEY")
+RECAPTCHA_PRIVATE_KEY = env("RECAPTCHA_SECRET")
+SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']

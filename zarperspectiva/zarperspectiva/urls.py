@@ -31,6 +31,7 @@ urlpatterns = [
     path('api/ages/', ListAgesApi.as_view(), name='ages-api'),
 
     path("staff/", include(("adminapp.urls", "adminapp"), namespace="staff")),
+    path("auth/", include(("authapp.urls", "authapp"), namespace="auth")),
     ]
 
 if settings.DEBUG:
