@@ -28,22 +28,42 @@ class CoursesView(ListView):
 
 class ListCoursesApi(APIView):
     def get(self, request, format=None):
-        courses = Course.objects.all()
-        serializer = CourseSerializer(courses, many=True)
+        age_id = request.query_params.get("ageId")
+        subject_id = request.query_params.get("subjId")
+        data = Course.objects.filter(age__id=age_id, subject__id=subject_id).all()
+        serializer = CourseSerializer(data, many=True)
         return Response(serializer.data)
 
 
 class ListSubjectsApi(APIView):
+    """
+    Класс возвращает список всех предметов, если в запросе нет параметров.
+    Если в запросе есть параметр ageId, то возвращаются только предметы, подходящие по возрасту.
+    """
+
     def get(self, request, format=None):
-        subjects = Subject.objects.all()
-        serializer = SubjectSerializer(subjects, many=True)
+        id = request.query_params["ageId"]
+        if id is not None and id != '':
+            courses = Course.objects.filter(age__id=id).all()
+            data = (course.subject for course in courses)
+        else:
+            data = Subject.objects.all()
+        serializer = SubjectSerializer(data, many=True)
         return Response(serializer.data)
 
 
 class ListAgesApi(APIView):
+    """
+    Возвращает только возраста, для которых имеются активные курсы.
+    """
+
     def get(self, request, format=None):
-        ages = Age.objects.all()
-        serializer = AgeSerializer(ages, many=True)
+        courses = Course.objects.prefetch_related('age').all()
+        data = []
+        for course in courses:
+            for age in course.age.all():
+                data.append(age)
+        serializer = AgeSerializer(data, many=True)
         return Response(serializer.data)
 
 
