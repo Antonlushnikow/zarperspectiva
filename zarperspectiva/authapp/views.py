@@ -4,19 +4,22 @@ from random import random
 
 from django.conf import settings
 from django.contrib import auth
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView
 
 from django.core.mail import send_mail
 from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import redirect, render, reverse, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 
 from .forms import (
     SiteUserRegistrationForm,
     SiteUserLoginForm,
+    StudentCreateForm,
+    ProfileEditForm,
+    SiteUserPasswordResetForm,
 )
-from .models import SiteUser, default_key_expires
+from .models import SiteUser, default_key_expires, Student
 
 
 def send_verify_mail(user):
@@ -107,3 +110,78 @@ class SiteUserLogoutView(LogoutView):
     model = SiteUser
     login_url = reverse_lazy("auth:login")
     next_page = reverse_lazy("index")
+
+
+class ProfileView(DetailView):
+    model = SiteUser
+    template_name = 'authapp/profile.html'
+    context_object_name = 'profile'
+
+    def get_object(self, queryset=None):
+        user = get_object_or_404(SiteUser, pk=self.request.user.pk)
+        return user
+
+
+class ProfileEditView(UpdateView):
+    model = Student
+    template_name = 'authapp/update-profile.html'
+    form_class = ProfileEditForm
+    success_url = reverse_lazy('auth:profile')
+
+    def get_object(self, queryset=None):
+        user = get_object_or_404(SiteUser, pk=self.request.user.pk)
+        return user
+
+
+class StudentCreateView(CreateView):
+    model = Student
+    template_name = 'authapp/create-student.html'
+    form_class = StudentCreateForm
+    success_url = reverse_lazy('auth:profile')
+
+    def form_valid(self, form):
+        user = get_object_or_404(SiteUser, pk=self.request.user.pk)
+        form.instance.parent_id = user.pk
+        return super().form_valid(form)
+
+
+class StudentEditView(UpdateView):
+    model = Student
+    template_name = 'authapp/update-student.html'
+    form_class = StudentCreateForm
+    success_url = reverse_lazy('auth:profile')
+
+    def dispatch(self, request, *args, **kwargs):
+        student = get_object_or_404(Student, pk=self.kwargs['pk'])
+        if student.parent != request.user:
+            return HttpResponseRedirect('/')
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        user = get_object_or_404(SiteUser, pk=self.request.user.pk)
+        form.instance.parent_id = user.pk
+        return super().form_valid(form)
+
+
+class StudentDeleteView(DeleteView):
+    model = Student
+    template_name = 'authapp/confirm-delete-student.html'
+    success_url = reverse_lazy('auth:profile')
+
+    def dispatch(self, request, *args, **kwargs):
+        student = get_object_or_404(Student, pk=self.kwargs['pk'])
+        if student.parent != request.user:
+            return HttpResponseRedirect('/')
+        return super().dispatch(request, *args, **kwargs)
+
+
+class SiteUserPasswordResetView(PasswordResetView):
+    """
+    Контроллер сброса пароля
+    """
+
+    form_class = SiteUserPasswordResetForm
+    template_name = "authapp/forgot-password.html"
+    email_template_name = "authapp/password-reset-email.html"
+    subject_template_name = "authapp/password-reset-subject.txt"
+    from_email = settings.EMAIL_HOST_USER

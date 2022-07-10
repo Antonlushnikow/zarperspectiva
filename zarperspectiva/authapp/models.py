@@ -9,22 +9,13 @@ def default_key_expires():
     return now() + timedelta(hours=24)
 
 
-class Student(models.Model):
-    pass
-
-
 class SiteUser(AbstractUser):
     second_name = models.CharField(
         max_length=30,
         blank=True,
         verbose_name='отчество',
     )
-    students = models.ManyToManyField(
-        Student,
-        verbose_name='ученики',
-        related_name='parent',
-        blank=True,
-    )
+
     activation_key = models.CharField(max_length=128, blank=True, verbose_name="ключ активации")
     activation_key_expires = models.DateTimeField(
         default=default_key_expires,
@@ -45,3 +36,39 @@ class SiteUser(AbstractUser):
     class Meta:
         verbose_name = 'пользователь'
         verbose_name_plural = 'пользователи'
+
+
+class Student(models.Model):
+    first_name = models.CharField(
+        verbose_name="имя",
+        max_length=150,
+        blank=True
+    )
+    second_name = models.CharField(
+        verbose_name="отчество",
+        max_length=150,
+        blank=True
+    )
+    last_name = models.CharField(
+        verbose_name="фамилия",
+        max_length=150,
+        blank=True
+    )
+    email = models.EmailField(
+        verbose_name="электронная почта",
+        blank=True
+    )
+    parent = models.ForeignKey(
+        SiteUser,
+        verbose_name='родитель',
+        related_name='students',
+        on_delete=models.CASCADE,
+        default=None,
+    )
+
+    class Meta:
+        verbose_name = 'ученик'
+        verbose_name_plural = 'ученики'
+
+    def __str__(self):
+        return f'{self.last_name} {self.first_name} {self.second_name}'

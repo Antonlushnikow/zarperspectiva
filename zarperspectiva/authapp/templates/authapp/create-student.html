@@ -5,16 +5,13 @@
 <section class="py-5">
     <div class="container col-12 col-md-5 col-lg-4 mt-4 mb-4">
       <div class="row">
-                <h2>Вход</h2>
-                <!-- Login Form -->
+                <h2>Добавить ученика</h2>
                 <form action="" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form.as_p }}
 
-                    <input type="submit" class="btn btn-primary" value="Войти">
+                    <input type="submit" class="btn btn-primary" value="Добавить">
                 </form>
-                <a class="mt-2" href="{% url 'auth:register' %}">Зарегистрироваться</a>
-                <a class="mt-2" href="{% url 'reset-password' %}">Забыли пароль?</a>
                 <br>
             </div>
         </div>
