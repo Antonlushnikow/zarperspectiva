@@ -32,14 +32,15 @@
         <div class="mt-2 mb-2 py-2">
           <div class="mb-3">
             <label for="selectAge" class="fw-bold me-2">ВОЗРАСТ</label>
-            <select v-model="selectedAge" id="selectAge" @change="getAvailableSubjects($event)">
+            <select v-model="selectedAge" id="selectAge" @change="getAvailableSubjects">
               <option value="">Все</option>
               <option v-for="age in ages" :value="age.id">{{ age.age }}</option>
             </select>
           </div>
           <div class="mb-3">
             <label for="selectSubject" class="fw-bold me-1">ПРЕДМЕТ</label>
-            <select v-model="selectedSubject" id="selectSubject" class="me-3" @change="getCourses($event)">
+            <select v-model="selectedSubject" id="selectSubject" class="me-3" @change="getCourses"
+              :disabled="subjectsDisabled">
               <option value="">Все</option>
               <option v-for="subject in subjects" :value="subject.id" class="text-capitalize">
                 {{ subject.title }}
@@ -47,12 +48,14 @@
             </select>
           </div>
         </div>
+        <p v-if="showWarning">Для отображения курсов выберите возраст и предмет</p>
         <div v-for="course in courses">
-          <div :course="course">{{ course.title }}</div>
+          <div>
+            <input type="checkbox" :id="course.id" :value="course.id" name="courses" v-model="course.checked">
+            <label :for="course.id">{{ course.title }}</label>
+          </div>
         </div>
       </div>
-
-
       {% endverbatim %}
       <br>
       <input type="submit" value="Записаться" class="col-12 btn btn-primary">
@@ -61,6 +64,8 @@
       new Vue({
         el: '#vue',
         data: {
+          showWarning: true,
+          subjectsDisabled: true,
           courses: [],
           subjects: [],
           ages: [],
@@ -68,23 +73,28 @@
           selectedAge: '',
         },
         methods: {
-          getCourses(event) {
+          getCourses() {
             if (this.selectedAge != '' && this.selectedSubject != '') {
               axios
                 .get('/api/courses?ageId=' + this.selectedAge + '&subjId=' + this.selectedSubject)
                 .then(response => {
                   this.courses = response.data;
+                  if (this.courses.length > 0) { this.showWarning = false }
+                  else { this.showWarning = true };
                 });
-              console.log(this.courses)
             }
           },
-          getAvailableSubjects(event) {
+          getAvailableSubjects() {
+            this.subjectsDisabled = false;
+            this.selectedSubject = '';
+            this.courses = [];
             axios
               .get('/api/subjects?ageId=' + this.selectedAge)
               .then(response => {
                 this.subjects = response.data;
+                if (this.courses.length > 0) { this.showWarning = false }
+                else { this.showWarning = true };
               });
-            this.getCourses();
           },
         },
         created() {
@@ -93,27 +103,8 @@
             .then(response => {
               this.ages = response.data;
             });
-        },
-        computed: {
-          filteredCourses() {
-            let tempCourses = this.courses;
-            if (this.selectedSubject) {
-              tempCourses = tempCourses.filter((item) => {
-                return (item.subject == this.selectedSubject);
-              });
-            }
-            if (this.selectedAge) {
-              tempCourses = tempCourses.filter((item) => {
-                return (item.age.includes(this.selectedAge));
-              })
-            }
-            return tempCourses;
-          }
         }
       })
-
-
-
     </script>
   </div>
 </section>
