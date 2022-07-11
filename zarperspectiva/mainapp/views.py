@@ -30,7 +30,10 @@ class ListCoursesApi(APIView):
     def get(self, request, format=None):
         age_id = request.query_params.get("ageId")
         subject_id = request.query_params.get("subjId")
-        data = Course.objects.filter(age__id=age_id, subject__id=subject_id).all()
+        if age_id or subject_id:
+            data = Course.objects.filter(age__id=age_id, subject__id=subject_id).all()
+        else:
+            data = Course.objects.all()
         serializer = CourseSerializer(data, many=True)
         return Response(serializer.data)
 
@@ -48,7 +51,7 @@ class ListSubjectsApi(APIView):
             data = (course.subject for course in courses)
         else:
             data = Subject.objects.all()
-        serializer = SubjectSerializer(data, many=True)
+        serializer = SubjectSerializer(set(data), many=True)
         return Response(serializer.data)
 
 
@@ -63,7 +66,7 @@ class ListAgesApi(APIView):
         for course in courses:
             for age in course.age.all():
                 data.append(age)
-        serializer = AgeSerializer(data, many=True)
+        serializer = AgeSerializer(set(data), many=True)
         return Response(serializer.data)
 
 
