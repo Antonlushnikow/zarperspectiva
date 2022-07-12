@@ -34,86 +34,35 @@
 
         {% endfor %}
       </div>
+        <hr>
     </div>
+
 </section>
 
-<section>
-
+<section class="mb-4">
 <div class="container">
   <div class="row">
     <div class="col-12">
-      <h1 class="header-title display-4 header text-center mb-5"> MEET OUR INSTRUCTORS</h1>
+      <h1 class="mb-5"> НАШИ УЧИТЕЛЯ </h1>
       <div class="swiper-custom-container">
-        <div class="swiper-container theme-slider swiper-container-initialized swiper-container-horizontal swiper-container-pointer-events" data-swiper="{&quot;spaceBetween&quot;:1,&quot;slideToClickedSlide&quot;:true,&quot;slidesPerView&quot;:1,&quot;pagination&quot;:{&quot;el&quot;:&quot;.swiper-pagination&quot;,&quot;clickable&quot;:true,&quot;bulletActiveClass&quot;:&quot;bullet-active&quot;},&quot;breakpoints&quot;:{&quot;320&quot;:{&quot;slidesPerView&quot;:1,&quot;spaceBetween&quot;:20},&quot;480&quot;:{&quot;slidesPerView&quot;:2,&quot;spaceBetween&quot;:30},&quot;640&quot;:{&quot;slidesPerView&quot;:4,&quot;spaceBetween&quot;:40}}}">
+        <div class="swiper-container theme-slider swiper-container-initialized swiper-container-horizontal swiper-container-pointer-events">
           <div class="swiper-wrapper" id="swiper-wrapper-13f91895d362a282" aria-live="polite" style="transform: translate3d(0px, 0px, 0px);">
-            <div class="swiper-slide swiper-slide-active" role="group" aria-label="1 / 8" style="width: 283.75px; margin-right: 40px;">
-              <div class="text-center product"><img class="w-100 photograph" src="assets/img/gallery/john.png" alt="">
-                <h3 class="fw-normal font-base lh-1 text-black mt-3">John S. <br> Sergent</h3>
-                <p class="mb-0">Head of Data Science</p>
-              </div>
-            </div>
+
+            {% for teacher in teachers %}
             <div class="swiper-slide swiper-slide-next" role="group" aria-label="2 / 8" style="width: 283.75px; margin-right: 40px;">
-              <div class="text-center product"><img class="w-100 photograph" src="assets/img/gallery/albrecht.png" alt="">
-                <h3 class="fw-normal font-base lh-1 text-black mt-3">Albrecht <br> Kachher</h3>
-                <p class="mb-0">Developer and Lead Instructor</p>
+              <div class="text-center product"><img class="w-100 photograph" src="/media/{{ teacher.pic }}" alt="">
+                <h3 class="fw-normal font-base lh-1 text-black mt-3">{{teacher.first_name}} <br> {{ teacher.last_name }}</h3>
+                <p class="mb-0">{{ teacher.subjects.all.0 }}</p>
               </div>
             </div>
-            <div class="swiper-slide" role="group" aria-label="3 / 8" style="width: 283.75px; margin-right: 40px;">
-              <div class="text-center product"><img class="w-100 photograph" src="assets/img/gallery/peter.png" alt="">
-                <h3 class="fw-normal font-base lh-1 text-black mt-3">Peter P. <br> Rubens</h3>
-                <p class="mb-0">Digital Marketing Expart</p>
-              </div>
-            </div>
-            <div class="swiper-slide" role="group" aria-label="4 / 8" style="width: 283.75px; margin-right: 40px;">
-              <div class="text-center product"><img class="w-100 photograph" src="assets/img/gallery/david.png" alt="">
-                <h3 class="fw-normal font-base lh-1 text-black mt-3">David A. <br> Sequiros</h3>
-                <p class="mb-0">Engineering Architect</p>
-              </div>
-            </div>
-            <div class="swiper-slide" role="group" aria-label="5 / 8" style="width: 283.75px; margin-right: 40px;">
-              <div class="text-center product"><img class="w-100 photograph" src="assets/img/gallery/john.png" alt="">
-                <h3 class="fw-normal font-base lh-1 text-black mt-3">John S. <br> Sergent</h3>
-                <p class="mb-0">Head of Data Science</p>
-              </div>
-            </div>
-            <div class="swiper-slide" role="group" aria-label="6 / 8" style="width: 283.75px; margin-right: 40px;">
-              <div class="text-center product"><img class="w-100 photograph" src="assets/img/gallery/albrecht.png" alt="">
-                <h3 class="fw-normal font-base lh-1 text-black mt-3">Albrecht <br> Kachher</h3>
-                <p class="mb-0">Developer and Lead Instructor</p>
-              </div>
-            </div>
-            <div class="swiper-slide" role="group" aria-label="7 / 8" style="width: 283.75px; margin-right: 40px;">
-              <div class="text-center product"><img class="w-100 photograph" src="assets/img/gallery/peter.png" alt="">
-                <h3 class="fw-normal font-base lh-1 text-black mt-3">Peter P. <br> Rubens</h3>
-                <p class="mb-0">Digital Marketing Expart</p>
-              </div>
-            </div>
-            <div class="swiper-slide" role="group" aria-label="8 / 8" style="width: 283.75px; margin-right: 40px;">
-              <div class="text-center product"><img class="w-100 photograph" src="assets/img/gallery/david.png" alt="">
-                <h3 class="fw-normal font-base lh-1 text-black mt-3">David A. <br> Sequiros</h3>
-                <p class="mb-0">Engineering Architect</p>
-              </div>
-            </div>
+            {% endfor %}
+
           </div>
-          <div class="swiper-pagination position-static d-flex justify-contnet-evenly mx-2 my-5 swiper-pagination-clickable swiper-pagination-bullets"><span class="swiper-pagination-bullet bullet-active" tabindex="0" role="button" aria-label="Go to slide 1"></span><span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 2"></span><span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 3"></span><span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 4"></span><span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 5"></span></div>
-          <div class="d-flex justify-content-sm-end justify-content-center mt-sm-n7 m-5"><a class="link fw-normal fs-2" href="#!"> See all </a></div>
-        <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
-        <div class="swiper-button-next d-none d-sm-block" tabindex="0" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-13f91895d362a282" aria-disabled="false">
-          <svg class="bi bi-arrow-right" xmlns="http://www.w3.org/2000/svg" width="42" height="27" fill="currentColor" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"></path>
-          </svg>
-        </div>
-        <div class="swiper-button-prev d-none d-sm-block swiper-button-disabled" tabindex="-1" role="button" aria-label="Previous slide" aria-controls="swiper-wrapper-13f91895d362a282" aria-disabled="true">
-          <svg class="bi bi-arrow-left" xmlns="http://www.w3.org/2000/svg" width="42" height="27" fill="currentColor" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"></path>
-          </svg>
         </div>
       </div>
     </div>
   </div>
 </div>
-<!-- end of .container-->
-
 </section>
 
 {% endblock %}

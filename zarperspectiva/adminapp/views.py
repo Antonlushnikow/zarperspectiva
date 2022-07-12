@@ -1,10 +1,20 @@
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
-from django.views.generic import UpdateView, ListView, CreateView, DeleteView
+from django.views.generic import UpdateView, ListView, CreateView, DeleteView, TemplateView
 from mainapp.models import SiteSettings
 
 from adminapp.forms import CourseEditForm, TeacherEditForm, SubjectEditForm, SiteSettingsEditForm
 from mainapp.models import Course, Teacher, Subject
+
+
+class AdminMainView(TemplateView):
+    template_name = 'adminapp/index.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            if request.user.is_staff:
+                return super().dispatch(request, *args, **kwargs)
+        return HttpResponseRedirect("/")
 
 
 # Абстрактные классы

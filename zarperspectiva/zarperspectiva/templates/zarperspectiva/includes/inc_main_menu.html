@@ -17,6 +17,9 @@
                             {{user.username|upper }}
                         </a>
                       <ul class="dropdown-menu mt-3">
+                          {% if user.is_staff %}
+                            <li><a class="dropdown-item" href="{% url 'staff:index' %}">НАСТРОЙКИ</a></li>
+                          {% endif %}
                         <li><a class="dropdown-item" href="{% url 'auth:logout' %}">ВЫЙТИ</a></li>
                       </ul>
 

@@ -1,14 +1,13 @@
 from django.urls import path
-from django.views.generic import TemplateView
 
 
 from adminapp.views import SiteSettingsEditView, CoursesView, CourseEditView, CourseCreateView, CourseDeleteView, \
     TeachersView, TeacherEditView, TeacherCreateView, TeacherDeleteView, SubjectDeleteView, SubjectCreateView, \
-    SubjectsView, SubjectEditView
+    SubjectsView, SubjectEditView, AdminMainView
 
 
 urlpatterns = [
-    path('', TemplateView.as_view(template_name='adminapp/index.html'), name='index'),
+    path('', AdminMainView.as_view(), name='index'),
     path('edit-site/', SiteSettingsEditView.as_view(), name='site-settings'),
     path('courses/', CoursesView.as_view(), name='courses'),
     path('edit-course/<int:pk>/', CourseEditView.as_view(), name='edit-course'),

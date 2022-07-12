@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from mainapp.forms import CreateRecordForm
-from mainapp.models import Subject, Course, Age, Pupil, SiteSettings
+from mainapp.models import Subject, Course, Age, Pupil, SiteSettings, Teacher
 from zarperspectiva import settings
 from mainapp.serializers import CourseSerializer, SubjectSerializer, AgeSerializer
 
@@ -19,16 +19,27 @@ class SubjectsView(ListView):
     template_name = 'mainapp/index.html'
     context_object_name = 'subjects'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['teachers'] = Teacher.objects.order_by('?')[:4]
+        return context
+
+    def get_queryset(self):
+        return Subject.objects.order_by('title')
+
 
 class CoursesView(ListView):
     model = Course
     template_name = 'mainapp/courses.html'
     context_object_name = 'courses'
 
+    def get_queryset(self):
+        return Course.objects.order_by('age')
+
 
 class ListCoursesApi(APIView):
     def get(self, request, format=None):
-        courses = Course.objects.all()
+        courses = Course.objects.order_by('age')
         serializer = CourseSerializer(courses, many=True)
         return Response(serializer.data)
 
