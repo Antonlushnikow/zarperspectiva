@@ -17,6 +17,7 @@
                             {{user.username|upper }}
                         </a>
                       <ul class="dropdown-menu mt-3">
+                        <li><a class="dropdown-item" href="{% url 'auth:profile' %}">ПРОФИЛЬ</a></li>
                         <li><a class="dropdown-item" href="{% url 'auth:logout' %}">ВЫЙТИ</a></li>
                       </ul>
 

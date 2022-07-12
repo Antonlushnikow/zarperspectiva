@@ -12,7 +12,7 @@ from django.contrib.auth.forms import (
     UserCreationForm,
 )
 
-from .models import SiteUser
+from .models import SiteUser, Student
 
 
 class SiteUserLoginForm(AuthenticationForm):
@@ -113,13 +113,46 @@ class SiteUserConfirmDeleteForm(forms.Form):
     )
 
 
+class StudentCreateForm(forms.ModelForm):
+    class Meta:
+        model = Student
+        fields = (
+            "first_name",
+            "second_name",
+            "last_name",
+            "email",
+            )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs["class"] = "form-control"
+            field.help_text = ""
+
+
+class ProfileEditForm(forms.ModelForm):
+    class Meta:
+        model = Student
+        fields = (
+            "first_name",
+            "second_name",
+            "last_name",
+            "email",
+            )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs["class"] = "form-control"
+            field.help_text = ""
+
+
 class SiteUserPasswordResetForm(PasswordResetForm):
     """
     Форма сброса пароля
     """
     def __init__(self, *args, **kwargs):
-        super(SiteUserPasswordResetForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs["class"] = "form-control"
             field.help_text = ""
-            
