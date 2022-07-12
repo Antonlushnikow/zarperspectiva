@@ -74,9 +74,13 @@
         },
         methods: {
           getCourses() {
-            if (this.selectedAge != '' && this.selectedSubject != '') {
+            let subjParam = '';
+            if (this.selectedAge != '') {
+              if (this.selectedSubject != '') {
+                subjParam = '&subjId=' + this.selectedSubject
+              };
               axios
-                .get('/api/courses?ageId=' + this.selectedAge + '&subjId=' + this.selectedSubject)
+                .get('/api/courses?ageId=' + this.selectedAge + subjParam)
                 .then(response => {
                   this.courses = response.data;
                   if (this.courses.length > 0) { this.showWarning = false }
@@ -92,6 +96,7 @@
               .get('/api/subjects?ageId=' + this.selectedAge)
               .then(response => {
                 this.subjects = response.data;
+                this.getCourses()
                 if (this.courses.length > 0) { this.showWarning = false }
                 else { this.showWarning = true };
               });

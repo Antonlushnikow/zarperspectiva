@@ -30,8 +30,10 @@ class ListCoursesApi(APIView):
     def get(self, request, format=None):
         age_id = request.query_params.get("ageId")
         subject_id = request.query_params.get("subjId")
-        if age_id or subject_id:
+        if age_id and subject_id:
             data = Course.objects.filter(age__id=age_id, subject__id=subject_id).all()
+        elif age_id and not subject_id:
+            data = Course.objects.filter(age__id=age_id).all()
         else:
             data = Course.objects.all()
         serializer = CourseSerializer(data, many=True)
