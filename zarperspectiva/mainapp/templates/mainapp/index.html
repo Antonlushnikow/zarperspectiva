@@ -41,27 +41,15 @@
 
 <section class="mb-4">
 <div class="container">
-  <div class="row">
-    <div class="col-12">
-      <h1 class="mb-5"> НАШИ УЧИТЕЛЯ </h1>
-      <div class="swiper-custom-container">
-        <div class="swiper-container theme-slider swiper-container-initialized swiper-container-horizontal swiper-container-pointer-events">
-          <div class="swiper-wrapper" id="swiper-wrapper-13f91895d362a282" aria-live="polite" style="transform: translate3d(0px, 0px, 0px);">
-
-            {% for teacher in teachers %}
-            <div class="swiper-slide swiper-slide-next" role="group" aria-label="2 / 8" style="width: 283.75px; margin-right: 40px;">
-              <div class="text-center product"><img class="w-100 photograph" src="/media/{{ teacher.pic }}" alt="">
-                <h3 class="fw-normal font-base lh-1 text-black mt-3">{{teacher.first_name}} <br> {{ teacher.last_name }}</h3>
-                <p class="mb-0">{{ teacher.subjects.all.0 }}</p>
-              </div>
-            </div>
-            {% endfor %}
-
+    <div class="col-12 row">
+        <h1 class="mb-5"> НАШИ УЧИТЕЛЯ </h1>
+        {% for teacher in teachers %}
+          <div class="text-center col-sm-6 col-lg-3"><img class="w-100 photograph" src="/media/{{ teacher.pic }}" alt="">
+            <h3 class="fw-normal font-base lh-1 text-black mt-3">{{teacher.first_name}} <br> {{ teacher.last_name }}</h3>
+            <p class="mb-0">{{ teacher.subjects.all.0 }}</p>
           </div>
-        </div>
-      </div>
+        {% endfor %}
     </div>
-  </div>
 </div>
 </section>
 
