@@ -1,0 +1,27 @@
+{% extends 'zarperspectiva/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container col-12 col-md-5 col-lg-4 mt-4 mb-4">
+      <div class="row">
+          <h4>{{ profile.last_name }} {{ profile.first_name }} {{ profile.second_name }}</h4>
+          <div class="d-flex">
+              <a href="{% url 'auth:update-profile' %}" class="me-2"><button class="btn btn-primary">Изменить</button></a>
+              <a href="#" class="me-2"><button class="btn btn-primary">Сменить пароль</button></a>
+          </div>
+          <br><br>
+          <h4>Ученики</h4>
+          {% for student in profile.students.all %}
+          <h5 class="mb-2">{{ student }}</h5>
+          <div class="d-flex">
+          <a href="{% url 'auth:update-student' student.pk %}" class="me-2"><button class="btn btn-primary">Изменить</button></a>
+          <a href="{% url 'auth:delete-student' student.pk %}"><button class="btn btn-primary">Удалить</button></a>
+          </div>
+          {% endfor %}
+          <a href="{% url 'auth:create-student' %}" class="mt-3"><button class="btn btn-primary">Добавить</button></a>
+
+      </div>
+    </div>
+</section>
+{% endblock %}
