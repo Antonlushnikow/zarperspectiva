@@ -3,10 +3,12 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
+from django.contrib.auth import views as auth_views
 
 
 from mainapp.views import SubjectsView, CoursesView, ListCoursesApi, ListSubjectsApi, \
     ListAgesApi, RecordForCourses, export_records, ScheduleView
+from authapp.views import SiteUserPasswordResetView
 
 from mainapp.utils import export_courses_to_xls
 
@@ -32,7 +34,29 @@ urlpatterns = [
 
     path("staff/", include(("adminapp.urls", "adminapp"), namespace="staff")),
     path("auth/", include(("authapp.urls", "authapp"), namespace="auth")),
-    ]
+    path("reset-password/", SiteUserPasswordResetView.as_view(), name="reset-password"),
+    path(
+        "forgotpasswordsent/",
+        auth_views.PasswordResetDoneView.as_view(
+            template_name="authapp/forgot-password-sent.html"
+        ),
+        name="password_reset_done",
+    ),
+    path(
+        "reset/<uidb64>/<token>/",
+        auth_views.PasswordResetConfirmView.as_view(
+            template_name="authapp/reset-password-confirm.html"
+        ),
+        name="password_reset_confirm",
+    ),
+    path(
+        "reset/done/",
+        auth_views.PasswordResetCompleteView.as_view(
+            template_name="authapp/reset-password-complete.html"
+        ),
+        name="password_reset_complete",
+    ),
+]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
