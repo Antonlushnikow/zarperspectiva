@@ -147,29 +147,47 @@ def export_records(request):
     writer = csv.writer(response, delimiter=';')
 
     writer.writerow([
-        'Фамилия родителя',
-        'Имя родителя',
-        'Отчество родителя',
-        'Email родителя',
         'Фамилия ученика',
         'Имя ученика',
         'Отчество ученика',
+        'Телефон ученика',
+        'Email ученика',
         'День рождения',
-        'Предмет',
+        'Место учебы',
+        'Класс',
+        'Фамилия заказчика',
+        'Имя заказчика',
+        'Отчество заказчика',
+        'Телефон заказчика',
+        'Email заказчика',
+        'Серия, номер паспорта',
+        'Дата выдачи',
+        'Орган выдачи',
+        'Город проживания',
+        'Улица, дом проживания',
+        'Дата заявки',
+        'Предметы',
     ])
 
     for obj in model.objects.values_list(
-            'parent_surname',
-            'parent_name',
-            'parent_second_name',
-            'e_mail_parent',
             'surname_pupil',
             'name_pupil',
             'second_name_pupil',
+            'phone_pupil',
+            'e_mail_pupil',
             'birthday_pupil',
+            'school_pupil',
+            'courses__age',
+            'parent_surname',
+            'parent_name',
+            'parent_second_name',
+            'phone_parent',
+            'e_mail_parent',
+            'sign_up_date',
             'courses__title',
     ):
-        writer.writerow(obj)
+        obj_ = obj[:13] + ('', '', '', '', '') + obj[13:]
+        writer.writerow(obj_)
     return response
 
 
