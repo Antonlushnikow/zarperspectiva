@@ -1,5 +1,6 @@
 import datetime
 
+from django.conf import settings
 from django.db import models
 from tinymce.models import HTMLField
 
@@ -123,6 +124,11 @@ class Course(models.Model):
     info = models.TextField(
         verbose_name='информация о курсе',
         blank=True,
+        default=f'''Индивидуальные занятия возможны только при наличии возможности у педагога и при отсутствии групп. Про возможность индивидуальных занятий уточняйте у администратора центра ({settings.DOMAIN_NAME + "/contacts/"})
+                Стоимость индивидуальных занятий
+                45 минут – 2550 руб. абонемент 4 занятия/разовая оплата -750 руб.
+                60 минут - 3400 руб. абонемент 4 занятия/разовая оплата -1000 руб.
+                90 минут - 5100 руб. абонемент 4 занятия/разовая оплата -1500 руб.'''
     )
     subject = models.ForeignKey(
         Subject,
@@ -142,19 +148,11 @@ class Course(models.Model):
         on_delete=models.SET_NULL,
     )
     price_once_alone = models.IntegerField(
-        verbose_name='цена за занятие без группы',
+        verbose_name='Разовая оплата за занятие',
         default=600,
     )
-    price_pass_alone = models.IntegerField(
-        verbose_name='цена за месяц без группы',
-        default=1600,
-    )
-    price_once_group = models.IntegerField(
-        verbose_name='цена за занятие в группе',
-        default=500,
-    )
     price_pass_group = models.IntegerField(
-        verbose_name='цена за месяц в группе',
+        verbose_name='Цена за месяц по абонементу',
         default=1400,
     )
     duration = models.IntegerField(
