@@ -97,7 +97,10 @@ class SiteUserLoginView(LoginView):
     next_page = reverse_lazy("index")
 
     def form_valid(self, form):
-        user = get_object_or_404(SiteUser, username=form["username"].value())
+        if '@' in form["username"].value():
+            user = get_object_or_404(SiteUser, email=form["username"].value())
+        else:
+            user = get_object_or_404(SiteUser, username=form["username"].value())
         if not user.is_verified:
             return render(self.request, 'authapp/verification_not_passed.html', context={'user': user})
         return super().form_valid(form)

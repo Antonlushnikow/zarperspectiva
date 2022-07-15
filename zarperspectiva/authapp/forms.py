@@ -22,7 +22,7 @@ class SiteUserLoginForm(AuthenticationForm):
     captcha = ReCaptchaField(
         widget=ReCaptchaV2Checkbox, label="Подтвердите, что вы не робот!"
     )
-    username = forms.CharField(label='Имя пользователя')
+    username = forms.CharField(label='Логин или электронная почта')
 
     class Meta:
         model = SiteUser
