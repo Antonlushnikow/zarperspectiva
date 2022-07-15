@@ -203,3 +203,15 @@ class ScheduleView(DetailView):
             obj = SiteSettings.objects.create()
             obj.save()
         return obj
+
+
+class TeachersListView(ListView):
+    model = Teacher
+    template_name = 'mainapp/teachers.html'
+    context_object_name = 'teachers'
+
+
+class TeacherView(DetailView):
+    model = Teacher
+    template_name = 'mainapp/teacher.html'
+    context_object_name = 'teacher'
