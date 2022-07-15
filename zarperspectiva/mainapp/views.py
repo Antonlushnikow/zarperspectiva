@@ -59,10 +59,13 @@ class ListSubjectsApi(APIView):
     """
 
     def get(self, request, format=None):
+        data = []
         id = request.query_params.get("ageId")
         if id is not None and id != '':
             courses = Course.objects.filter(age__id=id).all()
-            data = (course.subject for course in courses)
+            for course in courses:
+                for subject in course.subject.all():
+                    data.append(subject)
         else:
             data = Subject.objects.all()
         serializer = SubjectSerializer(set(data), many=True)
