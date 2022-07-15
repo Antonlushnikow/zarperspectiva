@@ -61,3 +61,10 @@ a:hover {
         display: none;
     }
 }
+
+.avatar-pic {
+    border-radius: 50% !important;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}

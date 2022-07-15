@@ -6,8 +6,19 @@ from django.views.generic import TemplateView
 from django.contrib.auth import views as auth_views
 
 
-from mainapp.views import SubjectsView, CoursesView, ListCoursesApi, ListSubjectsApi, \
-    ListAgesApi, RecordForCourses, export_records, ScheduleView
+from mainapp.views import (
+    SubjectsView,
+    CoursesView,
+    ListCoursesApi,
+    ListSubjectsApi,
+    ListAgesApi,
+    RecordForCourses,
+    export_records,
+    ScheduleView,
+    TeachersListView,
+    TeacherView
+)
+
 from authapp.views import SiteUserPasswordResetView
 
 from mainapp.utils import export_courses_to_xls
@@ -56,6 +67,8 @@ urlpatterns = [
         ),
         name="password_reset_complete",
     ),
+    path("teachers/", TeachersListView.as_view(), name="teachers"),
+    path("teacher/<int:pk>", TeacherView.as_view(), name="teacher"),
 ]
 
 if settings.DEBUG:

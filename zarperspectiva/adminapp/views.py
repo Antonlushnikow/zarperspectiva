@@ -12,7 +12,7 @@ class AdminMainView(TemplateView):
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            if request.user.is_staff:
+            if request.user.is_superuser or request.user.is_staff:
                 return super().dispatch(request, *args, **kwargs)
         return HttpResponseRedirect("/")
 
@@ -26,7 +26,7 @@ class AdminCreateView(CreateView):
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            if request.user.is_superuser:
+            if request.user.is_superuser or request.user.is_staff:
                 return super().dispatch(
                     request, *args, **kwargs
                 )
@@ -41,7 +41,7 @@ class AdminEditView(UpdateView):
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            if request.user.is_superuser:
+            if request.user.is_superuser or request.user.is_staff:
                 return super().dispatch(
                     request, *args, **kwargs
                 )
@@ -55,7 +55,7 @@ class AdminListView(ListView):
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            if request.user.is_superuser:
+            if request.user.is_superuser or request.user.is_staff:
                 return super().dispatch(
                     request, *args, **kwargs
                 )
