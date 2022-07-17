@@ -4,17 +4,46 @@
 {% block content %}
 <section class="py-5">
     <div class="container col-lg-10">
-    <p><a href="{% url 'staff:index' %}">К панели администратора</a></p>
-      <div class="row">
-        <form action="" method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button class="btn btn-primary" type="submit">ИЗМЕНИТЬ</button>
-        </form>
-      </div>
+        <p><a href="{% url 'staff:index' %}">К панели администратора</a></p>
+        <div class="row">
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% for field in form %}
+                {{ field.errors }}
+                {{ field.label }}
+                {{ field }}
+                {% if 'letter_template' in field.name %}
+                <hr>
+                <div title="
+    $client_name - полное имя клиента
+    $pupil_name - полное имя ученика
+    $phone_parent - номер телефона родителя
+    $e_mail_parent - электронная почта родителя
+    $birthday_pupil - дата рождения ученика
+    $school_pupil - школа ученика
+    $phone_pupil - телефон ученика
+    $e_mail_pupil - электронная почта ученика
+    $sign_up_date - дата регистрации заявки
+    $courses - список курсов">
+                    <mark>Внимание! В шаблоне письма доступно использование тэгов.</mark>
+                </div>
+                <hr>
+                {% endif %}
+                <br>
+                {% endfor %}
+                <button class="btn btn-primary mb-3" name="change-settings" type="submit">ИЗМЕНИТЬ</button>
+            </form>
+            <hr>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <label for="test-email" >Введите электронную почту для отправки тестового сообщения:</label>
+                <input class="form-control" type="email" id="test-email" name="test-email">
+                <button class="btn btn-primary mt-2" name="test-email-btn" type="submit">ОТПРАВИТЬ</button>
+            </form>
+        </div>
     </div>
 </section>
-  <script>
+<script>
     tinymce.init({
       selector: 'textarea',
       plugins: 'advlist autolink lists link image charmap preview anchor pagebreak',

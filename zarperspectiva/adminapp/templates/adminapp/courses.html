@@ -36,8 +36,9 @@
           <div class="course-card card border border-2 border-secondary mb-2">
             <div class="card-body px-2 py-3">
               <h4 class="mb-0 font-sans-serif fw-bold fs-md-0 fs-lg-1">{{ course.title|upper }}</h4>
-              <h6 class="mb-0 font-sans-serif fw-bold fs-md-0 fs-lg-1 mb-2">{{ course.subject_name}}</h6>
-
+                <h6>
+                    <span v-for="subject in course.subject" class="mb-0 font-sans-serif fw-bold fs-md-0 fs-lg-1 mb-2">{{ subject.title }} </span>
+                </h6>
               <div>
                   <div class="mt-3">
                     <a  :href="'/staff/edit-course/' + course.id"><button class="btn btn-primary me-2">ИЗМЕНИТЬ</button></a>

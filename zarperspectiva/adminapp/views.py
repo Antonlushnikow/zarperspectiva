@@ -1,10 +1,22 @@
+from django.core.mail import send_mail
+from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
-from django.views.generic import UpdateView, ListView, CreateView, DeleteView
+from django.views.generic import UpdateView, ListView, CreateView, DeleteView, TemplateView
 from mainapp.models import SiteSettings
 
 from adminapp.forms import CourseEditForm, TeacherEditForm, SubjectEditForm, SiteSettingsEditForm
 from mainapp.models import Course, Teacher, Subject
+
+
+class AdminMainView(TemplateView):
+    template_name = 'adminapp/index.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            if request.user.is_superuser or request.user.is_staff:
+                return super().dispatch(request, *args, **kwargs)
+        return HttpResponseRedirect("/")
 
 
 # Абстрактные классы
@@ -16,7 +28,7 @@ class AdminCreateView(CreateView):
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            if request.user.is_superuser:
+            if request.user.is_superuser or request.user.is_staff:
                 return super().dispatch(
                     request, *args, **kwargs
                 )
@@ -31,7 +43,7 @@ class AdminEditView(UpdateView):
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            if request.user.is_superuser:
+            if request.user.is_superuser or request.user.is_staff:
                 return super().dispatch(
                     request, *args, **kwargs
                 )
@@ -45,7 +57,7 @@ class AdminListView(ListView):
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            if request.user.is_superuser:
+            if request.user.is_superuser or request.user.is_staff:
                 return super().dispatch(
                     request, *args, **kwargs
                 )
@@ -72,6 +84,19 @@ class SiteSettingsEditView(AdminEditView):
     template_name = 'adminapp/edit-sitesettings.html'
     form_class = SiteSettingsEditForm
     success_url = reverse_lazy("staff:site-settings")
+
+    def post(self, request, *args, **kwargs):
+        if "test-email" in self.request.POST:
+            e_mail = self.request.POST["test-email"]
+            send_mail(
+                subject=f'Тестовое сообщение от {SiteSettings.objects.all()[0].admin_email}',
+                message='Если вы получили данное сообщение - проверка отправки тестового письма выполнена успешно',
+                from_email=settings.EMAIL_HOST_USER,
+                recipient_list=[e_mail]
+            )
+            return HttpResponseRedirect(request.environ['HTTP_REFERER'])
+        else:
+            return super().post(self, request, *args, **kwargs)
 
     def get_object(self):
         return SiteSettings.objects.all()[0]

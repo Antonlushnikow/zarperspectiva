@@ -1,3 +1,6 @@
+import datetime
+
+from django.conf import settings
 from django.db import models
 from tinymce.models import HTMLField
 
@@ -7,8 +10,12 @@ class SiteSettings(models.Model):
         verbose_name='информация о сайте',
         default='Информация',
     )
-    letter_template = HTMLField(
-        verbose_name='шаблон письма',
+    admin_letter_template = HTMLField(
+        verbose_name='шаблон письма администратору',
+        default='Поступила новая заявка',
+    )
+    client_letter_template = HTMLField(
+        verbose_name='шаблон письма клиенту',
         default='Спасибо за заявку',
     )
     schedule_url = models.CharField(
@@ -114,20 +121,24 @@ class Course(models.Model):
         max_length=100,
         null=False,
     )
-    info = models.TextField(
+    info = HTMLField(
         verbose_name='информация о курсе',
         blank=True,
+        default=f'''Индивидуальные занятия возможны только при наличии возможности у педагога и при отсутствии групп. Про возможность индивидуальных занятий уточняйте у администратора центра ({settings.DOMAIN_NAME + "/contacts/"})
+                Стоимость индивидуальных занятий
+                45 минут – 2550 руб. абонемент 4 занятия/разовая оплата -750 руб.
+                60 минут - 3400 руб. абонемент 4 занятия/разовая оплата -1000 руб.
+                90 минут - 5100 руб. абонемент 4 занятия/разовая оплата -1500 руб.'''
     )
-    subject = models.ForeignKey(
+    subject = models.ManyToManyField(
         Subject,
         verbose_name='предмет',
-        null=True,
-        on_delete=models.SET_NULL,
         related_name='subject',
     )
     age = models.ManyToManyField(
         Age,
         verbose_name='возраст',
+        related_name='ages',
     )
     teacher = models.ForeignKey(
         Teacher,
@@ -136,19 +147,11 @@ class Course(models.Model):
         on_delete=models.SET_NULL,
     )
     price_once_alone = models.IntegerField(
-        verbose_name='цена за занятие без группы',
+        verbose_name='Разовая оплата за занятие',
         default=600,
     )
-    price_pass_alone = models.IntegerField(
-        verbose_name='цена за месяц без группы',
-        default=1600,
-    )
-    price_once_group = models.IntegerField(
-        verbose_name='цена за занятие в группе',
-        default=500,
-    )
     price_pass_group = models.IntegerField(
-        verbose_name='цена за месяц в группе',
+        verbose_name='Цена за месяц по абонементу',
         default=1400,
     )
     duration = models.IntegerField(
@@ -255,6 +258,11 @@ class Pupil(models.Model):
     )
 
     courses = models.ManyToManyField(Course)
+
+    sign_up_date = models.DateField(
+        verbose_name='дата записи',
+        auto_now_add=True,
+    )
 
     def __str__(self):
         return f'{self.surname_pupil} {self.name_pupil} {self.second_name_pupil}'
