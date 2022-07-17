@@ -185,6 +185,7 @@ class Course(models.Model):
         AcademicHour,
         verbose_name='длительность занятия',
         null=True,
+        blank=True,
         on_delete=models.SET_NULL,
     )
     count_a_week = models.IntegerField(
