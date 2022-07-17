@@ -52,7 +52,7 @@
         <div v-for="course in courses">
           <div>
             <input type="checkbox" :id="course.id" :value="course.id" name="courses" v-model="course.checked">
-            <label :for="course.id">{{ course.title }}</label>
+            <label :for="course.id">{{ course.title }} (<span v-for="subj in course.subject">{{ subj.title }}</span>)</label>
           </div>
         </div>
       </div>

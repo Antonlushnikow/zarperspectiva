@@ -121,7 +121,7 @@ class Course(models.Model):
         max_length=100,
         null=False,
     )
-    info = models.TextField(
+    info = HTMLField(
         verbose_name='информация о курсе',
         blank=True,
         default=f'''Индивидуальные занятия возможны только при наличии возможности у педагога и при отсутствии групп. Про возможность индивидуальных занятий уточняйте у администратора центра ({settings.DOMAIN_NAME + "/contacts/"})
@@ -130,16 +130,15 @@ class Course(models.Model):
                 60 минут - 3400 руб. абонемент 4 занятия/разовая оплата -1000 руб.
                 90 минут - 5100 руб. абонемент 4 занятия/разовая оплата -1500 руб.'''
     )
-    subject = models.ForeignKey(
+    subject = models.ManyToManyField(
         Subject,
         verbose_name='предмет',
-        null=True,
-        on_delete=models.SET_NULL,
         related_name='subject',
     )
     age = models.ManyToManyField(
         Age,
         verbose_name='возраст',
+        related_name='ages',
     )
     teacher = models.ForeignKey(
         Teacher,
