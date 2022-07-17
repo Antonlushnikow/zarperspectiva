@@ -1,3 +1,5 @@
+from django.core.mail import send_mail
+from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import UpdateView, ListView, CreateView, DeleteView, TemplateView
@@ -82,6 +84,19 @@ class SiteSettingsEditView(AdminEditView):
     template_name = 'adminapp/edit-sitesettings.html'
     form_class = SiteSettingsEditForm
     success_url = reverse_lazy("staff:site-settings")
+
+    def post(self, request, *args, **kwargs):
+        if "test-email" in self.request.POST:
+            e_mail = self.request.POST["test-email"]
+            send_mail(
+                subject=f'Тестовое сообщение от {SiteSettings.objects.all()[0].admin_email}',
+                message='Если вы получили данное сообщение - проверка отправки тестового письма выполнена успешно',
+                from_email=settings.EMAIL_HOST_USER,
+                recipient_list=[e_mail]
+            )
+            return HttpResponseRedirect(request.environ['HTTP_REFERER'])
+        else:
+            return super().post(self, request, *args, **kwargs)
 
     def get_object(self):
         return SiteSettings.objects.all()[0]
