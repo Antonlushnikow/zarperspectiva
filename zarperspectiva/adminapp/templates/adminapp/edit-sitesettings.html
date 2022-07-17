@@ -31,13 +31,14 @@
                 {% endif %}
                 <br>
                 {% endfor %}
-                <button class="btn btn-primary" name="change-settings" type="submit">ИЗМЕНИТЬ</button>
+                <button class="btn btn-primary mb-3" name="change-settings" type="submit">ИЗМЕНИТЬ</button>
             </form>
+            <hr>
             <form action="" method="POST">
                 {% csrf_token %}
-                <label for="test-email">Введите электронную почту для отправки тестового сообщения:</label>
-                <input type="email" id="test-email" name="test-email">
-                <button class="btn btn-primary" name="test-email-btn" type="submit">ОТПРАВИТЬ</button>
+                <label for="test-email" >Введите электронную почту для отправки тестового сообщения:</label>
+                <input class="form-control" type="email" id="test-email" name="test-email">
+                <button class="btn btn-primary mt-2" name="test-email-btn" type="submit">ОТПРАВИТЬ</button>
             </form>
         </div>
     </div>
