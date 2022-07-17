@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from mainapp.models import Course, Age, Subject
+from mainapp.models import Course, Age, Subject, AcademicHour
 
 
 class AgeListingField(serializers.RelatedField):
@@ -16,11 +16,13 @@ class SubjectSerializer(serializers.ModelSerializer):
 class CourseSerializer(serializers.ModelSerializer):
     teacher_name = serializers.CharField(source='teacher')
     subject = SubjectSerializer(read_only=True, many=True)
+    lesson_duration = serializers.IntegerField(source='lesson_duration.duration')
+    lesson_price_once = serializers.IntegerField(source='lesson_duration.price_once')
+    lesson_price_month = serializers.IntegerField(source='lesson_duration.price_month')
 
     class Meta:
         model = Course
-        fields = '__all__'
-        extra_fields = ('teacher_name', 'subject')
+        exclude = ('duration',)
 
 
 class AgeSerializer(serializers.ModelSerializer):

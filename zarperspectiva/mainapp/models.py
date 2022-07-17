@@ -115,6 +115,29 @@ class Age(models.Model):
         verbose_name_plural = 'Возрастные категории'
 
 
+class AcademicHour(models.Model):
+    duration = models.IntegerField(
+        verbose_name='длительность урока',
+        null=False,
+        default=45,
+    )
+    price_once = models.IntegerField(
+        verbose_name='разовая оплата',
+        null=False,
+    )
+    price_month = models.IntegerField(
+        verbose_name='абонемент 4 занятия',
+        null=False,
+    )
+
+    def __str__(self):
+        return f'{self.duration} минут'
+
+    class Meta:
+        verbose_name = 'академический час'
+        verbose_name_plural = 'академические часы'
+
+
 class Course(models.Model):
     title = models.CharField(
         verbose_name='название курса',
@@ -157,6 +180,12 @@ class Course(models.Model):
     duration = models.IntegerField(
         verbose_name='длительность занятия',
         default=60,
+    )
+    lesson_duration = models.ForeignKey(
+        AcademicHour,
+        verbose_name='длительность занятия',
+        null=True,
+        on_delete=models.SET_NULL,
     )
     count_a_week = models.IntegerField(
         verbose_name='занятий в неделю',
