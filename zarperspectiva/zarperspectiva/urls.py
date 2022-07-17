@@ -25,7 +25,7 @@ from mainapp.utils import export_courses_to_xls
 
 
 urlpatterns = [
-    # path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),
     path('', SubjectsView.as_view(), name='index'),
 
     path('subject/<slug:slug>/', CoursesView.as_view(), name='subject'),
