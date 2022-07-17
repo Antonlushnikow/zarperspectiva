@@ -35,8 +35,11 @@
         <div class="course-card card border border-2 border-secondary mb-2">
           <div class="card-body px-2 py-3">
             <h4 class="mb-0 font-sans-serif fw-bold fs-md-0 fs-lg-1">{{ course.title|upper }}</h4>
-            <h6 v-for="subj in course.subject" class="mb-0 font-sans-serif fw-bold fs-md-0 fs-lg-1 mb-2">{{ subj.title
-              }}</h6>
+            <h6>
+              <span v-for="subj in course.subject" class="mb-0 font-sans-serif fw-bold fs-md-0 fs-lg-1 mb-2">
+                {{ subj.title }}
+              </span>
+            </h6>
             <hr>
             <p class="mb-0 font-sans-serif fs-md-0 fs-lg-1 mb-4">{{ course.info }}</p>
             <h6 class="mb-0 font-sans-serif fw-bold fs-md-0 fs-lg-1">ПРЕПОДАВАТЕЛЬ: {{ course.teacher_name|upper }}</h6>
