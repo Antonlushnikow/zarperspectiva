@@ -13,16 +13,21 @@ class SubjectSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class AcademicHourSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AcademicHour
+        fields = '__all__'
+
+
 class CourseSerializer(serializers.ModelSerializer):
     teacher_name = serializers.CharField(source='teacher')
     subject = SubjectSerializer(read_only=True, many=True)
-    lesson_duration = serializers.IntegerField(source='lesson_duration.duration')
-    lesson_price_once = serializers.IntegerField(source='lesson_duration.price_once')
-    lesson_price_month = serializers.IntegerField(source='lesson_duration.price_month')
+    lesson_info = AcademicHourSerializer(source='academic_hour')
 
     class Meta:
         model = Course
-        exclude = ('duration',)
+        fields = '__all__'
+        extra_fields = ('teacher_name', 'subject')
 
 
 class AgeSerializer(serializers.ModelSerializer):
