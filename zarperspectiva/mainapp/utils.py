@@ -17,10 +17,10 @@ def export_courses_to_xls(request):
 
     columns = [
         'Курс',
-        'Цена за занятие',
-        'Цена за занятие в группе',
-        'Цена за месяц',
-        'Цена за месяц в группе',
+        'Разовая оплата за занятие',
+        'Цена за месяц по абонементу',
+        'Оплата за индивидуальное занятие',
+        'Абонемент на 4 индивидуальных занятия',
     ]
 
     for col_num in range(len(columns)):
@@ -29,9 +29,9 @@ def export_courses_to_xls(request):
     rows = Course.objects.all().values_list(
         'title',
         'price_once_alone',
-        'price_once_group',
-        'price_pass_alone',
         'price_pass_group',
+        'academic_hour__price_once',
+        'academic_hour__price_month',
     )
 
     font_style = xlwt.XFStyle()
