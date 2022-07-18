@@ -115,6 +115,31 @@ class Age(models.Model):
         verbose_name_plural = 'Возрастные категории'
 
 
+class AcademicHour(models.Model):
+    duration = models.IntegerField(
+        verbose_name='длительность урока',
+        null=False,
+        default=45,
+    )
+    price_once = models.CharField(
+        verbose_name='разовая оплата',
+        null=False,
+        max_length=32,
+    )
+    price_month = models.CharField(
+        verbose_name='абонемент 4 занятия',
+        null=False,
+        max_length=32,
+    )
+
+    def __str__(self):
+        return f'{self.duration} минут'
+
+    class Meta:
+        verbose_name = 'академический час'
+        verbose_name_plural = 'академические часы'
+
+
 class Course(models.Model):
     title = models.CharField(
         verbose_name='название курса',
@@ -124,11 +149,7 @@ class Course(models.Model):
     info = HTMLField(
         verbose_name='информация о курсе',
         blank=True,
-        default=f'''Индивидуальные занятия возможны только при наличии возможности у педагога и при отсутствии групп. Про возможность индивидуальных занятий уточняйте у администратора центра ({settings.DOMAIN_NAME + "/contacts/"})
-                Стоимость индивидуальных занятий
-                45 минут – 2550 руб. абонемент 4 занятия/разовая оплата -750 руб.
-                60 минут - 3400 руб. абонемент 4 занятия/разовая оплата -1000 руб.
-                90 минут - 5100 руб. абонемент 4 занятия/разовая оплата -1500 руб.'''
+        default='',
     )
     subject = models.ManyToManyField(
         Subject,
@@ -157,6 +178,14 @@ class Course(models.Model):
     duration = models.IntegerField(
         verbose_name='длительность занятия',
         default=60,
+    )
+    academic_hour = models.ForeignKey(
+        AcademicHour,
+        verbose_name='длительность занятия',
+        related_name='academic_hour',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
     )
     count_a_week = models.IntegerField(
         verbose_name='занятий в неделю',
