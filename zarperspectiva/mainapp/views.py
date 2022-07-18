@@ -213,6 +213,9 @@ class TeachersListView(ListView):
     template_name = 'mainapp/teachers.html'
     context_object_name = 'teachers'
 
+    def get_queryset(self):
+        return Teacher.objects.order_by('last_name')
+
 
 class TeacherView(DetailView):
     model = Teacher

@@ -133,6 +133,9 @@ class TeachersView(AdminListView):
     template_name = 'adminapp/teachers.html'
     context_object_name = 'teachers'
 
+    def get_queryset(self):
+        return Teacher.objects.order_by('last_name')
+
 
 class TeacherEditView(AdminEditView):
     model = Teacher

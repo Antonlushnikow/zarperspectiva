@@ -97,17 +97,17 @@
       },
       computed: {
         filteredCourses() {
-            let tempCourses = [];
+            let tempCourses = this.courses;
             if (this.selectedSubject) {
-              this.courses.forEach((course) => {
-                course.subject.forEach((subject) => {
-                  if (subject.id == this.selectedSubject) {
-                    tempCourses.push(course);
-                    return;
+              tempCourses = tempCourses.filter((item) => {
+                let isSubject = false;
+                item.subject.forEach((subj) => {
+                  if (subj.id == this.selectedSubject) {
+                    isSubject = true;
                   }
                 })
-                return tempCourses;
-              });
+                return isSubject;
+              })
             }
             if (this.selectedAge) {
               tempCourses = tempCourses.filter((item) => {
