@@ -97,20 +97,28 @@
       },
       computed: {
         filteredCourses() {
-          this.tempCourses = this.courses;
-          if (this.selectedSubject) {
-                console.log('fweefw' + this.selectedSubject);
-              this.tempCourses = this.tempCourses.filter((item) => {
-                return (item.subject == this.selectedSubject);
+            let tempCourses = [];
+            if (this.selectedSubject) {
+              this.courses.forEach((course) => {
+                course.subject.forEach((subject) => {
+                  if (subject.id == this.selectedSubject) {
+                    tempCourses.push(course);
+                    return;
+                  }
+                })
+                return tempCourses;
               });
+            }
+            if (this.selectedAge) {
+              tempCourses = tempCourses.filter((item) => {
+                return (item.age.includes(this.selectedAge));
+              })
+            }
+            if (this.selectedAge == '' && this.selectedSubject == ''){
+              tempCourses = this.courses;
+            }
+            return tempCourses;
           }
-          if (this.selectedAge) {
-            this.tempCourses = this.tempCourses.filter((item) => {
-              return (item.age.includes(this.selectedAge));
-            })
-          }
-            return this.tempCourses;
-        }
       }
     })
 </script>
