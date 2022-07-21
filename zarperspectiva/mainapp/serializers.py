@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from mainapp.models import Course, Age, Subject, AcademicHour
+from authapp.models import SiteUser
 
 
 class AgeListingField(serializers.RelatedField):
@@ -33,4 +34,10 @@ class CourseSerializer(serializers.ModelSerializer):
 class AgeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Age
+        fields = '__all__'
+
+
+class SiteUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SiteUser
         fields = '__all__'

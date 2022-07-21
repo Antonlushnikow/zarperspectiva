@@ -10,8 +10,9 @@ from rest_framework.response import Response
 
 from mainapp.forms import CreateRecordForm
 from mainapp.models import Subject, Course, Age, Pupil, SiteSettings, Teacher
+from authapp.models import SiteUser
 from zarperspectiva import settings
-from mainapp.serializers import CourseSerializer, SubjectSerializer, AgeSerializer
+from mainapp.serializers import CourseSerializer, SubjectSerializer, AgeSerializer, SiteUserSerializer
 
 
 class SubjectsView(ListView):
@@ -221,3 +222,10 @@ class TeacherView(DetailView):
     model = Teacher
     template_name = 'mainapp/teacher.html'
     context_object_name = 'teacher'
+
+
+class ListUsersApi(APIView):
+    def get(self, request, format=None):
+        data = SiteUser.objects.filter(id=request.user.id)
+        serializer = SiteUserSerializer(set(data), many=True)
+        return Response(serializer.data)

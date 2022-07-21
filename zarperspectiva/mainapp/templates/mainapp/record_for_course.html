@@ -29,6 +29,7 @@
       {{ form.courses.errors }}
       {% verbatim %}
       <div id="vue">
+
         <div class="mt-2 mb-2 py-2">
           <div class="mb-3">
             <label for="selectAge" class="fw-bold me-2">ВОЗРАСТ</label>
@@ -36,7 +37,9 @@
               <option value="">Все</option>
               <option v-for="age in ages" :value="age.id">{{ age.age }}</option>
             </select>
+            <input type="text" :value="user.last_name">
           </div>
+
           <div class="mb-3">
             <label for="selectSubject" class="fw-bold me-1">ПРЕДМЕТ</label>
             <select v-model="selectedSubject" id="selectSubject" class="me-3" @change="getCourses"
@@ -71,6 +74,7 @@
           ages: [],
           selectedSubject: '',
           selectedAge: '',
+          user: {},
         },
         methods: {
           getCourses() {
@@ -101,6 +105,13 @@
                 else { this.showWarning = true };
               });
           },
+          getUsers() {
+              axios
+                .get('/api/users/')
+                .then(response => {
+                  this.user = response.data[0];
+                });
+          },
         },
         created() {
           axios
@@ -108,6 +119,7 @@
             .then(response => {
               this.ages = response.data;
             });
+          this.getUsers();
         }
       })
     </script>
