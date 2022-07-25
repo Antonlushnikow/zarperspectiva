@@ -17,7 +17,8 @@ from mainapp.views import (
     ScheduleView,
     TeachersListView,
     TeacherView,
-    ListUsersApi,
+    GetUserApi,
+    ListStudentsApi,
 )
 
 from authapp.views import SiteUserPasswordResetView
@@ -43,7 +44,8 @@ urlpatterns = [
     path('api/courses/', ListCoursesApi.as_view(), name='courses-api'),
     path('api/subjects/', ListSubjectsApi.as_view(), name='subjects-api'),
     path('api/ages/', ListAgesApi.as_view(), name='ages-api'),
-    path('api/users/', ListUsersApi.as_view(), name='users-api'),
+    path('api/user/', GetUserApi.as_view(), name='user-api'),
+    path('api/students/', ListStudentsApi.as_view(), name='students-api'),
 
     path("staff/", include(("adminapp.urls", "adminapp"), namespace="staff")),
     path("auth/", include(("authapp.urls", "authapp"), namespace="auth")),

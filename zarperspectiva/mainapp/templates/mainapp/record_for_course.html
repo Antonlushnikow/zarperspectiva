@@ -2,34 +2,58 @@
 {% load static %}
 
 {% block content %}
-<section class="py-1">
+<section class="py-1 mt-2">
   <h2 class="text-center">Запись на курсы</h2>
   <div class="container col-12 col-md-5 col-lg-4 mt-4 mb-4">
+    {% if not user.is_authenticated %}
+    <div class="mb-3"><a href="{% url 'auth:login' %}"><u>Войдите</u></a> или <a href="{% url 'auth:register' %}"><u>зарегистрируйтесь</u></a>, чтобы сохранить данные о записи</div>
+    {% endif %}
     <form method="post">
-      <h4>Информация об Ученике:</h4>
-      <hr>
       {% csrf_token %}
-      {% for field in form %}
-      {% if 'pupil' in field.name %}
-      {{ field.errors }}
-      {{ field.label }}
-      {{ field }}
-      {% endif %}
-      {% endfor %}
-      <br>
       <h4>Информация о Заказчике:</h4>
       <hr>
-      {% for field in form %}
-      {% if 'parent' in field.name %}
-      {{ field.errors }}
-      {{ field.label }}
-      {{ field }}
-      {% endif %}
-      {% endfor %}
-      {{ form.courses.errors }}
+      <div id="user-vue">
       {% verbatim %}
-      <div id="vue">
+        Фамилия заказчика
+        <input type="text" name="parent_surname" maxlength="50" class="form-control" :value="user.last_name" required="" id="id_parent_surname">
+        Имя заказчика
+        <input type="text" name="parent_name" maxlength="50" class="form-control" :value="user.first_name" required="" id="id_parent_name">
+        Отчество заказчика
+        <input type="text" name="parent_second_name" maxlength="50" class="form-control" :value="user.second_name" required="" id="id_parent_second_name">
+        Телефон заказчика
+        <input type="text" name="phone_parent" maxlength="12" class="form-control" required="" id="id_phone_parent">
+        Электронная почта заказчика
+        <input type="email" name="e_mail_parent" maxlength="254" class="form-control" :value="user.email" required="" id="id_e_mail_parent">
 
+      </div>
+      <br>
+       <hr>
+      <div id="students-vue">
+        <h4>Информация об Ученике:</h4>
+        <select v-model="selectedStudent" id="selectStudent"  name="" id="">
+          <option  v-for="student in students">{{ student.last_name }} {{ student.first_name }}</option>
+        </select>
+        <br>
+        Фамилия ученика
+        <input type="text" name="surname_pupil" maxlength="50" class="form-control" required="" id="id_surname_pupil">
+        Имя ученика
+        <input type="text" name="name_pupil" maxlength="50" class="form-control" required="" id="id_name_pupil">
+        Отчество ученика
+        <input type="text" name="second_name_pupil" maxlength="50" class="form-control" required="" id="id_second_name_pupil">
+        Дата рождения ученика
+        <input type="date" name="birthday_pupil" class="form-control" required="" id="id_birthday_pupil">
+        Место учебы
+        <input type="text" name="school_pupil" maxlength="100" class="form-control" required="" id="id_school_pupil">
+        Телефон ученика
+        <input type="text" name="phone_pupil" maxlength="12" class="form-control" id="id_phone_pupil">
+        Электронная почта ученика
+        <input type="email" name="e_mail_pupil" maxlength="254" class="form-control" id="id_e_mail_pupil">
+      </div>
+      {% endverbatim %}
+      {{ form.courses.errors }}
+
+      <div id="vue">
+        {% verbatim %}
         <div class="mt-2 mb-2 py-2">
           <div class="mb-3">
             <label for="selectAge" class="fw-bold me-2">ВОЗРАСТ</label>
@@ -37,7 +61,6 @@
               <option value="">Все</option>
               <option v-for="age in ages" :value="age.id">{{ age.age }}</option>
             </select>
-            <input type="text" :value="user.last_name">
           </div>
 
           <div class="mb-3">
@@ -64,7 +87,8 @@
       <input type="submit" value="Записаться" class="col-12 btn btn-primary">
     </form>
     <script type="text/javascript">
-      new Vue({
+    new Vue(
+      {
         el: '#vue',
         data: {
           showWarning: true,
@@ -105,9 +129,9 @@
                 else { this.showWarning = true };
               });
           },
-          getUsers() {
+          getUser() {
               axios
-                .get('/api/users/')
+                .get('/api/user/')
                 .then(response => {
                   this.user = response.data[0];
                 });
@@ -119,9 +143,62 @@
             .then(response => {
               this.ages = response.data;
             });
-          this.getUsers();
+          this.getUser();
         }
-      })
+      }
+    )
+
+    new Vue(
+      {
+        el: '#user-vue',
+        data: {
+          user: {},
+        },
+        methods: {
+          getUser() {
+              axios
+                .get('/api/user/')
+                .then(response => {
+                  this.user = response.data[0];
+                });
+          },
+        },
+        created() {
+          console.log('===========================');
+          this.getUser();
+        }
+      }
+    )
+
+    new Vue(
+      {
+        el: '#students-vue',
+        data: {
+          students: [],
+          selectedStudent: '',
+        },
+        methods: {
+          getStudents() {
+              axios
+                .get('/api/students/')
+                .then(response => {
+                  this.students = response.data;
+                });
+          },
+        },
+        created() {
+          this.getStudents();
+        },
+        computed: {
+          chooseStudent() {
+            if (this.selectedStudent) {
+              console.log("choose student");
+            }
+          }
+        }
+        
+      }
+    )
     </script>
   </div>
 </section>
