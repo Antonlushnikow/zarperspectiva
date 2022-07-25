@@ -11,7 +11,7 @@
               <div class="text-center col-sm-6 col-lg-3 mb-3">
                   <a href="{% url 'teacher' teacher.pk %}">
                       <div><img class="avatar-pic" src="/media/{{ teacher.pic }}" alt="">
-                        <h3 class="fw-normal font-base lh-1 text-black mt-3 mb-0">{{teacher.first_name}} <br> {{ teacher.last_name }}</h3>
+                        <h3 class="fw-normal font-base lh-1 text-black mt-3 mb-0">{{teacher.first_name}} <br> {{teacher.second_name}} <br> {{ teacher.last_name }}</h3>
                         <p class="mb-0">{{ teacher.subjects.all.0 }}</p>
                       </div>
                   </a>
