@@ -21,7 +21,7 @@ class SubjectsView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['teachers'] = Teacher.objects.order_by('?')[:4]
+        context['teachers'] = Teacher.objects.order_by('?')
         return context
 
     def get_queryset(self):
