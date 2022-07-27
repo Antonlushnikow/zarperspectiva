@@ -30,39 +30,37 @@
        <hr>
       <div id="students-vue">
         <h4>Информация об Ученике:</h4>
-        <select v-model="selectedStudent" id="selectStudent"  name="" id="">
-          <option  v-for="student in students">{{ student.last_name }} {{ student.first_name }}</option>
+        <select v-model="studentId" id="selectStudent"  @change="chooseStudents">
+          <option  v-for="(student, index) in students" :value="index">{{ student.last_name }} {{ student.first_name }}</option>
         </select>
         <br>
         Фамилия ученика
-        <input type="text" name="surname_pupil" maxlength="50" class="form-control" required="" id="id_surname_pupil">
+        <input type="text" name="surname_pupil" maxlength="50" class="form-control" :value="student.last_name" required="" id="id_surname_pupil">
         Имя ученика
-        <input type="text" name="name_pupil" maxlength="50" class="form-control" required="" id="id_name_pupil">
+        <input type="text" name="name_pupil" maxlength="50" class="form-control" :value="student.first_name" required="" id="id_name_pupil">
         Отчество ученика
-        <input type="text" name="second_name_pupil" maxlength="50" class="form-control" required="" id="id_second_name_pupil">
+        <input type="text" name="second_name_pupil" maxlength="50" class="form-control" :value="student.second_name" required="" id="id_second_name_pupil">
         Дата рождения ученика
         <input type="date" name="birthday_pupil" class="form-control" required="" id="id_birthday_pupil">
         Место учебы
         <input type="text" name="school_pupil" maxlength="100" class="form-control" required="" id="id_school_pupil">
         Телефон ученика
-        <input type="text" name="phone_pupil" maxlength="12" class="form-control" id="id_phone_pupil">
+        <input type="text" name="phone_pupil" maxlength="12" class="form-control"  id="id_phone_pupil">
         Электронная почта ученика
-        <input type="email" name="e_mail_pupil" maxlength="254" class="form-control" id="id_e_mail_pupil">
+        <input type="email" name="e_mail_pupil" maxlength="254" class="form-control" :value="student.email" id="id_e_mail_pupil">
       </div>
       {% endverbatim %}
       {{ form.courses.errors }}
-
+      {% verbatim %}
       <div id="vue">
-        {% verbatim %}
         <div class="mt-2 mb-2 py-2">
           <div class="mb-3">
             <label for="selectAge" class="fw-bold me-2">ВОЗРАСТ</label>
-            <select v-model="selectedAge" id="selectAge" @change="getAvailableSubjects">
+            <select v-model="selectedAge" id="selectAge" @change="getAvailableSubjects" required>
               <option value="">Все</option>
               <option v-for="age in ages" :value="age.id">{{ age.age }}</option>
             </select>
           </div>
-
           <div class="mb-3">
             <label for="selectSubject" class="fw-bold me-1">ПРЕДМЕТ</label>
             <select v-model="selectedSubject" id="selectSubject" class="me-3" @change="getCourses"
@@ -87,8 +85,7 @@
       <input type="submit" value="Записаться" class="col-12 btn btn-primary">
     </form>
     <script type="text/javascript">
-    new Vue(
-      {
+      new Vue({
         el: '#vue',
         data: {
           showWarning: true,
@@ -98,7 +95,6 @@
           ages: [],
           selectedSubject: '',
           selectedAge: '',
-          user: {},
         },
         methods: {
           getCourses() {
@@ -128,13 +124,6 @@
                 if (this.courses.length > 0) { this.showWarning = false }
                 else { this.showWarning = true };
               });
-          },
-          getUser() {
-              axios
-                .get('/api/user/')
-                .then(response => {
-                  this.user = response.data[0];
-                });
           },
         },
         created() {
@@ -175,7 +164,8 @@
         el: '#students-vue',
         data: {
           students: [],
-          selectedStudent: '',
+          student: {},
+          studentId: null,
         },
         methods: {
           getStudents() {
@@ -190,15 +180,16 @@
           this.getStudents();
         },
         computed: {
-          chooseStudent() {
-            if (this.selectedStudent) {
-              console.log("choose student");
+          chooseStudents() {
+            console.log(this.studentId);
+            if (this.studentId != null) {
+              this.student = this.students[this.studentId]
             }
+            ;
+            console.log(this.student);
           }
         }
-        
-      }
-    )
+      })
     </script>
   </div>
 </section>
