@@ -15,16 +15,15 @@
       <div id="user-vue">
       {% verbatim %}
         Фамилия заказчика
-        <input type="text" name="parent_surname" maxlength="50" class="form-control" :value="user.last_name" required="" id="id_parent_surname">
+        <input type="text" name="parent_surname" maxlength="50" class="form-control" :value="user.last_name" required="" id="id_parent_surname" disabled>
         Имя заказчика
-        <input type="text" name="parent_name" maxlength="50" class="form-control" :value="user.first_name" required="" id="id_parent_name">
+        <input type="text" name="parent_name" maxlength="50" class="form-control" :value="user.first_name" required="" id="id_parent_name" disabled>
         Отчество заказчика
-        <input type="text" name="parent_second_name" maxlength="50" class="form-control" :value="user.second_name" required="" id="id_parent_second_name">
+        <input type="text" name="parent_second_name" maxlength="50" class="form-control" :value="user.second_name" required="" id="id_parent_second_name" disabled>
         Телефон заказчика
-        <input type="text" name="phone_parent" maxlength="12" class="form-control" required="" id="id_phone_parent">
+        <input type="text" name="phone_parent" maxlength="12" class="form-control" required="" id="id_phone_parent" disabled>
         Электронная почта заказчика
-        <input type="email" name="e_mail_parent" maxlength="254" class="form-control" :value="user.email" required="" id="id_e_mail_parent">
-
+        <input type="email" name="e_mail_parent" maxlength="254" class="form-control" :value="user.email" required="" id="id_e_mail_parent" disabled>
       </div>
       <br>
        <hr>
@@ -33,21 +32,22 @@
         <select v-model="studentId" id="selectStudent"  @change="chooseStudents">
           <option  v-for="(student, index) in students" :value="index">{{ student.last_name }} {{ student.first_name }}</option>
         </select>
+        <a :href="'/auth/update-student/'+ student.id" class="me-2"><u>Изменить</u></a>
         <br>
         Фамилия ученика
-        <input type="text" name="surname_pupil" maxlength="50" class="form-control" :value="student.last_name" required="" id="id_surname_pupil">
-        Имя ученика
-        <input type="text" name="name_pupil" maxlength="50" class="form-control" :value="student.first_name" required="" id="id_name_pupil">
+        <input type="text" name="surname_pupil" maxlength="50" class="form-control" :value="student.last_name" required="" id="id_surname_pupil" disabled>
+        Имя ученика{{ student.last_name }}
+        <input type="text" name="name_pupil" maxlength="50" class="form-control" :value="student.first_name" required="" id="id_name_pupil" disabled>
         Отчество ученика
-        <input type="text" name="second_name_pupil" maxlength="50" class="form-control" :value="student.second_name" required="" id="id_second_name_pupil">
+        <input type="text" name="second_name_pupil" maxlength="50" class="form-control" :value="student.second_name" required="" id="id_second_name_pupil" disabled>
         Дата рождения ученика
-        <input type="date" name="birthday_pupil" class="form-control" required="" id="id_birthday_pupil">
+        <input type="date" name="birthday_pupil" class="form-control" required="" id="id_birthday_pupil" disabled>
         Место учебы
-        <input type="text" name="school_pupil" maxlength="100" class="form-control" required="" id="id_school_pupil">
+        <input type="text" name="school_pupil" maxlength="100" class="form-control" required="" id="id_school_pupil" disabled>
         Телефон ученика
-        <input type="text" name="phone_pupil" maxlength="12" class="form-control"  id="id_phone_pupil">
+        <input type="text" name="phone_pupil" maxlength="12" class="form-control"  id="id_phone_pupil" disabled>
         Электронная почта ученика
-        <input type="email" name="e_mail_pupil" maxlength="254" class="form-control" :value="student.email" id="id_e_mail_pupil">
+        <input type="email" name="e_mail_pupil" maxlength="254" class="form-control" :value="student.email" id="id_e_mail_pupil" disabled>
       </div>
       {% endverbatim %}
       {{ form.courses.errors }}
