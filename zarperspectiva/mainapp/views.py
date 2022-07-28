@@ -21,7 +21,7 @@ class SubjectsView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['teachers'] = Teacher.objects.order_by('?')[:4]
+        context['teachers'] = Teacher.objects.order_by('?')
         return context
 
     def get_queryset(self):
@@ -45,6 +45,8 @@ class ListCoursesApi(APIView):
             data = Course.objects.filter(age__id=age_id, subject__id=subject_id).order_by('age')
         elif age_id and not subject_id:
             data = Course.objects.filter(age__id=age_id).order_by('age')
+        elif not age_id and subject_id:
+            data = Course.objects.filter(subject__id=subject_id).order_by('age')
         else:
             data = Course.objects.all()
         serializer = CourseSerializer(data, many=True)
