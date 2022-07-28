@@ -13,6 +13,7 @@ from mainapp.views import (
     ListSubjectsApi,
     ListAgesApi,
     RecordForCourses,
+    AnonymousRecordForCourses,
     export_records,
     ScheduleView,
     TeachersListView,
@@ -40,6 +41,7 @@ urlpatterns = [
 
 
     path('record-for-courses/', RecordForCourses.as_view(), name='record'),
+    path('anonymous-record/', AnonymousRecordForCourses.as_view(), name='anonymous-record'),
     path('courses/', CoursesView.as_view(), name='courses'),
     path('api/courses/', ListCoursesApi.as_view(), name='courses-api'),
     path('api/subjects/', ListSubjectsApi.as_view(), name='subjects-api'),

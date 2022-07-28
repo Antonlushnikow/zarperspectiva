@@ -89,9 +89,9 @@ class ListAgesApi(APIView):
         return Response(serializer.data)
 
 
-class RecordForCourses(CreateView):
+class CreateRecordView(CreateView):
     model = Pupil
-    template_name = "mainapp/record_for_course.html"
+    template_name = None
     form_class = CreateRecordForm
     success_url = "/"
 
@@ -121,8 +121,7 @@ class RecordForCourses(CreateView):
         template = template.replace('$courses', "<br>".join([course.title for course in obj.courses.all()]))
         return template
 
-    def form_valid(self, form):
-        obj = form.save()
+    def send_emails(self, obj):
         admin_message_text = SiteSettings.objects.get().admin_letter_template
         client_message_text = SiteSettings.objects.get().client_letter_template
         send_mail(
@@ -140,6 +139,23 @@ class RecordForCourses(CreateView):
             recipient_list=[obj.e_mail_parent],
             html_message=self.process_templates(client_message_text, obj),
         )
+
+
+class RecordForCourses(CreateRecordView):
+    template_name = "mainapp/record_for_course.html"
+
+    def form_valid(self, form):
+        obj = form.save()
+        # self.send_emails(obj)
+        return HttpResponseRedirect("/")
+
+
+class AnonymousRecordForCourses(CreateRecordView):
+    template_name = "mainapp/anonymous_record.html"
+
+    def form_valid(self, form):
+        obj = form.save()
+        # self.send_emails(obj)
         return HttpResponseRedirect("/")
 
 
