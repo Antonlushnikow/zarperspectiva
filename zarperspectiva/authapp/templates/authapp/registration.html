@@ -17,7 +17,7 @@
                         {% endif %}
                       {{ field }}
                       {% if 'accept_pdn' in field.name %}
-                    <a href="mail.ru"> Я подтверждаю согласие с политикой конфидециальности и обработки персональных данных</a><br><br>
+                    <a href="{% url 'auth:terms-conditions' %}"> Я подтверждаю согласие с <span style="color:blue">политикой конфидециальности и обработки персональных данных</span></a><br><br>
                       {% endif %}
                       {% endfor %}
 

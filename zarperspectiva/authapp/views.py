@@ -10,8 +10,10 @@ from django.core.mail import send_mail
 from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import redirect, render, reverse, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
+from django.views import View
+from django.views.generic import CreateView, DetailView, UpdateView, DeleteView, TemplateView
 
+from mainapp.models import SiteSettings
 from .forms import (
     SiteUserRegistrationForm,
     SiteUserLoginForm,
@@ -72,8 +74,8 @@ class SiteUserRegisterView(CreateView):
         try:
             user = SiteUser.objects.get(email=email)
             if (
-                user.activation_key == activation_key
-                and not user.is_activation_key_expired()
+                    user.activation_key == activation_key
+                    and not user.is_activation_key_expired()
             ):
                 user.is_verified = True
                 user.save()
@@ -188,3 +190,14 @@ class SiteUserPasswordResetView(PasswordResetView):
     email_template_name = "authapp/password-reset-email.html"
     subject_template_name = "authapp/password-reset-subject.txt"
     from_email = settings.EMAIL_HOST_USER
+
+
+class TermsConditionsView(TemplateView):
+    """
+    Политика конфиденциальности и обработки персональных данных
+    """
+
+    template_name = "authapp/terms_conditions.html"
+
+    def get_context_data(self, **kwargs):
+        return {"term_conditions": SiteSettings.objects.get().terms_conditions}
