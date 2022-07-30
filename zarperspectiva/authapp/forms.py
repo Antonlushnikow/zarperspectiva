@@ -41,6 +41,7 @@ class SiteUserRegistrationForm(UserCreationForm):
     captcha = ReCaptchaField(
         widget=ReCaptchaV2Checkbox, label="Подтвердите что вы не робот!"
     )
+    accept_pdn = forms.BooleanField(required=True, label='\n\r')
 
     class Meta:
         model = SiteUser
@@ -58,7 +59,8 @@ class SiteUserRegistrationForm(UserCreationForm):
         super(SiteUserRegistrationForm, self).__init__(*args, **kwargs)
 
         for field_name, field in self.fields.items():
-            field.widget.attrs["class"] = "form-control mb-2"
+            if field_name != "accept_pdn":
+                field.widget.attrs["class"] = "form-control mb-2"
             if field.required:
                 field.label_suffix = " (обязательное)"
             field.help_text = ""
@@ -121,7 +123,7 @@ class StudentCreateForm(forms.ModelForm):
             "second_name",
             "last_name",
             "email",
-            )
+        )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -138,7 +140,7 @@ class ProfileEditForm(forms.ModelForm):
             "second_name",
             "last_name",
             "email",
-            )
+        )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -151,6 +153,7 @@ class SiteUserPasswordResetForm(PasswordResetForm):
     """
     Форма сброса пароля
     """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():

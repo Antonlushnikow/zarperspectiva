@@ -9,7 +9,17 @@
                 <!-- Login Form -->
                 <form action="" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-                    {{ form.as_p }}
+                                          {% for field in form %}
+                      {{ field.errors }}
+                      {{ field.label }}
+                       {% if 'accept_pdn' in field.name %}
+                        <br>
+                        {% endif %}
+                      {{ field }}
+                      {% if 'accept_pdn' in field.name %}
+                    <a href="mail.ru"> Я подтверждаю согласие с политикой конфидециальности и обработки персональных данных</a><br><br>
+                      {% endif %}
+                      {% endfor %}
 
                     <input type="submit" class="btn btn-primary" value="Зарегистрироваться">
                 </form>
