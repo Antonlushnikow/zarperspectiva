@@ -1,5 +1,13 @@
-<div class="footer d-flex justify-content-around">
-    <div class="site-parts">11111111</div>
-    <div class="contacts">2222222</div>
-    <div class="policies"><a href="{% url 'auth:terms-conditions' %}">политика конфиденциальности </a></div>
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            {% for key, value in main_menu.items %}
+            <div class="col-auto m-auto"><a href="{{ value }}">{{ key }}</a></div>
+            {% endfor %}
+        </div>
+        <br>
+        <div class="text-center"><a href="{% url 'auth:terms-conditions' %}">Политика конфиденциальности </a></div>
+        <br>
+        <div class="text-center">2022</div>
+    </div>
 </div>
