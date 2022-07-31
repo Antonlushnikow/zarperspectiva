@@ -140,23 +140,21 @@ class CreateRecordView(CreateView):
             html_message=self.process_templates(client_message_text, obj),
         )
 
+    def form_valid(self, form):
+        obj = form.save()
+        try:
+            self.send_emails(obj)
+        except:
+            pass
+        return HttpResponseRedirect("/")
+
 
 class RecordForCourses(CreateRecordView):
     template_name = "mainapp/record_for_course.html"
 
-    def form_valid(self, form):
-        obj = form.save()
-        # self.send_emails(obj)
-        return HttpResponseRedirect("/")
-
 
 class AnonymousRecordForCourses(CreateRecordView):
     template_name = "mainapp/anonymous_record.html"
-
-    def form_valid(self, form):
-        obj = form.save()
-        # self.send_emails(obj)
-        return HttpResponseRedirect("/")
 
 
 @login_required
