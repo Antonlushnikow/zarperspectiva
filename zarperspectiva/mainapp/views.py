@@ -10,8 +10,10 @@ from rest_framework.response import Response
 
 from mainapp.forms import CreateRecordForm
 from mainapp.models import Subject, Course, Age, Pupil, SiteSettings, Teacher
+from authapp.models import SiteUser, Student
 from zarperspectiva import settings
-from mainapp.serializers import CourseSerializer, SubjectSerializer, AgeSerializer
+from mainapp.serializers import CourseSerializer, SubjectSerializer, AgeSerializer, SiteUserSerializer, \
+    StudentSerializer
 
 
 class SubjectsView(ListView):
@@ -89,9 +91,9 @@ class ListAgesApi(APIView):
         return Response(serializer.data)
 
 
-class RecordForCourses(CreateView):
+class CreateRecordView(CreateView):
     model = Pupil
-    template_name = "mainapp/record_for_course.html"
+    template_name = None
     form_class = CreateRecordForm
     success_url = "/"
 
@@ -121,8 +123,7 @@ class RecordForCourses(CreateView):
         template = template.replace('$courses', "<br>".join([course.title for course in obj.courses.all()]))
         return template
 
-    def form_valid(self, form):
-        obj = form.save()
+    def send_emails(self, obj):
         admin_message_text = SiteSettings.objects.get().admin_letter_template
         client_message_text = SiteSettings.objects.get().client_letter_template
         send_mail(
@@ -140,7 +141,22 @@ class RecordForCourses(CreateView):
             recipient_list=[obj.e_mail_parent],
             html_message=self.process_templates(client_message_text, obj),
         )
+
+    def form_valid(self, form):
+        obj = form.save()
+        try:
+            self.send_emails(obj)
+        except:
+            pass
         return HttpResponseRedirect("/")
+
+
+class RecordForCourses(CreateRecordView):
+    template_name = "mainapp/record_for_course.html"
+
+
+class AnonymousRecordForCourses(CreateRecordView):
+    template_name = "mainapp/anonymous_record.html"
 
 
 @login_required
@@ -223,3 +239,23 @@ class TeacherView(DetailView):
     model = Teacher
     template_name = 'mainapp/teacher.html'
     context_object_name = 'teacher'
+
+
+class GetUserApi(APIView):
+    """
+    Возвращает данные о текущем пользователе
+    """
+    def get(self, request, format=None):
+        data = SiteUser.objects.filter(id=request.user.id)
+        serializer = SiteUserSerializer(set(data), many=True)
+        return Response(serializer.data)
+
+
+class ListStudentsApi(APIView):
+    """
+    Возвращает данные о текущем пользователе
+    """
+    def get(self, request, format=None):
+        data = Student.objects.filter(parent__id=request.user.id)
+        serializer = StudentSerializer(set(data), many=True)
+        return Response(serializer.data)
