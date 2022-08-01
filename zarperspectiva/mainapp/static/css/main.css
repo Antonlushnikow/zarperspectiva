@@ -68,3 +68,12 @@ a:hover {
     height: 200px;
     object-fit: cover;
 }
+.content{
+height:100%;
+min-height:calc(100vh - 282px);
+}
+.footer {
+padding-top: 50px;
+padding-bottom: 50px;
+background-color: whitesmoke;
+}
