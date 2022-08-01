@@ -37,7 +37,9 @@
         <select v-model="studentId" id="selectStudent"  @change="chooseStudents">
           <option  v-for="(student, index) in students" :value="index">{{ student.last_name }} {{ student.first_name }}</option>
         </select>
-        <a :href="'/auth/update-student/'+ student.id" class="me-2"><u>Изменить</u></a>
+
+        <a  :href="'/auth/create-student/'" class="me-2"><u>Добавить</u></a>
+        <a v-if="student.id" :href="'/auth/update-student/'+ student.id" class="me-2"><u>Изменить</u></a>
         <br>
         <input type="hidden" name="student" :value="student.id">
         Фамилия ученика
