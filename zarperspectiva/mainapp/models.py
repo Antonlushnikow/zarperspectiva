@@ -304,3 +304,17 @@ class Pupil(models.Model):
     class Meta:
         verbose_name = 'Запись на курс'
         verbose_name_plural = 'Записи на курсы'
+
+
+class Review(models.Model):
+    review_text = HTMLField(
+        verbose_name='Текст отзыва',
+        default='Введите текст отзыва.',
+    )
+
+    def __str__(self):
+        return self.review_text[:90]
+
+    class Meta:
+        verbose_name = 'Отзыв'
+        verbose_name_plural = 'Отзывы'

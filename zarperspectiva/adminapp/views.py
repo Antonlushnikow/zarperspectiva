@@ -3,9 +3,9 @@ from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import UpdateView, ListView, CreateView, DeleteView, TemplateView
-from mainapp.models import SiteSettings
+from mainapp.models import SiteSettings, Review
 
-from adminapp.forms import CourseEditForm, TeacherEditForm, SubjectEditForm, SiteSettingsEditForm
+from adminapp.forms import CourseEditForm, TeacherEditForm, SubjectEditForm, SiteSettingsEditForm, ReviewEditForm
 from mainapp.models import Course, Teacher, Subject
 
 
@@ -178,3 +178,27 @@ class SubjectDeleteView(AdminDeleteView):
     model = Subject
     template_name = 'adminapp/confirm-delete-subject.html'
     success_url = reverse_lazy("staff:subjects")
+
+
+class ReviewsView(AdminListView):
+    model = Review
+    template_name = 'adminapp/reviews.html'
+    context_object_name = 'reviews'
+
+
+class ReviewEditView(AdminEditView):
+    model = Review
+    form_class = ReviewEditForm
+    success_url = reverse_lazy("staff:reviews")
+
+
+class ReviewCreateView(AdminCreateView):
+    model = Review
+    form_class = ReviewEditForm
+    success_url = reverse_lazy("staff:reviews")
+
+
+class ReviewDeleteView(AdminDeleteView):
+    model = Review
+    template_name = 'adminapp/confirm-delete-reviews.html'
+    success_url = reverse_lazy("staff:reviews")

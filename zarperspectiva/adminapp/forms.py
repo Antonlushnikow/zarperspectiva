@@ -1,4 +1,4 @@
-from mainapp.models import SiteSettings, Course, Teacher, Subject
+from mainapp.models import SiteSettings, Course, Teacher, Subject, Review
 from django import forms
 
 
@@ -37,3 +37,10 @@ class SubjectEditForm(AdminEditForm):
     class Meta:
         model = Subject
         fields = '__all__'
+
+
+class ReviewEditForm(AdminEditForm):
+    class Meta:
+        model = Review
+        fields = '__all__'
+
