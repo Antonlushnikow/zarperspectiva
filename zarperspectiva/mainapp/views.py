@@ -1,6 +1,7 @@
 import csv
 
 from django.contrib.auth.decorators import login_required
+from django.db.models import Min
 from django.views.generic import ListView, CreateView, DetailView
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.mail import send_mail
@@ -188,7 +189,7 @@ def export_records(request):
         'Предметы',
     ])
 
-    for obj in model.objects.values_list(
+    objects = model.objects.values_list(
             'surname_pupil',
             'name_pupil',
             'second_name_pupil',
@@ -196,7 +197,6 @@ def export_records(request):
             'e_mail_pupil',
             'birthday_pupil',
             'school_pupil',
-            'courses__age',
             'parent_surname',
             'parent_name',
             'parent_second_name',
@@ -204,8 +204,10 @@ def export_records(request):
             'e_mail_parent',
             'sign_up_date',
             'courses__title',
-    ):
-        obj_ = obj[:13] + ('', '', '', '', '') + obj[13:]
+    ).annotate(age=Min('courses__age__age'))
+
+    for obj in objects:
+        obj_ = obj[:7] + obj[-1:] + obj[7:12] + ('', '', '', '', '') + obj[12:-1]
         writer.writerow(obj_)
     return response
 
