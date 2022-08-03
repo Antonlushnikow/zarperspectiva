@@ -87,27 +87,47 @@
         </button>
       </div>
     </div>
+          <hr>
   </div>
 </section>
 
 <section>
+
 <div class="container">
-    <h1 class="mb-5"> ОТЗЫВЫ </h1>
-<div class="row row-cols-1 row-cols-md-3 g-4">
+    <h1 class="mb-3"> ОТЗЫВЫ </h1>
+<div class="row row-cols-1 row-cols-xl-3">
   {% for review in reviews%}
-  <div class="col">
-    <div class="card h-100">
+    <div class=" h-100 g-3">
       <div class="card-body">
-        <i class="fa fa-quote-left u-color"></i>
-        <p class="card-text">{{ review|truncatewords_html:50 }}</p>
-
-        <i class="fa fa-quote-right u-color position-absolute end-0"></i>
-
+        <h5><b>{{ review.author}}</b></h5>
+      <h5><i>{{ review.role }}</i></h5>
+        <div class="card-text readmore" style="max-height:200px">
+          <p>{{ review }}</p>
+          <span class="readmore-link"></span>
+        </div>
       </div>
     </div>
-  </div>
+
   {% endfor %}
 </div>
 </div>
+  <br>
 </section>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script>
+  $(".readmore-link").click( function(e) {
+  // record if our text is expanded
+  var isExpanded =  $(e.target).hasClass("expand");
+
+  //close all open paragraphs
+  $(".readmore.expand").removeClass("expand");
+  $(".readmore-link.expand").removeClass("expand");
+
+  // if target wasn't expand, then expand it
+  if (!isExpanded){
+    $( e.target ).parent( ".readmore" ).addClass( "expand" );
+    $(e.target).addClass("expand");
+  }
+});
+</script>
 {% endblock %}
