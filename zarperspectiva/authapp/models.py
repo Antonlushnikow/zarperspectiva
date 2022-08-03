@@ -10,16 +10,38 @@ def default_key_expires():
 
 
 class SiteUser(AbstractUser):
+    first_name = models.CharField(
+        verbose_name="имя",
+        max_length=150,
+        blank=False,
+    )
+    last_name = models.CharField(
+        verbose_name="фамилия",
+        max_length=150,
+        blank=False,
+    )
     second_name = models.CharField(
         max_length=30,
-        blank=True,
+        blank=False,
         verbose_name='отчество',
+    )
+
+    email = models.EmailField(
+        verbose_name="электронная почта",
+        blank=False,
+    )
+
+    phone = models.CharField(
+        verbose_name='телефон',
+        max_length=12,
+        null=False,
+        blank=False,
     )
 
     activation_key = models.CharField(max_length=128, blank=True, verbose_name="ключ активации")
     activation_key_expires = models.DateTimeField(
         default=default_key_expires,
-        verbose_name="срок действия ключа активации"
+        verbose_name="срок действия ключа активации",
     )
 
     is_verified = models.BooleanField(
@@ -42,17 +64,17 @@ class Student(models.Model):
     first_name = models.CharField(
         verbose_name="имя",
         max_length=150,
-        blank=True
+        blank=False,
     )
     second_name = models.CharField(
         verbose_name="отчество",
         max_length=150,
-        blank=True
+        blank=False,
     )
     last_name = models.CharField(
         verbose_name="фамилия",
         max_length=150,
-        blank=True
+        blank=False,
     )
     email = models.EmailField(
         verbose_name="электронная почта",
@@ -64,6 +86,22 @@ class Student(models.Model):
         related_name='students',
         on_delete=models.CASCADE,
         default=None,
+    )
+    phone = models.CharField(
+        verbose_name="телефон",
+        max_length=20,
+        blank=True,
+    )
+    birthday = models.DateField(
+        verbose_name='дата рождения',
+        default=datetime(2010, 1, 1),
+        null=False,
+    )
+    school = models.CharField(
+        verbose_name='Место учебы',
+        default='не указано',
+        max_length=100,
+        blank=True,
     )
 
     class Meta:
