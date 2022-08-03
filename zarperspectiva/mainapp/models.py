@@ -34,6 +34,10 @@ class SiteSettings(models.Model):
         null=False,
         default='zarperspectiva@gmail.com'
     )
+    center_info = HTMLField(
+        verbose_name='информация о центре',
+        default='',
+    )
 
     class Meta:
         verbose_name = 'Настройки сайта'
