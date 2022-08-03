@@ -11,6 +11,7 @@ from authapp.views import (
     StudentCreateView,
     StudentEditView,
     StudentDeleteView,
+    TermsConditionsView,
 )
 
 urlpatterns = [
@@ -30,4 +31,6 @@ urlpatterns = [
     path("create-student/", StudentCreateView.as_view(), name="create-student"),
     path("update-student/<int:pk>/", StudentEditView.as_view(), name="update-student"),
     path("delete-student/<int:pk>/", StudentDeleteView.as_view(), name="delete-student"),
+
+    path("terms-conditions/", TermsConditionsView.as_view(), name="terms-conditions"),
 ]

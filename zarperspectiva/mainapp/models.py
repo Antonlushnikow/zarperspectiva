@@ -37,6 +37,11 @@ class SiteSettings(models.Model):
         default='zarperspectiva@gmail.com'
     )
 
+    terms_conditions = models.TextField(
+        verbose_name='Политика конфиденциальности и обработки персональных данных',
+        default=''
+    )
+
     class Meta:
         verbose_name = 'Настройки сайта'
 
