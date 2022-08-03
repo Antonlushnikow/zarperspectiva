@@ -313,7 +313,7 @@ class Review(models.Model):
     )
 
     def __str__(self):
-        return self.review_text[:90]
+        return self.review_text
 
     class Meta:
         verbose_name = 'Отзыв'

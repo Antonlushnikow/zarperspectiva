@@ -91,14 +91,23 @@
 </section>
 
 <section>
-  <div class="container">
-    <h1 class="mb-5"> НАШИ УЧЕНИКИ О НАС: </h1>
-      {% for review in reviews %}
-      <div class="col-md-4 text-center m-auto">
-        <p>{{ review }}</p>
-      </div>
-      {% endfor %}
-  </div>
-</section>
+<div class="container">
+    <h1 class="mb-5"> ОТЗЫВЫ </h1>
+<div class="row row-cols-1 row-cols-md-3 g-4">
+  {% for review in reviews%}
+  <div class="col">
+    <div class="card h-100">
+      <div class="card-body">
+        <i class="fa fa-quote-left u-color"></i>
+        <p class="card-text">{{ review|truncatewords_html:50 }}</p>
 
+        <i class="fa fa-quote-right u-color position-absolute end-0"></i>
+
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+</div>
+</section>
 {% endblock %}
