@@ -51,6 +51,7 @@ class SiteUserRegistrationForm(UserCreationForm):
             "first_name",
             "second_name",
             "email",
+            "phone",
             "password1",
             "password2",
         )
@@ -71,14 +72,19 @@ class SiteUserUpdateForm(UserChangeForm):
     Форма изменения данных пользователя
     """
     password = None
-    avatar = forms.FileField(label="Аватар", widget=forms.FileInput())
 
     class Meta:
         model = SiteUser
-        fields = ("first_name", "last_name")
+        fields = (
+            "last_name",
+            "first_name",
+            "second_name",
+            "email",
+            "phone",
+            )
 
     def __init__(self, *args, **kwargs):
-        super(SiteUserUpdateForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs["class"] = "form-control"
             field.help_text = ""
@@ -119,28 +125,14 @@ class StudentCreateForm(forms.ModelForm):
     class Meta:
         model = Student
         fields = (
+            "last_name",
             "first_name",
             "second_name",
-            "last_name",
+            "birthday",
             "email",
-        )
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
-            field.widget.attrs["class"] = "form-control"
-            field.help_text = ""
-
-
-class ProfileEditForm(forms.ModelForm):
-    class Meta:
-        model = Student
-        fields = (
-            "first_name",
-            "second_name",
-            "last_name",
-            "email",
-        )
+            "phone",
+            "school",
+            )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

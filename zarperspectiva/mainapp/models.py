@@ -4,6 +4,8 @@ from django.conf import settings
 from django.db import models
 from tinymce.models import HTMLField
 
+from authapp.models import Student
+
 
 class SiteSettings(models.Model):
     site_info = HTMLField(
@@ -296,6 +298,16 @@ class Pupil(models.Model):
     sign_up_date = models.DateField(
         verbose_name='дата записи',
         auto_now_add=True,
+    )
+
+    student = models.ForeignKey(
+        Student,
+        verbose_name='ученик',
+        related_name='records',
+        on_delete=models.CASCADE,
+        default=None,
+        blank=True,
+        null=True,
     )
 
     def __str__(self):
