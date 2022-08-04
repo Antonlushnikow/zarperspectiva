@@ -133,3 +133,8 @@ iframe {
   content:"Свернуть";
 }
 
+.thead-dark th {
+    color: #fff;
+    background-color: #10203F;
+    font-weight: 400;
+}

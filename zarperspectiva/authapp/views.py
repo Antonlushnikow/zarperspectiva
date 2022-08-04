@@ -13,7 +13,7 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView, TemplateView
 
-from mainapp.models import SiteSettings
+from mainapp.models import SiteSettings, Pupil
 from .forms import (
     SiteUserRegistrationForm,
     SiteUserUpdateForm,
@@ -126,6 +126,13 @@ class ProfileView(DetailView):
         user = get_object_or_404(SiteUser, pk=self.request.user.pk)
         return user
 
+    def get_context_data(self, **kwargs):
+        user = get_object_or_404(SiteUser, pk=self.request.user.pk)
+        students = Student.objects.filter(parent=user)
+        context = super().get_context_data(**kwargs)
+        context['records'] = Pupil.objects.filter(student__in=students).order_by('-sign_up_date')
+        return context
+
 
 class SiteUserUpdateView(UpdateView):
     model = Student
@@ -142,7 +149,11 @@ class StudentCreateView(CreateView):
     model = Student
     template_name = 'authapp/create-student.html'
     form_class = StudentCreateForm
-    success_url = reverse_lazy('auth:profile')
+
+    def get_success_url(self):
+        if self.request.GET.get('next'):
+            return self.request.GET.get('next')
+        return reverse_lazy('auth:profile')
 
     def form_valid(self, form):
         user = get_object_or_404(SiteUser, pk=self.request.user.pk)
@@ -154,7 +165,11 @@ class StudentEditView(UpdateView):
     model = Student
     template_name = 'authapp/update-student.html'
     form_class = StudentCreateForm
-    success_url = reverse_lazy('auth:profile')
+
+    def get_success_url(self):
+        if self.request.GET.get('next'):
+            return self.request.GET.get('next')
+        return reverse_lazy('auth:profile')
 
     def dispatch(self, request, *args, **kwargs):
         student = get_object_or_404(Student, pk=self.kwargs['pk'])
