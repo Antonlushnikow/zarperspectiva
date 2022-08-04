@@ -38,9 +38,9 @@
           <option  v-for="(student, index) in students" :value="index">{{ student.last_name }} {{ student.first_name }}</option>
         </select>
 
-        <a :href="'/auth/create-student/'" class="me-2"><u>Добавить</u></a>
+        <a :href="'/auth/create-student/?next=/record-for-courses/'" class="me-2"><u>Добавить</u></a>
 
-        <a v-if="student.id" :href="'/auth/update-student/'+ student.id" class="me-2"><u>Изменить</u></a>
+        <a v-if="student.id" :href="'/auth/update-student/'+ student.id + '?next=/record-for-courses/'" class="me-2"><u>Изменить</u></a>
         <br>
         <div v-if="students.length">
           <input type="hidden" name="student" :value="student.id">
