@@ -102,7 +102,7 @@
         <h5><b>{{ review.author}}</b></h5>
       <h5><i>{{ review.role }}</i></h5>
         <div class="card-text readmore" style="max-height:200px">
-          <p>{{ review }}</p>
+          <p>{{ review|safe }}</p>
           <span class="readmore-link"></span>
         </div>
       </div>
