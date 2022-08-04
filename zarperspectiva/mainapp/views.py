@@ -10,8 +10,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from mainapp.forms import CreateRecordForm
-from mainapp.models import Subject, Course, Age, Pupil, SiteSettings, Teacher
+
+from mainapp.models import Subject, Course, Age, Pupil, SiteSettings, Teacher, Review
 from authapp.models import SiteUser, Student
+
 from zarperspectiva import settings
 from mainapp.serializers import CourseSerializer, SubjectSerializer, AgeSerializer, SiteUserSerializer, \
     StudentSerializer
@@ -25,6 +27,7 @@ class SubjectsView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['teachers'] = Teacher.objects.order_by('?')
+        context['reviews'] = Review.objects.order_by('?')[:3]
         return context
 
     def get_queryset(self):

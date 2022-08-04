@@ -320,3 +320,34 @@ class Pupil(models.Model):
     class Meta:
         verbose_name = 'Запись на курс'
         verbose_name_plural = 'Записи на курсы'
+
+
+class Review(models.Model):
+    ROLES = [
+        ('Родитель', 'Родитель'),
+        ('Ученик', 'Ученик'),
+    ]
+
+    review_text = HTMLField(
+        verbose_name='Текст отзыва',
+        default='Введите текст отзыва.',
+    )
+    author = models.CharField(
+        verbose_name='Автор отзыва',
+        max_length=300,
+        default='Аноним'
+    )
+
+    role = models.CharField(
+        verbose_name='Роль',
+        max_length=20,
+        choices=ROLES,
+        default='Родитель'
+    )
+
+    def __str__(self):
+        return self.review_text
+
+    class Meta:
+        verbose_name = 'Отзыв'
+        verbose_name_plural = 'Отзывы'
