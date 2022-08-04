@@ -93,6 +93,9 @@
       </div>
       {% endverbatim %}
       <br>
+        <input type="checkbox" name="accept_pdn" required="" id="id_accept_pdn">
+        <a href="{% url 'auth:terms-conditions' %}"> Я подтверждаю согласие с <span style="color:blue">политикой конфиденциальности и обработки персональных данных</span></a><br><br>
+      <br>
       <input type="submit" value="Записаться" class="col-12 btn btn-primary">
     </form>
     <script type="text/javascript">
