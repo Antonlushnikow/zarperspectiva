@@ -16,9 +16,9 @@ from django.views.generic import CreateView, DetailView, UpdateView, DeleteView,
 from mainapp.models import SiteSettings
 from .forms import (
     SiteUserRegistrationForm,
+    SiteUserUpdateForm,
     SiteUserLoginForm,
     StudentCreateForm,
-    ProfileEditForm,
     SiteUserPasswordResetForm,
 )
 from .models import SiteUser, default_key_expires, Student
@@ -127,10 +127,10 @@ class ProfileView(DetailView):
         return user
 
 
-class ProfileEditView(UpdateView):
+class SiteUserUpdateView(UpdateView):
     model = Student
     template_name = 'authapp/update-profile.html'
-    form_class = ProfileEditForm
+    form_class = SiteUserUpdateForm
     success_url = reverse_lazy('auth:profile')
 
     def get_object(self, queryset=None):
