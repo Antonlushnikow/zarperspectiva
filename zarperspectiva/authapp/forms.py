@@ -151,3 +151,15 @@ class SiteUserPasswordResetForm(PasswordResetForm):
         for field_name, field in self.fields.items():
             field.widget.attrs["class"] = "form-control"
             field.help_text = ""
+
+
+class AdminLoginForm(AuthenticationForm):
+    captcha = ReCaptchaField(
+        widget=ReCaptchaV2Checkbox, label="Подтвердите что вы не робот!"
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs["class"] = "form-control"
+            field.help_text = ""
