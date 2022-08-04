@@ -23,8 +23,12 @@ from mainapp.views import (
 )
 
 from authapp.views import SiteUserPasswordResetView
-
+from authapp.forms import AdminLoginForm
 from mainapp.utils import export_courses_to_xls
+
+admin.autodiscover()
+admin.site.login_form = AdminLoginForm
+admin.site.login_template = 'zarperspectiva/admin_login.html'
 
 
 urlpatterns = [
