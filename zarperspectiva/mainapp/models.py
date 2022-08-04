@@ -97,8 +97,14 @@ class Teacher(models.Model):
         verbose_name='фото',
     )
     bio = models.TextField(
-        verbose_name='о себе',
+        verbose_name='о себе (на удаление)',
         null=True,
+    )
+
+    info = HTMLField(
+        verbose_name='информация',
+        null=True,
+        default='',
     )
 
     subjects = models.ManyToManyField(Subject)
