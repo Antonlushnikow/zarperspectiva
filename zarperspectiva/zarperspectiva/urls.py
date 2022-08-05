@@ -13,15 +13,22 @@ from mainapp.views import (
     ListSubjectsApi,
     ListAgesApi,
     RecordForCourses,
+    AnonymousRecordForCourses,
     export_records,
     ScheduleView,
     TeachersListView,
-    TeacherView
+    TeacherView,
+    GetUserApi,
+    ListStudentsApi,
 )
 
 from authapp.views import SiteUserPasswordResetView
-
+from authapp.forms import AdminLoginForm
 from mainapp.utils import export_courses_to_xls
+
+admin.autodiscover()
+admin.site.login_form = AdminLoginForm
+admin.site.login_template = 'zarperspectiva/admin_login.html'
 
 
 urlpatterns = [
@@ -38,10 +45,13 @@ urlpatterns = [
 
 
     path('record-for-courses/', RecordForCourses.as_view(), name='record'),
+    path('anonymous-record/', AnonymousRecordForCourses.as_view(), name='anonymous-record'),
     path('courses/', CoursesView.as_view(), name='courses'),
     path('api/courses/', ListCoursesApi.as_view(), name='courses-api'),
     path('api/subjects/', ListSubjectsApi.as_view(), name='subjects-api'),
     path('api/ages/', ListAgesApi.as_view(), name='ages-api'),
+    path('api/user/', GetUserApi.as_view(), name='user-api'),
+    path('api/students/', ListStudentsApi.as_view(), name='students-api'),
 
     path("staff/", include(("adminapp.urls", "adminapp"), namespace="staff")),
     path("auth/", include(("authapp.urls", "authapp"), namespace="auth")),

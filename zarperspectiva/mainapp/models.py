@@ -4,6 +4,8 @@ from django.conf import settings
 from django.db import models
 from tinymce.models import HTMLField
 
+from authapp.models import Student
+
 
 class SiteSettings(models.Model):
     site_info = HTMLField(
@@ -33,6 +35,15 @@ class SiteSettings(models.Model):
         verbose_name='email администратора',
         null=False,
         default='zarperspectiva@gmail.com'
+    )
+    center_info = HTMLField(
+        verbose_name='информация о центре',
+        default='',
+    )
+
+    terms_conditions = models.TextField(
+        verbose_name='Политика конфиденциальности и обработки персональных данных',
+        default=''
     )
 
     class Meta:
@@ -86,8 +97,14 @@ class Teacher(models.Model):
         verbose_name='фото',
     )
     bio = models.TextField(
-        verbose_name='о себе',
+        verbose_name='о себе (на удаление)',
         null=True,
+    )
+
+    info = HTMLField(
+        verbose_name='информация',
+        null=True,
+        default='',
     )
 
     subjects = models.ManyToManyField(Subject)
@@ -293,9 +310,50 @@ class Pupil(models.Model):
         auto_now_add=True,
     )
 
+    student = models.ForeignKey(
+        Student,
+        verbose_name='ученик',
+        related_name='records',
+        on_delete=models.CASCADE,
+        default=None,
+        blank=True,
+        null=True,
+    )
+
     def __str__(self):
         return f'{self.surname_pupil} {self.name_pupil} {self.second_name_pupil}'
 
     class Meta:
         verbose_name = 'Запись на курс'
         verbose_name_plural = 'Записи на курсы'
+
+
+class Review(models.Model):
+    ROLES = [
+        ('Родитель', 'Родитель'),
+        ('Ученик', 'Ученик'),
+    ]
+
+    review_text = HTMLField(
+        verbose_name='Текст отзыва',
+        default='Введите текст отзыва.',
+    )
+    author = models.CharField(
+        verbose_name='Автор отзыва',
+        max_length=300,
+        default='Аноним'
+    )
+
+    role = models.CharField(
+        verbose_name='Роль',
+        max_length=20,
+        choices=ROLES,
+        default='Родитель'
+    )
+
+    def __str__(self):
+        return self.review_text
+
+    class Meta:
+        verbose_name = 'Отзыв'
+        verbose_name_plural = 'Отзывы'

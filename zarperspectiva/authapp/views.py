@@ -10,13 +10,15 @@ from django.core.mail import send_mail
 from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import redirect, render, reverse, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
+from django.views import View
+from django.views.generic import CreateView, DetailView, UpdateView, DeleteView, TemplateView
 
+from mainapp.models import SiteSettings, Pupil
 from .forms import (
     SiteUserRegistrationForm,
+    SiteUserUpdateForm,
     SiteUserLoginForm,
     StudentCreateForm,
-    ProfileEditForm,
     SiteUserPasswordResetForm,
 )
 from .models import SiteUser, default_key_expires, Student
@@ -72,8 +74,8 @@ class SiteUserRegisterView(CreateView):
         try:
             user = SiteUser.objects.get(email=email)
             if (
-                user.activation_key == activation_key
-                and not user.is_activation_key_expired()
+                    user.activation_key == activation_key
+                    and not user.is_activation_key_expired()
             ):
                 user.is_verified = True
                 user.save()
@@ -124,11 +126,18 @@ class ProfileView(DetailView):
         user = get_object_or_404(SiteUser, pk=self.request.user.pk)
         return user
 
+    def get_context_data(self, **kwargs):
+        user = get_object_or_404(SiteUser, pk=self.request.user.pk)
+        students = Student.objects.filter(parent=user)
+        context = super().get_context_data(**kwargs)
+        context['records'] = Pupil.objects.filter(student__in=students).order_by('-sign_up_date')
+        return context
 
-class ProfileEditView(UpdateView):
+
+class SiteUserUpdateView(UpdateView):
     model = Student
     template_name = 'authapp/update-profile.html'
-    form_class = ProfileEditForm
+    form_class = SiteUserUpdateForm
     success_url = reverse_lazy('auth:profile')
 
     def get_object(self, queryset=None):
@@ -140,7 +149,11 @@ class StudentCreateView(CreateView):
     model = Student
     template_name = 'authapp/create-student.html'
     form_class = StudentCreateForm
-    success_url = reverse_lazy('auth:profile')
+
+    def get_success_url(self):
+        if self.request.GET.get('next'):
+            return self.request.GET.get('next')
+        return reverse_lazy('auth:profile')
 
     def form_valid(self, form):
         user = get_object_or_404(SiteUser, pk=self.request.user.pk)
@@ -152,7 +165,11 @@ class StudentEditView(UpdateView):
     model = Student
     template_name = 'authapp/update-student.html'
     form_class = StudentCreateForm
-    success_url = reverse_lazy('auth:profile')
+
+    def get_success_url(self):
+        if self.request.GET.get('next'):
+            return self.request.GET.get('next')
+        return reverse_lazy('auth:profile')
 
     def dispatch(self, request, *args, **kwargs):
         student = get_object_or_404(Student, pk=self.kwargs['pk'])
@@ -188,3 +205,14 @@ class SiteUserPasswordResetView(PasswordResetView):
     email_template_name = "authapp/password-reset-email.html"
     subject_template_name = "authapp/password-reset-subject.txt"
     from_email = settings.EMAIL_HOST_USER
+
+
+class TermsConditionsView(TemplateView):
+    """
+    Политика конфиденциальности и обработки персональных данных
+    """
+
+    template_name = "authapp/terms_conditions.html"
+
+    def get_context_data(self, **kwargs):
+        return {"term_conditions": SiteSettings.objects.get().terms_conditions}
