@@ -56,6 +56,16 @@
 
                     {% if user.is_authenticated %}
                     <div class="dropdown-divider"></div>
+                    {% if user.is_staff %}
+                      <li>
+                          <a class="nav-link px-lg-3 py-2 py-lg-3 lh-1" href="{% url 'staff:index' %}">НАСТРОЙКИ</a>
+                      </li>
+                    {% endif %}
+                    <div class="dropdown-divider"></div>
+                    <li>
+                        <a class="nav-link px-lg-3 py-2 py-lg-3 lh-1" href="{% url 'auth:profile' %}">ПРОФИЛЬ</a>
+                    </li>
+                    <div class="dropdown-divider"></div>
                     <li>
                         <a class="nav-link px-lg-3 py-2 py-lg-3 lh-1" href="{% url 'auth:logout' %}">
                             ВЫЙТИ
