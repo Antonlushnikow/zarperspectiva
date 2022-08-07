@@ -2,6 +2,7 @@
 import hashlib
 from random import random
 
+import django.db.models
 from django.conf import settings
 from django.contrib import auth
 from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView
@@ -34,7 +35,7 @@ def send_verify_mail(user):
     verify_link = reverse("auth:verify", args=[user.email, user.activation_key])
     title = f"ПЕРСПЕКТИВА. Подтверждение электронной почты"
     message = f"Для подтверждения учетной записи {user.username}  \
-    перейдите по ссылке: \n{settings.DOMAIN_NAME}{verify_link}"
+    перейдите по ссылке: \nhttp://{settings.DOMAIN_NAME}{verify_link}"
     return send_mail(
         title, message, settings.EMAIL_HOST_USER, [user.email], fail_silently=False
     )
@@ -65,6 +66,8 @@ class SiteUserRegisterView(CreateView):
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
+        if SiteUser.objects.filter(email=self.request.POST["email"]).all():
+            return render(self.request, "authapp/reg_error.html")
         user = form.save()
         send_verify_mail(user)
         context = {"user": user}
@@ -83,6 +86,10 @@ class SiteUserRegisterView(CreateView):
                     self, user, backend="django.contrib.auth.backends.ModelBackend"
                 )
             return render(self, "authapp/verification.html")
+        except django.core.exceptions.MultipleObjectsReturned as e:
+            print(
+                f'error occured: \n registration error, entered user email in registration already exists in db:\n{e}')
+            return render(self, "authapp/reg_error.html")
         except Exception as e:
             print(e.with_traceback())
             return HttpResponseRedirect(reverse("index"))

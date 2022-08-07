@@ -1,0 +1,14 @@
+{% extends 'zarperspectiva/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container col-12 col-md-5 col-lg-4 mt-4 mb-4">
+      <div class="row text-center">
+            <h3>Ошибка регистрации</h3>
+          <p>Учетная запись пользователя с указанной электронной почтой {{ user.e_mail }} уже существует.</p>
+                <a href="{% url 'index' %}" class="">на главную</a>
+            </div>
+        </div>
+</section>
+{% endblock %}
