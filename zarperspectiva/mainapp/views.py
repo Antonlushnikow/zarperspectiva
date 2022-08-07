@@ -1,6 +1,7 @@
 import csv
 
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Min
 from django.views.generic import ListView, CreateView, DetailView
 from django.http import HttpResponseRedirect, HttpResponse
@@ -165,7 +166,7 @@ class AnonymousRecordForCourses(CreateRecordView):
     template_name = "mainapp/anonymous_record.html"
 
 
-@login_required
+@staff_member_required
 def export_records(request):
     model = Pupil
     response = HttpResponse(content_type='text/csv')
@@ -215,7 +216,7 @@ def export_records(request):
             'sign_up_date',
             'courses__title',
             'comment',
-    ).annotate(age=Min('courses__age__age'))
+    ).annotate(age=Min('courses__age__age')).order_by('sign_up_date')
 
     for obj in objects:
         obj_ = obj[:7] + obj[-1:] + obj[7:13] + ('', '', '', '', '') + obj[13:-1]
