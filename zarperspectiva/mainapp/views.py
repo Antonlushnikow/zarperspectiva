@@ -117,6 +117,7 @@ class CreateRecordView(CreateView):
             [obj.name_pupil, obj.surname_pupil, obj.second_name_pupil]))
         template = template.replace('$phone_parent', obj.phone_parent)
         template = template.replace('$e_mail_parent', obj.e_mail_parent)
+        template = template.replace('$address_parent', obj.address_parent)
         template = template.replace('$birthday_pupil', str(obj.birthday_pupil))
         template = template.replace('$school_pupil', obj.school_pupil)
         if obj.phone_pupil:
@@ -124,6 +125,7 @@ class CreateRecordView(CreateView):
         if obj.e_mail_pupil:
             template = template.replace('$e_mail_pupil', obj.e_mail_pupil)
         template = template.replace('$sign_up_date', str(obj.sign_up_date))
+        template = template.replace('$comment', obj.comment)
 
         template = template.replace('$courses', "<br>".join([course.title for course in obj.courses.all()]))
         return template
@@ -185,6 +187,7 @@ def export_records(request):
         'Имя заказчика',
         'Отчество заказчика',
         'Телефон заказчика',
+        'Адрес заказчика',
         'Email заказчика',
         'Серия, номер паспорта',
         'Дата выдачи',
@@ -192,7 +195,8 @@ def export_records(request):
         'Город проживания',
         'Улица, дом проживания',
         'Дата заявки',
-        'Предметы',
+        'Курсы',
+        'Комментарий',
     ])
 
     objects = model.objects.values_list(
@@ -207,13 +211,15 @@ def export_records(request):
             'parent_name',
             'parent_second_name',
             'phone_parent',
+            'address_parent',
             'e_mail_parent',
             'sign_up_date',
             'courses__title',
+            'comment',
     ).annotate(age=Min('courses__age__age')).order_by('sign_up_date')
 
     for obj in objects:
-        obj_ = obj[:7] + obj[-1:] + obj[7:12] + ('', '', '', '', '') + obj[12:-1]
+        obj_ = obj[:7] + obj[-1:] + obj[7:13] + ('', '', '', '', '') + obj[13:-1]
         writer.writerow(obj_)
     return response
 
