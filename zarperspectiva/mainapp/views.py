@@ -112,9 +112,9 @@ class CreateRecordView(CreateView):
 
     def process_templates(self, template: str, obj):
         template = template.replace('$client_name', " ".join(
-            [obj.parent_name, obj.parent_second_name, obj.parent_name]))
+            [obj.parent_name, obj.parent_second_name, obj.parent_surname]))
         template = template.replace('$pupil_name', " ".join(
-            [obj.name_pupil, obj.surname_pupil, obj.second_name_pupil]))
+            [obj.name_pupil, obj.second_name_pupil, obj.surname_pupil]))
         template = template.replace('$phone_parent', obj.phone_parent)
         template = template.replace('$e_mail_parent', obj.e_mail_parent)
         template = template.replace('$address_parent', obj.address_parent)
@@ -122,8 +122,12 @@ class CreateRecordView(CreateView):
         template = template.replace('$school_pupil', obj.school_pupil)
         if obj.phone_pupil:
             template = template.replace('$phone_pupil', obj.phone_pupil)
+        else:
+            template = template.replace('$phone_pupil', '')
         if obj.e_mail_pupil:
             template = template.replace('$e_mail_pupil', obj.e_mail_pupil)
+        else:
+            template = template.replace('$e_mail_pupil', '')
         template = template.replace('$sign_up_date', str(obj.sign_up_date))
         template = template.replace('$comment', obj.comment)
 
@@ -140,7 +144,6 @@ class CreateRecordView(CreateView):
             recipient_list=[SiteSettings.objects.get().admin_email],
             html_message=self.process_templates(admin_message_text, obj),
         )
-
         send_mail(
             from_email=settings.EMAIL_HOST_USER,
             subject='Поздравляем с успешной записью на курсы',
@@ -153,8 +156,8 @@ class CreateRecordView(CreateView):
         obj = form.save()
         try:
             self.send_emails(obj)
-        except:
-            pass
+        except Exception as err:
+            print(f"Unexpected {err=}, {type(err)=}")
         return HttpResponseRedirect("/")
 
 
