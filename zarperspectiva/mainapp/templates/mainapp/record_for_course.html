@@ -29,6 +29,8 @@
         <input type="text" name="phone_parent" maxlength="12" class="form-control" :value="user.phone" required="" id="id_phone_parent" readonly>
         Электронная почта заказчика
         <input type="email" name="e_mail_parent" maxlength="254" class="form-control" :value="user.email" required="" id="id_e_mail_parent" readonly>
+        Адрес заказчика
+        <input type="text" name="address_parent" value="не указан" maxlength="256" class="form-control" :value="user.address" required="" id="id_address_parent" readonly>
       </div>
       <br>
        <hr>
@@ -58,6 +60,8 @@
           <input type="text" name="phone_pupil" maxlength="12" class="form-control" :value="student.phone" id="id_phone_pupil" readonly>
           Электронная почта ученика
           <input type="email" name="e_mail_pupil" maxlength="254" class="form-control" :value="student.email" id="id_e_mail_pupil" readonly>
+          Комментарий
+          <textarea name="comment" maxlength="254" class="form-control" id="id_comment"></textarea>
         </div>
       </div>
       {% endverbatim %}
@@ -94,7 +98,13 @@
       {% endverbatim %}
       <br>
         <input type="checkbox" name="accept_pdn" required="" id="id_accept_pdn">
-        <a href="{% url 'auth:terms-conditions' %}"> Я подтверждаю согласие с <span style="color:blue">политикой конфиденциальности и обработки персональных данных</span></a><br><br>
+<!--        <a href="{% url 'auth:terms-conditions' %}"> Я подтверждаю согласие с <span style="color:blue">-->
+<!--          политикой конфиденциальности и обработки персональных данных</span></a>-->
+      <p class="text-muted">Нажимая на кнопку «Записаться», вы тем самым даёте согласие на обработку персональных данных
+        с целью заключения договора на оказание платных образовательных или консультационных
+        услуг в соответствии с Федеральным законом от 27.02.2006 № 152-ФЗ «О персональных данных»,
+        на получение оповещений, связанных с оказанием таких услуг, и на размещение фамилии и имени ученика
+        в расписании, публично доступном на сайте центра</p>
       <br>
       <input type="submit" value="Записаться" class="col-12 btn btn-primary">
     </form>

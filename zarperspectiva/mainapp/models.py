@@ -227,15 +227,15 @@ class Course(models.Model):
 
 
 class Pupil(models.Model):
-    parent_name = models.CharField(
-        verbose_name='Имя заказчика',
+    parent_surname = models.CharField(
+        verbose_name='Фамилия заказчика',
         max_length=50,
         null=False,
         blank=False,
     )
 
-    parent_surname = models.CharField(
-        verbose_name='Фамилия заказчика',
+    parent_name = models.CharField(
+        verbose_name='Имя заказчика',
         max_length=50,
         null=False,
         blank=False,
@@ -255,21 +255,29 @@ class Pupil(models.Model):
         blank=False,
     )
 
+    address_parent = models.CharField(
+        verbose_name='адрес',
+        max_length=256,
+        null=False,
+        blank=False,
+        default='не указан',
+    )
+
     e_mail_parent = models.EmailField(
         verbose_name='Электронная почта заказчика',
         null=False,
         blank=False,
     )
 
-    name_pupil = models.CharField(
-        verbose_name='Имя ученика',
+    surname_pupil = models.CharField(
+        verbose_name='Фамилия ученика',
         max_length=50,
         null=False,
         blank=False,
     )
 
-    surname_pupil = models.CharField(
-        verbose_name='Фамилия ученика',
+    name_pupil = models.CharField(
+        verbose_name='Имя ученика',
         max_length=50,
         null=False,
         blank=False,
@@ -318,6 +326,14 @@ class Pupil(models.Model):
         default=None,
         blank=True,
         null=True,
+    )
+
+    comment = models.TextField(
+        verbose_name='комментарий',
+        max_length=256,
+        null=False,
+        blank=False,
+        default='',
     )
 
     def __str__(self):

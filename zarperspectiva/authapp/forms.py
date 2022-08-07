@@ -52,6 +52,7 @@ class SiteUserRegistrationForm(UserCreationForm):
             "second_name",
             "email",
             "phone",
+            "address",
             "password1",
             "password2",
         )
@@ -81,6 +82,7 @@ class SiteUserUpdateForm(UserChangeForm):
             "second_name",
             "email",
             "phone",
+            "address",
             )
 
     def __init__(self, *args, **kwargs):

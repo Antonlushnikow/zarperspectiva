@@ -1,6 +1,7 @@
 import csv
 
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Min
 from django.views.generic import ListView, CreateView, DetailView
 from django.http import HttpResponseRedirect, HttpResponse
@@ -111,18 +112,24 @@ class CreateRecordView(CreateView):
 
     def process_templates(self, template: str, obj):
         template = template.replace('$client_name', " ".join(
-            [obj.parent_name, obj.parent_second_name, obj.parent_name]))
+            [obj.parent_name, obj.parent_second_name, obj.parent_surname]))
         template = template.replace('$pupil_name', " ".join(
-            [obj.name_pupil, obj.surname_pupil, obj.second_name_pupil]))
+            [obj.name_pupil, obj.second_name_pupil, obj.surname_pupil]))
         template = template.replace('$phone_parent', obj.phone_parent)
         template = template.replace('$e_mail_parent', obj.e_mail_parent)
+        template = template.replace('$address_parent', obj.address_parent)
         template = template.replace('$birthday_pupil', str(obj.birthday_pupil))
         template = template.replace('$school_pupil', obj.school_pupil)
         if obj.phone_pupil:
             template = template.replace('$phone_pupil', obj.phone_pupil)
+        else:
+            template = template.replace('$phone_pupil', '')
         if obj.e_mail_pupil:
             template = template.replace('$e_mail_pupil', obj.e_mail_pupil)
+        else:
+            template = template.replace('$e_mail_pupil', '')
         template = template.replace('$sign_up_date', str(obj.sign_up_date))
+        template = template.replace('$comment', obj.comment)
 
         template = template.replace('$courses', "<br>".join([course.title for course in obj.courses.all()]))
         return template
@@ -137,7 +144,6 @@ class CreateRecordView(CreateView):
             recipient_list=[SiteSettings.objects.get().admin_email],
             html_message=self.process_templates(admin_message_text, obj),
         )
-
         send_mail(
             from_email=settings.EMAIL_HOST_USER,
             subject='Поздравляем с успешной записью на курсы',
@@ -150,8 +156,8 @@ class CreateRecordView(CreateView):
         obj = form.save()
         try:
             self.send_emails(obj)
-        except:
-            pass
+        except Exception as err:
+            print(f"Unexpected {err=}, {type(err)=}")
         return HttpResponseRedirect("/")
 
 
@@ -163,7 +169,7 @@ class AnonymousRecordForCourses(CreateRecordView):
     template_name = "mainapp/anonymous_record.html"
 
 
-@login_required
+@staff_member_required
 def export_records(request):
     model = Pupil
     response = HttpResponse(content_type='text/csv')
@@ -184,6 +190,7 @@ def export_records(request):
         'Имя заказчика',
         'Отчество заказчика',
         'Телефон заказчика',
+        'Адрес заказчика',
         'Email заказчика',
         'Серия, номер паспорта',
         'Дата выдачи',
@@ -191,7 +198,8 @@ def export_records(request):
         'Город проживания',
         'Улица, дом проживания',
         'Дата заявки',
-        'Предметы',
+        'Курсы',
+        'Комментарий',
     ])
 
     objects = model.objects.values_list(
@@ -206,13 +214,15 @@ def export_records(request):
             'parent_name',
             'parent_second_name',
             'phone_parent',
+            'address_parent',
             'e_mail_parent',
             'sign_up_date',
             'courses__title',
-    ).annotate(age=Min('courses__age__age'))
+            'comment',
+    ).annotate(age=Min('courses__age__age')).order_by('sign_up_date')
 
     for obj in objects:
-        obj_ = obj[:7] + obj[-1:] + obj[7:12] + ('', '', '', '', '') + obj[12:-1]
+        obj_ = obj[:7] + obj[-1:] + obj[7:13] + ('', '', '', '', '') + obj[13:-1]
         writer.writerow(obj_)
     return response
 

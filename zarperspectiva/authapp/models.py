@@ -38,6 +38,14 @@ class SiteUser(AbstractUser):
         blank=False,
     )
 
+    address = models.CharField(
+        verbose_name='адрес',
+        max_length=256,
+        null=False,
+        blank=False,
+        default='не указан',
+    )
+
     activation_key = models.CharField(max_length=128, blank=True, verbose_name="ключ активации")
     activation_key_expires = models.DateTimeField(
         default=default_key_expires,
