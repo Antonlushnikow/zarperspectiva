@@ -149,11 +149,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 DOMAIN_NAME = '89.108.99.140'
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.mail.ru'
-EMAIL_HOST_USER = 'zarperspectiva@list.ru'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'zarperspectiva@gmail.com'
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
-ADMIN_EMAIL_ADDRESS = 'antonlushnikow@gmail.com'
+ADMIN_EMAIL_ADDRESS = 'zarperspectiva@gmail.com'
 
 RECAPTCHA_PUBLIC_KEY = env("RECAPTCHA_KEY")
 RECAPTCHA_PRIVATE_KEY = env("RECAPTCHA_SECRET")
