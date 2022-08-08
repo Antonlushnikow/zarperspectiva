@@ -3,6 +3,7 @@ import csv
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Min
+from django.shortcuts import render
 from django.views.generic import ListView, CreateView, DetailView
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.mail import send_mail
@@ -158,7 +159,7 @@ class CreateRecordView(CreateView):
             self.send_emails(obj)
         except Exception as err:
             print(f"Unexpected {err=}, {type(err)=}")
-        return HttpResponseRedirect("/")
+        return render(self.request, "mainapp/record_complete.html")
 
 
 class RecordForCourses(CreateRecordView):
