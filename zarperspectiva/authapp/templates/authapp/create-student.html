@@ -10,7 +10,7 @@
                     {% csrf_token %}
                     {{ form.as_p }}
                       <div class="mt-2 mb-3">
-                          <a href="{% url 'auth:terms-conditions' %}">Нажимая на кнопку "Добавить", я подтверждаю согласие с <span style="color:blue">
+                          <a href="{% url 'auth:terms-conditions' %}">Нажимая кнопку "Добавить", я подтверждаю согласие с <span style="color:blue">
                             политикой конфиденциальности и обработки персональных данных</span></a>
                       </div>
                     <input type="submit" class="btn btn-primary" value="Добавить">
