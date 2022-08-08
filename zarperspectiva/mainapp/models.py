@@ -331,8 +331,8 @@ class Pupil(models.Model):
     comment = models.TextField(
         verbose_name='комментарий',
         max_length=256,
-        null=False,
-        blank=False,
+        null=True,
+        blank=True,
         default='',
     )
 
