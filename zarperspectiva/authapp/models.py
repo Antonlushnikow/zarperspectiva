@@ -11,35 +11,35 @@ def default_key_expires():
 
 class SiteUser(AbstractUser):
     first_name = models.CharField(
-        verbose_name="имя",
+        verbose_name="имя заказчика",
         max_length=150,
         blank=False,
     )
     last_name = models.CharField(
-        verbose_name="фамилия",
+        verbose_name="фамилия заказчика",
         max_length=150,
         blank=False,
     )
     second_name = models.CharField(
         max_length=30,
         blank=False,
-        verbose_name='отчество',
+        verbose_name='отчество заказчика',
     )
 
     email = models.EmailField(
-        verbose_name="электронная почта",
+        verbose_name="электронная почта заказчика",
         blank=False,
     )
 
     phone = models.CharField(
-        verbose_name='телефон',
+        verbose_name='телефон заказчика',
         max_length=12,
         null=False,
         blank=False,
     )
 
     address = models.CharField(
-        verbose_name='адрес',
+        verbose_name='адрес заказчика',
         max_length=256,
         null=False,
         blank=False,
@@ -70,22 +70,22 @@ class SiteUser(AbstractUser):
 
 class Student(models.Model):
     first_name = models.CharField(
-        verbose_name="имя",
+        verbose_name="имя ученика",
         max_length=150,
         blank=False,
     )
     second_name = models.CharField(
-        verbose_name="отчество",
+        verbose_name="отчество ученика",
         max_length=150,
         blank=False,
     )
     last_name = models.CharField(
-        verbose_name="фамилия",
+        verbose_name="фамилия ученика",
         max_length=150,
         blank=False,
     )
     email = models.EmailField(
-        verbose_name="электронная почта",
+        verbose_name="электронная почта ученика",
         blank=True
     )
     parent = models.ForeignKey(
@@ -96,17 +96,17 @@ class Student(models.Model):
         default=None,
     )
     phone = models.CharField(
-        verbose_name="телефон",
+        verbose_name="телефон ученика",
         max_length=20,
         blank=True,
     )
     birthday = models.DateField(
-        verbose_name='дата рождения',
+        verbose_name='дата рождения ученика',
         default=datetime(2010, 1, 1),
         null=False,
     )
     school = models.CharField(
-        verbose_name='Место учебы',
+        verbose_name='место учебы ученика',
         default='не указано',
         max_length=100,
         blank=True,
