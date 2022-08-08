@@ -3,8 +3,8 @@
 
 {% block content %}
 <section class="py-5">
-    <div class="container col-12 col-md-5 col-lg-4 mt-4 mb-4">
-        {{ term_conditions }}
+    <div class="container col-12 col-md-8 col-lg-8 mt-4 mb-4">
+        {{ term_conditions|safe }}
     </div>
 </section>
 {% endblock %}
