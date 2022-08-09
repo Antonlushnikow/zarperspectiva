@@ -35,7 +35,7 @@ def send_verify_mail(user):
     verify_link = reverse("auth:verify", args=[user.email, user.activation_key])
     title = f"ПЕРСПЕКТИВА. Подтверждение электронной почты"
     message = f"Для подтверждения учетной записи {user.username}  \
-    перейдите по ссылке: \nhttp://{settings.DOMAIN_NAME}{verify_link}"
+    перейдите по ссылке: \nhttps://{settings.DOMAIN_NAME}{verify_link}"
     return send_mail(
         title, message, settings.EMAIL_HOST_USER, [user.email], fail_silently=False
     )

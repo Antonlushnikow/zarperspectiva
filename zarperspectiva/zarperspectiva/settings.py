@@ -30,6 +30,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = [
     '89.108.99.140',
+    'zarperspectiva.ru',
 ]
 
 
@@ -147,7 +148,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-DOMAIN_NAME = '89.108.99.140'
+DOMAIN_NAME = 'zarperspectiva.ru'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'zarperspectiva@gmail.com'
