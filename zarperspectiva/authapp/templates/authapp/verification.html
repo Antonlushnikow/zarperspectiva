@@ -5,12 +5,9 @@
 <section class="py-5">
     <div class="container col-12 col-md-5 col-lg-4 mt-4 mb-4">
       <div class="row text-center">
-        {% if user.is_authenticated %}
             <h3>Поздравляем!</h3>
-          <p>Учетная запись пользователя {{ user.username }} подтверждена.</p>
-        {% else %}
-            <h3 align="center">Верификация не пройдена.</h3>
-        {% endif %}
+          <p>Учетная запись пользователя <b>{{ user.username }}</b> подтверждена.</p>
+          <p>Для продолжения выполните вход, использую данные указанные при регистрации.</p>
                 <a href="{% url 'index' %}" class="">на главную</a>
             </div>
         </div>
