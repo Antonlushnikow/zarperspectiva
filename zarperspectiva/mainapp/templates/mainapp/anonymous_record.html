@@ -66,6 +66,10 @@
       <a href="{% url 'auth:terms-conditions' %}">Нажимая кнопку "Записаться", я подтверждаю согласие с <span style="color:blue">
         политикой конфиденциальности и обработки персональных данных</span></a>
       </div>
+      {{ form.captcha.errors }}
+      {{ form.captcha.label }}
+      {{ form.captcha }}
+      <br>
       <input type="submit" value="Записаться" class="col-12 btn btn-primary">
     </form>
     <script type="text/javascript">

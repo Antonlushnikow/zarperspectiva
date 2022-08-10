@@ -1,3 +1,5 @@
+from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV2Checkbox
 from django import forms
 
 from mainapp.models import Pupil, Subject
@@ -11,6 +13,9 @@ class CreateRecordForm(forms.ModelForm):
     """
     Форма создания записи на курс
     """
+    captcha = ReCaptchaField(
+        widget=ReCaptchaV2Checkbox, label="Подтвердите что вы не робот!"
+    )
 
     class Meta:
         model = Pupil
