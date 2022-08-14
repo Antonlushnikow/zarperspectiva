@@ -82,9 +82,6 @@ class SiteUserRegisterView(CreateView):
             ):
                 user.is_verified = True
                 user.save()
-                auth.login(
-                    self, user, backend="django.contrib.auth.backends.ModelBackend"
-                )
             return render(self, "authapp/verification.html")
         except django.core.exceptions.MultipleObjectsReturned as e:
             print(
