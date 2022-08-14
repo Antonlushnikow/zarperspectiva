@@ -14,6 +14,9 @@
     {% else %}
     <form method="post">
       {% csrf_token %}
+      {% if not user.students.all %}
+        <div class="text-danger"><a class="text-danger" href="{% url 'auth:create-student' %}?next=/record-for-courses/"><u>Добавьте</u></a> данные об учениках, чтобы записаться!</div>
+      {% endif %}
       <h4>Информация о Заказчике:</h4>
       <a href="{% url 'auth:update-profile' %}" class="me-2"><u>Изменить</u></a>
       <hr>
@@ -40,7 +43,7 @@
           <option  v-for="(student, index) in students" :value="index">{{ student.last_name }} {{ student.first_name }}</option>
         </select>
 
-        <a :href="'/auth/create-student/?next=/record-for-courses/'" class="me-2"><u>Добавить</u></a>
+        <a :href="'/auth/create-student/?next=/record-for-courses/'" class="me-2"><u>Добавить ученика</u></a>
 
         <a v-if="student.id" :href="'/auth/update-student/'+ student.id + '?next=/record-for-courses/'" class="me-2"><u>Изменить</u></a>
         <br>
