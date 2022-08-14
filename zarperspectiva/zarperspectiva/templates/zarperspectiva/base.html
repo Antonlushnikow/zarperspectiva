@@ -32,6 +32,11 @@
     <!-- Header -->
     {% include 'zarperspectiva/includes/inc_main_menu.html' %}
     <div  class="content">
+        <div class="container col-lg-10 mt-4 mb-4">
+            {% if user.first_name and not user.students.all %}
+                <div class="bg-warning bg-gradient border border-primary rounded px-3 py-1"><a class="" href="{% url 'auth:create-student' %}?next=/record-for-courses/"><u>Добавьте</u></a> данные об учениках, чтобы записаться!</div>
+            {% endif %}
+        </div>
     {% block content %}
     {% endblock %}
     </div>
