@@ -179,20 +179,16 @@ def export_records(request):
     writer = csv.writer(response, delimiter=';')
 
     writer.writerow([
-        'Фамилия ученика',
-        'Имя ученика',
-        'Отчество ученика',
+        'ФИО ученика',
         'Телефон ученика',
         'Email ученика',
         'День рождения',
         'Место учебы',
         'Класс',
-        'Фамилия заказчика',
-        'Имя заказчика',
-        'Отчество заказчика',
+        'ФИО заказчика',
         'Телефон заказчика',
-        'Адрес заказчика',
         'Email заказчика',
+        'Адрес заказчика',
         'Серия, номер паспорта',
         'Дата выдачи',
         'Орган выдачи',
@@ -215,15 +211,15 @@ def export_records(request):
             'parent_name',
             'parent_second_name',
             'phone_parent',
-            'address_parent',
             'e_mail_parent',
+            'address_parent',
             'sign_up_date',
             'courses__title',
             'comment',
     ).annotate(age=Min('courses__age__age')).order_by('sign_up_date')
 
     for obj in objects:
-        obj_ = obj[:7] + obj[-1:] + obj[7:13] + ('', '', '', '', '') + obj[13:-1]
+        obj_ = (' '.join(obj[:3]),) + obj[3:7] + obj[-1:] + (' '.join(obj[7:10]),) + obj[10:13] + ('', '', '', '', '') + obj[13:-1]
         writer.writerow(obj_)
     return response
 
