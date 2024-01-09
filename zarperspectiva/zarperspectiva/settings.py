@@ -29,7 +29,7 @@ SECRET_KEY = env("SECRET_KEY")
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    '89.108.99.140',
+    '79.174.84.186',
     'zarperspectiva.ru',
 ]
 
