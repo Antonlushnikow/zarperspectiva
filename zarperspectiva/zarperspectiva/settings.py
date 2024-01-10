@@ -31,6 +31,7 @@ DEBUG = False
 ALLOWED_HOSTS = [
     '79.174.84.186',
     'zarperspectiva.ru',
+    'zarperspectiva-mirror.ru',
 ]
 
 
