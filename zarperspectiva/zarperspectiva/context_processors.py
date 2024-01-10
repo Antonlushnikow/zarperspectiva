@@ -8,9 +8,9 @@ def get_menu_items(request):
         'main_menu': {
             'КОНТАКТЫ': reverse_lazy('contacts'),
             'ИНФОРМАЦИЯ': reverse_lazy('schedule'),
-            'КУРСЫ': reverse_lazy('courses'),
-            'УЧИТЕЛЯ': reverse_lazy('teachers'),
-            'ЗАПИСЬ': reverse_lazy('record'),
+            # 'КУРСЫ': reverse_lazy('courses'),
+            # 'УЧИТЕЛЯ': reverse_lazy('teachers'),
+            # 'ЗАПИСЬ': reverse_lazy('record'),
         }
     }
 
