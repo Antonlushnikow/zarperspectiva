@@ -139,14 +139,26 @@ class AcademicHour(models.Model):
         default=45,
     )
     price_once = models.CharField(
-        verbose_name='разовая оплата',
+        verbose_name='разовая оплата (групп)',
         null=False,
         max_length=32,
     )
     price_month = models.CharField(
-        verbose_name='абонемент 4 занятия',
+        verbose_name='абонемент 4 занятия (групп)',
         null=False,
         max_length=32,
+    )
+    price_once_ind = models.CharField(
+        verbose_name='разовая оплата (индивидуально)',
+        null=False,
+        max_length=32,
+        default=750,
+    )
+    price_month_ind = models.CharField(
+        verbose_name='абонемент 4 занятия (индивидуально)',
+        null=False,
+        max_length=32,
+        default=2550,
     )
 
     def __str__(self):
@@ -185,15 +197,15 @@ class Course(models.Model):
         on_delete=models.SET_NULL,
     )
     price_once_alone = models.IntegerField(
-        verbose_name='Разовая оплата за занятие',
+        verbose_name='Разовая оплата за занятие (уст.)',
         default=600,
     )
     price_pass_group = models.IntegerField(
-        verbose_name='Цена за месяц по абонементу',
+        verbose_name='Цена за месяц по абонементу (уст.)',
         default=1400,
     )
     duration = models.IntegerField(
-        verbose_name='длительность занятия',
+        verbose_name='длительность занятия (уст.)',
         default=60,
     )
     academic_hour = models.ForeignKey(

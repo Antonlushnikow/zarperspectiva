@@ -53,13 +53,13 @@
                 <div class="row">
                   <div class="col-sm-6 col-lg-6">
                     <b><u>Стоимость занятий:</u></b>
-                    <div><b>Разовая оплата за занятие:</b> {{ course.price_once_alone }} ₽ </div>
-                    <div><b>Цена за месяц по абонементу:</b> {{ course.price_pass_group }} ₽ </div>
+                    <div><b>Разовая оплата за занятие:</b> {{ course.lesson_info.price_once }} ₽ </div>
+                    <div><b>Цена за месяц по абонементу:</b> {{ course.lesson_info.price_month }} ₽ </div>
                   </div>
                   <div class="col-sm-6 col-lg-6" v-if="course.lesson_info">
                     <div><b><u>Индивидуальные занятия*:</u></b></div>
-                    <div><b>Разовая оплата:</b> {{ course.lesson_info.price_once }} ₽ </div>
-                    <div><b>Абонемент за 4 занятия:</b> {{ course.lesson_info.price_month }} ₽ </div>
+                    <div><b>Разовая оплата:</b> {{ course.lesson_info.price_once_ind }} ₽ </div>
+                    <div><b>Абонемент за 4 занятия:</b> {{ course.lesson_info.price_month_ind }} ₽ </div>
                   </div>
                 </div>
                 <hr>
