@@ -3,7 +3,8 @@ from django.urls import path
 
 from adminapp.views import SiteSettingsEditView, CoursesView, CourseEditView, CourseCreateView, CourseDeleteView, \
     TeachersView, TeacherEditView, TeacherCreateView, TeacherDeleteView, SubjectDeleteView, SubjectCreateView, \
-    SubjectsView, SubjectEditView, AdminMainView, ReviewsView, ReviewEditView, ReviewCreateView, ReviewDeleteView
+    SubjectsView, SubjectEditView, AdminMainView, ReviewsView, ReviewEditView, ReviewCreateView, ReviewDeleteView, \
+    PricesView, PriceCreateView, PriceEditView
 
 urlpatterns = [
     path('', AdminMainView.as_view(), name='index'),
@@ -24,4 +25,8 @@ urlpatterns = [
     path('edit-review/<int:pk>/', ReviewEditView.as_view(), name='edit-review'),
     path('add-review/', ReviewCreateView.as_view(), name='add-review'),
     path('delete-review/<int:pk>/', ReviewDeleteView.as_view(), name='delete-review'),
+
+    path('prices/', PricesView.as_view(), name='prices'),
+    path('edit-price/<int:pk>/', PriceEditView.as_view(), name='edit-price'),
+    path('add-price/', PriceCreateView.as_view(), name='add-price'),
     ]

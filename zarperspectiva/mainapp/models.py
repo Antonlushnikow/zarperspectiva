@@ -163,6 +163,7 @@ class AcademicHour(models.Model):
     class Meta:
         verbose_name = 'академический час'
         verbose_name_plural = 'академические часы'
+        ordering = ['duration']
 
 
 class Course(models.Model):

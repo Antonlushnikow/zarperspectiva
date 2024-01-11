@@ -1,4 +1,4 @@
-from mainapp.models import SiteSettings, Course, Teacher, Subject, Review
+from mainapp.models import SiteSettings, Course, Teacher, Subject, Review, AcademicHour
 from django import forms
 
 
@@ -44,3 +44,8 @@ class ReviewEditForm(AdminEditForm):
         model = Review
         fields = '__all__'
 
+
+class PriceEditForm(AdminEditForm):
+    class Meta:
+        model = AcademicHour
+        fields = '__all__'
