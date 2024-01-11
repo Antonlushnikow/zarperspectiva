@@ -158,3 +158,47 @@ iframe {
     border: 1px solid rgba(0,0,0,.15);
     border-radius: 0.25rem;
 }
+
+h1 a {
+  font-size: calc(1.375rem + 1.5vw);
+}
+@media (min-width: 1200px) {
+  h1 a {
+    font-size: 2.5rem;
+  }
+}
+
+h2 a {
+  font-size: calc(1.325rem + 0.9vw);
+}
+@media (min-width: 1200px) {
+  h2 a {
+    font-size: 2rem;
+  }
+}
+
+h3 a {
+  font-size: calc(1.3rem + 0.6vw);
+}
+@media (min-width: 1200px) {
+  h3 a {
+    font-size: 1.75rem;
+  }
+}
+
+h4 a {
+  font-size: calc(1.275rem + 0.3vw);
+}
+@media (min-width: 1200px) {
+  h4 a {
+    font-size: 1.5rem;
+  }
+}
+
+h5 a {
+  font-size: 1.25rem;
+}
+
+h6 a {
+  font-size: 1rem;
+}
