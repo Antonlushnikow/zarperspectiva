@@ -1,0 +1,23 @@
+{% extends 'zarperspectiva/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="py-3">
+    <div class="container col-lg-8">
+    <p><a href="{% url 'staff:index' %}">К панели администратора</a></p>
+      <div class="row">
+          <h1>Стоимость курсов</h1>
+            <a  href="{% url 'staff:add-price' %}"><button class="btn btn-primary me-2 mb-3">ДОБАВИТЬ</button></a>
+          {% for hour in hours %}
+            <div class="px-2 py-1">
+                <div class="row">
+                    <div class="col-sm-6 col-lg-6">{{ hour.duration }} минут</div>
+                    <div class="col-sm-6 col-lg-6"><a class="me-2" href="{% url 'staff:edit-price' hour.pk %}">ИЗМЕНИТЬ</a></div>
+                </div>
+                <hr>
+            </div>
+          {% endfor %}
+      </div>
+    </div>
+</section>
+{% endblock %}

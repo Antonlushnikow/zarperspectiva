@@ -5,8 +5,15 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import UpdateView, ListView, CreateView, DeleteView, TemplateView
 from mainapp.models import SiteSettings, Review
 
-from adminapp.forms import CourseEditForm, TeacherEditForm, SubjectEditForm, SiteSettingsEditForm, ReviewEditForm
-from mainapp.models import Course, Teacher, Subject
+from adminapp.forms import (
+    CourseEditForm,
+    TeacherEditForm,
+    SubjectEditForm,
+    SiteSettingsEditForm,
+    ReviewEditForm,
+    PriceEditForm,
+)
+from mainapp.models import Course, Teacher, Subject, AcademicHour
 
 
 class AdminMainView(TemplateView):
@@ -202,3 +209,23 @@ class ReviewDeleteView(AdminDeleteView):
     model = Review
     template_name = 'adminapp/confirm-delete-reviews.html'
     success_url = reverse_lazy("staff:reviews")
+
+
+class PricesView(AdminListView):
+    model = AcademicHour
+    template_name = 'adminapp/prices.html'
+    context_object_name = 'hours'
+
+    ordering = ['duration']
+
+
+class PriceEditView(AdminEditView):
+    model = AcademicHour
+    form_class = PriceEditForm
+    success_url = reverse_lazy("staff:prices")
+
+
+class PriceCreateView(AdminCreateView):
+    model = AcademicHour
+    form_class = PriceEditForm
+    success_url = reverse_lazy("staff:prices")
