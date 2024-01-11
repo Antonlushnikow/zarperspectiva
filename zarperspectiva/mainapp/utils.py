@@ -28,10 +28,10 @@ def export_courses_to_xls(request):
 
     rows = Course.objects.all().values_list(
         'title',
-        'price_once_alone',
-        'price_pass_group',
         'academic_hour__price_once',
         'academic_hour__price_month',
+        'academic_hour__price_once_ind',
+        'academic_hour__price_month_ind',
     )
 
     font_style = xlwt.XFStyle()
