@@ -271,3 +271,9 @@ class ListStudentsApi(APIView):
         data = Student.objects.filter(parent__id=request.user.id)
         serializer = StudentSerializer(set(data), many=True)
         return Response(serializer.data)
+
+
+class ContactsView(ListView):
+    model = SiteSettings
+    template_name = 'mainapp/contacts.html'
+    context_object_name = 'contacts'

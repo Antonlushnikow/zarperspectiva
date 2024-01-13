@@ -20,6 +20,7 @@ from mainapp.views import (
     TeacherView,
     GetUserApi,
     ListStudentsApi,
+    ContactsView,
 )
 
 from authapp.views import SiteUserPasswordResetView
@@ -38,7 +39,8 @@ urlpatterns = [
     path('subject/<slug:slug>/', CoursesView.as_view(), name='subject'),
 
     path('schedule/', ScheduleView.as_view(), name='schedule'),
-    path('contacts/', TemplateView.as_view(template_name='mainapp/contacts.html'), name='contacts'),
+    path('contacts/', ContactsView.as_view(), name='contacts'),
+    # path('contacts/', TemplateView.as_view(template_name='mainapp/contacts.html'), name='contacts'),
     path('export/', TemplateView.as_view(template_name='mainapp/export.html'), name='export'),
     path('export-records/', export_records, name='export-records'),
     path('export-courses/', export_courses_to_xls, name='export-courses'),

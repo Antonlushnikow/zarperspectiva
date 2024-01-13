@@ -24,5 +24,11 @@ def get_site_settings(request):
             "client_letter_template": obj.client_letter_template,
             "schedule_url": obj.schedule_url,
             "calendar_url": obj.calendar_url,
+            "address": obj.address,
+            "admin_email": obj.admin_email,
+            "admin_phone": obj.admin_phone,
+            "admin_photo": obj.admin_photo,
+            "contacts_info": obj.contacts_info,
+            "vk_link": obj.vk_link,
         }
     return {}
