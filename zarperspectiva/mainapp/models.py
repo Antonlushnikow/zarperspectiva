@@ -30,17 +30,40 @@ class SiteSettings(models.Model):
         default='',
         max_length=150,
     )
-
+    admin_photo = models.ImageField(
+        upload_to='avatars/',
+        null=True,
+        blank=True,
+        verbose_name='фото администратора',
+    )
     admin_email = models.EmailField(
         verbose_name='email администратора',
         null=False,
         default='zarperspectiva@gmail.com'
     )
+    admin_phone = models.CharField(
+        verbose_name='телефон администратора',
+        default='+7-919-367-2831',
+        max_length=50,
+    )
+    address = models.CharField(
+        verbose_name='адрес центра',
+        default='г. Заречный, ул. Ленинградская, 29А',
+        max_length=150,
+    )
+    vk_link = models.CharField(
+        verbose_name='ссылка на ВК',
+        default='https://vk.com/public.cpperspektiva',
+        max_length=150,
+    )
+    contacts_info = HTMLField(
+        verbose_name='информация о контактах',
+        default='На ваши вопросы всегда ответит администратор центра Ольга Валерьевна. Тел. +7-919-367-2831 (с 18 августа по 26 мая по будням с 15.00 до 20.00)',
+    )
     center_info = HTMLField(
         verbose_name='информация о центре',
         default='',
     )
-
     terms_conditions = models.TextField(
         verbose_name='Политика конфиденциальности и обработки персональных данных',
         default=''

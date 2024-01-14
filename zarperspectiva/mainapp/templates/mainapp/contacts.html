@@ -6,22 +6,21 @@
     <div class="container col-lg-10">
       <div class="row">
           <h3>Контакты</h3>
-          <p>г. Заречный, ул. Ленинградская, 29А</p>
+          <p>{{ address }}<br>
+          {{ admin_phone }}</p>
           <hr>
           <div class="d-flex row">
               <div class="ms-2 me-3 mb-3 col-sm-12 col-lg-3 text-center">
-                <img src="/media/administrator.png" class="rounded-circle w-100" style="max-width:200px;">
+                <img src="/media/{{ admin_photo }}" class="rounded-circle w-100" style="max-width:200px;">
               </div>
               <div class="d-flex flex-column justify-content-end col-sm-12 col-lg-8">
-                <p>На ваши вопросы всегда ответит администратор центра Ольга Валерьевна.</p>
-                <p>Тел. +7-919-367-2831 (с 18 августа по 26 мая по будням с 15.00 до 20.00)</p>
+                  {{ contacts_info | safe }}
               </div>
           </div>
-          </div>
-          <hr>
-          <p><i class="fab fa-vk"></i> <a href="https://vk.com/public.cpperspektiva">Мы ВКонтакте</a></p>
-          <p><i class="fa fa-envelope"></i> <a href="mailto:zarperspectiva@gmail.com">zarperspectiva@gmail.com</a></p>
       </div>
+      <hr>
+      <p><i class="fab fa-vk"></i> <a href="{{ vk_link }}">Мы ВКонтакте</a></p>
+      <p><i class="fa fa-envelope"></i> <a href="mailto:{{ admin_email }}">{{ admin_email }}</a></p>
     </div>
 </section>
 
