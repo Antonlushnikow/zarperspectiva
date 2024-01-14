@@ -27,4 +27,128 @@
 </div>
 </section>
 
+
+<section class="py-3">
+  <div class="container">
+    <div class="row">
+      <h1>КУРСЫ</h1>
+      {% verbatim %}
+
+      <div id="vue">
+
+        <div v-for="course in filteredCourses">
+          <toggle-list-item :course="course"></toggle-list-item>
+        </div>
+      </div>
+
+      <template id="list-item">
+        <div class="course-card card border border-2 border-secondary mb-2">
+          <div class="card-body px-2 py-3">
+            <h4 class="mb-0 font-sans-serif fw-bold fs-md-0 fs-lg-1">{{ course.title|upper }}</h4>
+            <h6>
+              <span v-for="subj in course.subject" class="mb-0 font-sans-serif fw-bold fs-md-0 fs-lg-1 mb-2">
+                {{ subj.title }}
+              </span>
+            </h6>
+            <hr>
+            <p class="mb-0 font-sans-serif fs-md-0 fs-lg-1 mb-4"><span v-html="course.info"></span></p>
+
+            <div>
+              <div v-show="visible" class="mt-2">
+                <div class="row">
+                  <div class="col-sm-6 col-lg-6">
+                    <div v-if="course.lesson_info"><b>{{ course.count_overall }} занятий по {{ course.lesson_info.duration }} минут</b></div>
+                    <div v-else><b>{{ course.count_overall }} занятий по {{ course.duration }} минут</b></div>
+                    <div><b>Занятий в неделю:</b> {{ course.count_a_week }}</div>
+                    <div><b>Группа:</b> {{ course.group_size }}</div>
+                  </div>
+                  <div class="col-sm-6 col-lg-6">
+                    <b><u>Стоимость занятий:</u></b>
+                    <div><b>Разовая оплата за занятие:</b> {{ course.lesson_info.price_once }} ₽ </div>
+                    <div><b>Цена за месяц по абонементу:</b> {{ course.lesson_info.price_month }} ₽ </div>
+                  </div>
+                </div>
+                <hr>
+                <div>*Индивидуальные занятия возможны только при наличии возможности у педагога и при отсутствии групп. Про возможность индивидуальных занятий уточняйте у <a href="/contacts/"><u>администратора центра</u></a></div>
+              </div>
+              <div class="mt-3">
+                <button class="btn btn-primary me-2" @click="toggle()">{{visible?'СКРЫТЬ':'ПОДРОБНЕЕ'}}</button>
+                <a href="/record-for-courses/"><button class="btn btn-primary">ЗАПИСАТЬСЯ</button></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+      {% endverbatim %}
+    </div>
+  </div>
+</section>
+
+
+
+<script type="text/javascript">
+  Vue.component('toggle-list-item', {
+    template: '#list-item',
+    props: ['course'],
+    methods: {
+      toggle() {
+        this.visible = !this.visible;
+      }
+    },
+    data() {
+      return {
+        visible: false
+      }
+    },
+  })
+
+  var app = new Vue({
+    el: '#vue',
+    data: {
+      visible: false,
+      courses: [],
+      subjects: [],
+      ages: [],
+      selectedSubject: '',
+      selectedAge: '',
+    },
+    created() {
+      let uri = window.location.search.substring(1);
+      let params = new URLSearchParams(uri);
+      let currentUrl = window.location.pathname;
+      this.teachId = currentUrl.split('/')
+    },
+    mounted() {
+      axios
+        .get('/api/courses/')
+        .then(response => {
+          this.courses = response.data;
+        });
+      axios
+        .get('/api/subjects/')
+        .then(response => {
+          this.subjects = response.data;
+        });
+      axios
+        .get('/api/ages/')
+        .then(response => {
+          this.ages = response.data;
+        });
+
+    },
+    computed: {
+      filteredCourses() {
+        let tempCourses = this.courses;
+        tempCourses = tempCourses.filter((item) => {
+            return (item.teacher ==  this.teachId[2]);
+          })
+        return tempCourses;
+      }
+    }
+  })
+</script>
+
+
+
+
 {% endblock %}
