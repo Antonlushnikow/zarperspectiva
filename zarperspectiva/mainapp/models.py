@@ -30,6 +30,11 @@ class SiteSettings(models.Model):
         default='',
         max_length=150,
     )
+    price_url = models.CharField(
+        verbose_name='ссылка на прайс',
+        default='',
+        max_length=150,
+    )
     admin_photo = models.ImageField(
         upload_to='avatars/',
         null=True,
